@@ -12,5 +12,8 @@ namespace invMed.Data
             : base(options)
         {
         }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Item> Items { get; set; }
     }
 }
