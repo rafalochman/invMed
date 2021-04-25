@@ -1,0 +1,49 @@
+﻿@page "/products"
+@using invMed.Data
+@using invMed.Services
+@inject ProductsService productsService
+
+<h3>Products</h3>
+
+<NavLink class="nav-link " href="addProduct">
+    Add product
+</NavLink>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Product Id</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Price</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in products)
+        {
+        <tr>
+            <td>@product.Id</td>
+            <td>@product.Name</td>
+            <td>@product.Category</td>
+            <td>@product.Amount</td>
+            <td>@product.Price</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Product> products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await productsService.GetProducts();
+    }
+
+}
