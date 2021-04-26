@@ -18,12 +18,31 @@ namespace invMed.Services
 
         public Task<List<Product>> GetProducts()
         {
-            return Task.FromResult(_db.Products.ToList());
+            List<Product> products = _db.Products.ToList();
+            return Task.FromResult(products);
+        }
+
+        public Task<Product> GetProductById(int id)
+        {
+            Product product = _db.Products.FirstOrDefault(p => p.Id == id);
+            return Task.FromResult(product);
         }
 
         public void AddProduct(Product product)
         {
             _db.Products.Add(product);
+            _db.SaveChanges();
+        }
+
+        public void EditProduct(Product product)
+        {
+            _db.Products.Update(product);
+            _db.SaveChanges();
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            _db.Products.Remove(product);
             _db.SaveChanges();
         }
     }

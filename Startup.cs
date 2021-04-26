@@ -45,6 +45,7 @@ namespace invMed
             services.AddSingleton<WeatherForecastService>();
 
             services.AddScoped<ProductsService>();
+            services.AddScoped<ItemsService>();
 
             services.AddAuthorization(options =>
             {

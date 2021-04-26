@@ -1,0 +1,45 @@
+﻿@page "/items/{productId:int}"
+@using invMed.Data
+@inject ItemsService itemsService
+
+<h3>Items</h3>
+
+@if (items == null)
+{
+    <p><em>Loading...</em></p>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Item Id</th>
+        <th>Product Id</th>
+        <th>Product Name</th>
+        <th>Code</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in items)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Product.Id</td>
+            <td>@item.Product.Name</td>
+            <td>@item.Code</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+
+    private List<Item> items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await itemsService.GetItemsByProductId(ProductId);
+    }
+
+}

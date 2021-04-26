@@ -1,34 +1,35 @@
-﻿@page "/addProduct"
+﻿@page "/deleteProduct/{id:int}"
 @using invMed.Data
 @inject ProductsService productsService
 @inject NavigationManager NavigationManager
-<h3>Add Product</h3>
 
+<h3>Delete Product</h3>
+<h2>Are you sure?</h2>
 <form>
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
                 <label class="col-form-label">Name</label>
-                <input form="Name" class="form-control" @bind="@product.Name" />
+                <label>@product.Name</label>
             </div>
             <div class="form-group">
                 <label class="col-form-label">Category</label>
-                <input form="Category" class="form-control" @bind="@product.Category" />
+                <label>@product.Category</label>
             </div>
             <div class="form-group">
                 <label class="col-form-label">Amount</label>
-                <input form="Amount" class="form-control" @bind="@product.Amount" />
+                <label>@product.Amount</label>
             </div>
             <div class="form-group">
                 <label class="col-form-label">Price</label>
-                <input form="Price" class="form-control" @bind="@product.Price" />
+                <label>@product.Price</label>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
-                <input type="button" class="btn btn-primary" @onclick="@CreateProduct" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@RemoveProduct" value="Delete" />
                 <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
             </div>
         </div>
@@ -36,11 +37,19 @@
 </form>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
+
     Product product = new Product();
 
-    protected void CreateProduct()
+    protected override async Task OnInitializedAsync()
     {
-        productsService.AddProduct(product);
+        product = await productsService.GetProductById(Id);
+    }
+
+    protected void RemoveProduct()
+    {
+        productsService.DeleteProduct(product);
         NavigationManager.NavigateTo("products");
     }
 
