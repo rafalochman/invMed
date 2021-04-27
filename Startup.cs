@@ -37,6 +37,7 @@ namespace invMed
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -46,6 +47,7 @@ namespace invMed
 
             services.AddScoped<ProductsService>();
             services.AddScoped<ItemsService>();
+            services.AddScoped<AdminService>();
 
             services.AddAuthorization(options =>
             {
