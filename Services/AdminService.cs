@@ -27,11 +27,5 @@ namespace invMed.Services
             List<IdentityRole> identityRoles = _db.Roles.ToList();
             return Task.FromResult(identityRoles);
         }
-
-        public void AddRole(IdentityRole role)
-        {
-            _db.Roles.Add(role);
-            _db.SaveChanges();
-        }
     }
 }

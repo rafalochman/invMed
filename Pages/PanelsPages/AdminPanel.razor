@@ -1,20 +1,25 @@
 ﻿@page "/adminPanel"
 @using Microsoft.AspNetCore.Identity;
 @inject AdminService adminService
-@using Microsoft.AspNetCore.Authorization;
 @inject UserManager<IdentityUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
-@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@attribute [Authorize (Roles = "Admin")]
 
 <h3>Admin Panel</h3>
 
 <a href="Identity/Account/Register">Add user</a>
-<br/>
+<br />
 @if (users == null)
 {
     <p><em>Loading...</em></p>
 }
-<button class="btn btn-primary" @onclick="AddAdmin">Add admin account</button>
+
+@if (!isAdmin)
+{
+    <button class="btn btn-primary" @onclick="AddAdmin">Add admin account</button>
+}
+
 
 <table class="table">
     <thead>
@@ -33,7 +38,7 @@
                 <td>@user.Id</td>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
-                <td>@userRoles</td>
+                <td></td>
                 <td>
                     <a href="detailsAccount/">Details </a>
                     <a href="detailsAccount/">Edit </a>
@@ -48,86 +53,91 @@
 
 <button class="btn btn-primary" @onclick="() => showAddUser = true">Add role</button>
 
-    @if (showAddUser)
-    {
-        <form>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="col-form-label">Role name</label>
-                        <input form="Name" class="form-control" @bind="@newRole" />
-                    </div>
-                </div>
+@if (showAddUser)
+{
+<form>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="col-form-label">Role name</label>
+                <input form="Name" class="form-control" @bind="@newRole" />
             </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <input type="button" class="btn btn-primary" @onclick="@CreateRole" value="Save" />
-                        <input type="button" class="btn btn-primary" @onclick="() => showAddUser = false" value="Cancel" />
-                    </div>
-                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateRole" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
             </div>
-        </form>
-    }
+        </div>
+    </div>
+</form>
+}
 
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Role Id</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in roles)
+        {
             <tr>
-                <th>Role Id</th>
-                <th>Role</th>
+                <td>@role.Id</td>
+                <td>@role.Name</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var role in roles)
-            {
-                <tr>
-                    <td>@role.Id</td>
-                    <td>@role.Name</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-
-    @code {
-        private bool showAddUser = false;
-        private List<IdentityUser> users;
-        private List<IdentityRole> roles;
-        private List<IdentityRole> userRoles;
-        private string newRole;
-        private bool isAdminAccount = true;
-        private bool isAdminRole = true;
-
-        protected override async Task OnInitializedAsync()
-        {
-            users = await adminService.GetUsers();
-            roles = await adminService.GetRoles();
         }
+    </tbody>
+</table>
 
-        protected async Task AddAdmin()
-        {
-            var adminRole = await _RoleManager.FindByNameAsync("Admin");
-            if (adminRole == null)
-            {
-                await _RoleManager.CreateAsync(new IdentityRole("Admin"));
-            }
 
-            var adminUser = await _UserManager.FindByNameAsync("admin@admin.com");
-            if (adminUser != null)
-            {
-                var isAdmin = await _UserManager.IsInRoleAsync(adminUser, "Admin");
-                if (!isAdmin)
-                {
-                    await _UserManager.AddToRoleAsync(adminUser, "Admin");
-                }
-            }
-        }
+@code {
+    private List<IdentityUser> users;
+    private List<IdentityRole> roles;
+    private string newRole;
+    private bool showAddUser = false;
+    private bool isAdmin = true;
 
-        protected async Task CreateRole()
-        {
-            await _RoleManager.CreateAsync(new IdentityRole(newRole));
-            roles = await adminService.GetRoles();
-            showAddUser = false;
-        }
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await adminService.GetUsers();
+        roles = await adminService.GetRoles();
     }
+
+    protected async Task AddAdmin()
+    {
+        var adminRole = await _RoleManager.FindByNameAsync("Admin");
+        if (adminRole == null)
+        {
+            await _RoleManager.CreateAsync(new IdentityRole("Admin"));
+        }
+
+        var adminUser = await _UserManager.FindByNameAsync("admin@admin.com");
+        if (adminUser != null)
+        {
+            var isAdmin = await _UserManager.IsInRoleAsync(adminUser, "Admin");
+            if (!isAdmin)
+            {
+                await _UserManager.AddToRoleAsync(adminUser, "Admin");
+            }
+        }
+    }
+
+    protected async Task CreateRole()
+    {
+        await _RoleManager.CreateAsync(new IdentityRole(newRole));
+        roles = await adminService.GetRoles();
+        showAddUser = false;
+    }
+
+    protected void Cancel()
+    {
+        showAddUser = false;
+    }
+
+}
