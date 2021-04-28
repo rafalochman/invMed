@@ -1,10 +1,12 @@
 ﻿@page "/adminPanel"
 @using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Http
 @inject AdminService adminService
 @inject UserManager<IdentityUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
+@inject IHttpContextAccessor httpContextAccessor
 
-@attribute [Authorize (Roles = "Admin")]
+@attribute [Authorize(Roles = "Admin")]
 
 <h3>Admin Panel</h3>
 
@@ -40,9 +42,11 @@
                 <td>@user.Email</td>
                 <td></td>
                 <td>
-                    <a href="detailsAccount/">Details </a>
                     <a href="editAccount/@user.Id">Edit </a>
-                    <a href="deleteAccount/">Delete </a>
+                    @if (!currentUserName.Equals(user.UserName))
+                    {
+                        <button class="btn btn-primary" @onclick="@(async () => await DeleteAccount(user))">Delete</button>
+                    }
                 </td>
             </tr>
         }
@@ -55,24 +59,24 @@
 
 @if (showAddUser)
 {
-<form>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label class="col-form-label">Role name</label>
-                <input form="Name" class="form-control" @bind="@newRole" />
+    <form>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Role name</label>
+                    <input form="Name" class="form-control" @bind="@newRole" />
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <input type="button" class="btn btn-primary" @onclick="@CreateRole" value="Save" />
-                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="button" class="btn btn-primary" @onclick="@CreateRole" value="Save" />
+                    <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 }
 
 <table class="table">
@@ -100,13 +104,14 @@
     private string newRole;
     private bool showAddUser = false;
     private bool isAdmin = true;
-
+    private string currentUserName;
 
 
     protected override async Task OnInitializedAsync()
     {
         users = await adminService.GetUsers();
         roles = await adminService.GetRoles();
+        currentUserName = httpContextAccessor.HttpContext.User.Identity.Name;
     }
 
     protected async Task AddAdmin()
@@ -138,6 +143,12 @@
     protected void Cancel()
     {
         showAddUser = false;
+    }
+
+    protected async Task DeleteAccount(IdentityUser user)
+    {
+        await _UserManager.DeleteAsync(user);
+        users = await adminService.GetUsers();
     }
 
 }
