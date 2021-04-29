@@ -18,7 +18,7 @@ namespace invMed.Services
 
         public Task<List<IdentityUser>> GetUsers()
         {
-            List<IdentityUser> identityUsers = _db.Users.ToList();
+            var identityUsers = _db.Users.ToList();
             return Task.FromResult(identityUsers);
         }
 

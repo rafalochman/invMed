@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using invMed.Services;
 using Microsoft.AspNetCore.Authorization;
+using MudBlazor.Services;
 
 namespace invMed
 {
@@ -47,7 +48,6 @@ namespace invMed
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddSingleton<WeatherForecastService>();
 
             services.AddScoped<ProductsService>();
             services.AddScoped<ItemsService>();
@@ -59,6 +59,8 @@ namespace invMed
                     .RequireAuthenticatedUser()
                     .Build();
             });
+
+            services.AddMudServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
