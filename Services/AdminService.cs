@@ -16,7 +16,7 @@ namespace invMed.Services
             _db = db;
         }
 
-        public Task<List<IdentityUser>> GetUsers()
+        public Task<List<AspNetUser>> GetUsers()
         {
             var identityUsers = _db.Users.ToList();
             return Task.FromResult(identityUsers);

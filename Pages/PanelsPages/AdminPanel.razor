@@ -1,8 +1,9 @@
 ﻿@page "/adminPanel"
 @using Microsoft.AspNetCore.Identity;
 @using Microsoft.AspNetCore.Http
+@using invMed.Data
 @inject AdminService adminService
-@inject UserManager<IdentityUser> _UserManager
+@inject UserManager<AspNetUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
 @inject IHttpContextAccessor httpContextAccessor
 
@@ -99,7 +100,7 @@
 
 
 @code {
-    private List<IdentityUser> users;
+    private List<AspNetUser> users;
     private List<IdentityRole> roles;
     private string newRole;
     private bool showAddUser = false;
@@ -145,7 +146,7 @@
         showAddUser = false;
     }
 
-    protected async Task DeleteAccount(IdentityUser user)
+    protected async Task DeleteAccount(AspNetUser user)
     {
         await _UserManager.DeleteAsync(user);
         users = await adminService.GetUsers();
