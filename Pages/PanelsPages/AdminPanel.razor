@@ -2,16 +2,15 @@
 @using Microsoft.AspNetCore.Identity;
 @using invMed.Data
 @inject AdminService adminService
-@inject UserManager<AspNetUser> _UserManager
-@inject RoleManager<IdentityRole> _RoleManager
+
 
 @attribute [Authorize(Roles = "Admin")]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Admin Panel Dashboard</MudText>
 <MudGrid>
     <MudItem xs="12" sm="6" md="3">
-        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-            <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Success" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">System</MudText>
                 <MudText Typo="Typo.h5">online</MudText>
@@ -19,17 +18,20 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
-        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-            <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Secondary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Users</MudText>
-                <MudText Typo="Typo.h5">@users.Count</MudText>
+                @if (users is not null)
+                {
+                    <MudText Typo="Typo.h5">@users.Count</MudText>
+                }
             </div>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
-        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-            <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Primary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Something</MudText>
                 <MudText Typo="Typo.h5">12%</MudText>
@@ -37,8 +39,8 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="3">
-        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
-            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Warning" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Warning" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
                 <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Primary">Create Account</MudButton>
             </div>
@@ -46,47 +48,50 @@
     </MudItem>
 
     <MudItem xs="12" sm="12" lg="8">
-        <MudPaper Elevation="25" Class="pa-4">
-            <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<AspNetUser,bool>(FilterFunc)">
-                <ToolBarContent>
-                    <MudText Typo="Typo.h6">Users</MudText>
-                    <MudToolBarSpacer />
-                    <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-                </ToolBarContent>
-                <ColGroup>
-                    <col />
-                    <col />
-                    <col />
-                    <col />
-                    <col style="width: 60px;" />
-                </ColGroup>
-                <HeaderContent>
-                    <MudTh>Name</MudTh>
-                    <MudTh>Login</MudTh>
-                    <MudTh>Email</MudTh>
-                    <MudTh>Role</MudTh>
-                    <MudTh></MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
-                    <MudTd DataLabel="Login" HideSmall="true">@context.UserName</MudTd>
-                    <MudTd DataLabel="Email">@context.Email</MudTd>
-                    <MudTd DataLabel="Role">Admin</MudTd>
-                    <MudTd DataLabel="Actions">
-                        <MudTooltip Text="More">
-                            <MudIconButton Icon="@Icons.Material.Filled.MoreVert" />
-                        </MudTooltip>
-                    </MudTd>
-                </RowTemplate>
-                <PagerContent>
-                    <MudTablePager PageSizeOptions="new int[]{5}" RowsPerPageString="Users per page" />
-                </PagerContent>
-            </MudTable>
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 608px;">
+            @if (users is not null)
+            {
+                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Users</MudText>
+                        <MudToolBarSpacer/>
+                        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <ColGroup>
+                        <col/>
+                        <col/>
+                        <col/>
+                        <col/>
+                        <col style="width: 60px;"/>
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh>Login</MudTh>
+                        <MudTh>Email</MudTh>
+                        <MudTh>Role</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
+                        <MudTd DataLabel="Login" HideSmall="true">@context.UserName</MudTd>
+                        <MudTd DataLabel="Email">@context.Email</MudTd>
+                        <MudTd DataLabel="Role">@context.Role</MudTd>
+                        <MudTd DataLabel="Actions">
+                            <MudTooltip Text="More">
+                                <MudIconButton Icon="@Icons.Material.Filled.MoreVert"/>
+                            </MudTooltip>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Users per page"/>
+                    </PagerContent>
+                </MudTable>
+            }
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" sm="4">
-        <MudPaper Elevation="25" Class="pa-4" Style="height:608px;">
+        <MudPaper Elevation="25" Class="pa-4" Style="height: 608px;">
             User roles chart
         </MudPaper>
     </MudItem>
@@ -94,15 +99,15 @@
 
 
 @code {
+    private List<UserView> users;
     private string searchString = "";
-    private List<AspNetUser> users;
 
     protected override async Task OnInitializedAsync()
     {
-        users = await adminService.GetUsers();
+        users = await Task.Run(() => adminService.GetUsers());
     }
 
-    private bool FilterFunc(AspNetUser user)
+    private bool FilterFunc(UserView user)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
@@ -111,30 +116,5 @@
         return false;
     }
 
-    protected async Task AddAdmin()
-    {
-        var adminRole = await _RoleManager.FindByNameAsync("Admin");
-        if (adminRole == null)
-        {
-            await _RoleManager.CreateAsync(new IdentityRole("Admin"));
-        }
-
-        var adminUser = await _UserManager.FindByNameAsync("admin@admin.com");
-        if (adminUser != null)
-        {
-            var isAdmin = await _UserManager.IsInRoleAsync(adminUser, "Admin");
-            if (!isAdmin)
-            {
-                await _UserManager.AddToRoleAsync(adminUser, "Admin");
-            }
-        }
-    }
-
-
-    protected async Task DeleteAccount(AspNetUser user)
-    {
-        await _UserManager.DeleteAsync(user);
-        users = await adminService.GetUsers();
-    }
 
 }

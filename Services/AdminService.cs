@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
 {
@@ -16,16 +18,22 @@ namespace invMed.Services
             _db = db;
         }
 
-        public Task<List<AspNetUser>> GetUsers()
+        public async Task<List<UserView>> GetUsers()
         {
-            var AspNetUsers = _db.Users.ToList();
-            return Task.FromResult(AspNetUsers);
+            return await (from u in _db.Users
+                    join ur in _db.UserRoles on u.Id equals ur.UserId
+                    join r in _db.Roles on ur.RoleId equals r.Id
+                    select new UserView
+                    {
+                        Id = u.Id,
+                        Name = u.Name,
+                        Surname = u.Surname,
+                        UserName = u.Surname,
+                        Email = u.Email,
+                        Role = r.Name
+                    })
+                .ToListAsync();
         }
 
-        public Task<List<IdentityRole>> GetRoles()
-        {
-            List<IdentityRole> identityRoles = _db.Roles.ToList();
-            return Task.FromResult(identityRoles);
-        }
     }
 }
