@@ -1,0 +1,13 @@
+.loginHeader {
+    background-color: #594AE2;
+    height: 64px;
+}
+
+.loginLogo {
+    color: white; 
+    padding-top: 14px;
+}
+
+.loginContainer {
+    margin-top: 30px;
+}
