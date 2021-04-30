@@ -1,118 +1,114 @@
 ﻿@page "/adminPanel"
 @using Microsoft.AspNetCore.Identity;
-@using Microsoft.AspNetCore.Http
 @using invMed.Data
 @inject AdminService adminService
 @inject UserManager<AspNetUser> _UserManager
 @inject RoleManager<IdentityRole> _RoleManager
-@inject IHttpContextAccessor httpContextAccessor
 
 @attribute [Authorize(Roles = "Admin")]
 
-<h3>Admin Panel</h3>
-
-<a href="Identity/Account/Register">Add user</a>
-<br />
-@if (users == null)
-{
-    <p><em>Loading...</em></p>
-}
-
-@if (!isAdmin)
-{
-    <button class="btn btn-primary" @onclick="AddAdmin">Add admin account</button>
-}
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>User Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in users)
-        {
-            <tr>
-                <td>@user.Id</td>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
-                <td></td>
-                <td>
-                    <a href="editAccount/@user.Id">Edit </a>
-                    @if (!currentUserName.Equals(user.UserName))
-                    {
-                        <button class="btn btn-primary" @onclick="@(async () => await DeleteAccount(user))">Delete</button>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<h4>Number of users accounts: @users.Count</h4>
-
-<button class="btn btn-primary" @onclick="() => showAddUser = true">Add role</button>
-
-@if (showAddUser)
-{
-    <form>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="col-form-label">Role name</label>
-                    <input form="Name" class="form-control" @bind="@newRole" />
-                </div>
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Admin Panel Dashboard</MudText>
+<MudGrid>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Success" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">System</MudText>
+                <MudText Typo="Typo.h5">online</MudText>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <input type="button" class="btn btn-primary" @onclick="@CreateRole" value="Save" />
-                    <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel" />
-                </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Users</MudText>
+                <MudText Typo="Typo.h5">@users.Count</MudText>
             </div>
-        </div>
-    </form>
-}
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Primary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Something</MudText>
+                <MudText Typo="Typo.h5">12%</MudText>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Warning" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Primary">Create Account</MudButton>
+            </div>
+        </MudPaper>
+    </MudItem>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Role Id</th>
-            <th>Role</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var role in roles)
-        {
-            <tr>
-                <td>@role.Id</td>
-                <td>@role.Name</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <MudItem xs="12" sm="12" lg="8">
+        <MudPaper Elevation="25" Class="pa-4">
+            <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<AspNetUser,bool>(FilterFunc)">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Users</MudText>
+                    <MudToolBarSpacer />
+                    <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                </ToolBarContent>
+                <ColGroup>
+                    <col />
+                    <col />
+                    <col />
+                    <col />
+                    <col style="width: 60px;" />
+                </ColGroup>
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Login</MudTh>
+                    <MudTh>Email</MudTh>
+                    <MudTh>Role</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
+                    <MudTd DataLabel="Login" HideSmall="true">@context.UserName</MudTd>
+                    <MudTd DataLabel="Email">@context.Email</MudTd>
+                    <MudTd DataLabel="Role">Admin</MudTd>
+                    <MudTd DataLabel="Actions">
+                        <MudTooltip Text="More">
+                            <MudIconButton Icon="@Icons.Material.Filled.MoreVert" />
+                        </MudTooltip>
+                    </MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[]{5}" RowsPerPageString="Users per page" />
+                </PagerContent>
+            </MudTable>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" sm="4">
+        <MudPaper Elevation="25" Class="pa-4" Style="height:608px;">
+            User roles chart
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
 
 @code {
+    private string searchString = "";
     private List<AspNetUser> users;
-    private List<IdentityRole> roles;
-    private string newRole;
-    private bool showAddUser = false;
-    private bool isAdmin = true;
-    private string currentUserName;
-
 
     protected override async Task OnInitializedAsync()
     {
         users = await adminService.GetUsers();
-        roles = await adminService.GetRoles();
-        currentUserName = httpContextAccessor.HttpContext.User.Identity.Name;
+    }
+
+    private bool FilterFunc(AspNetUser user)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if ($"{user.Name} {user.Surname} {user.Email} {user.UserName}".Contains(searchString))
+            return true;
+        return false;
     }
 
     protected async Task AddAdmin()
@@ -134,17 +130,6 @@
         }
     }
 
-    protected async Task CreateRole()
-    {
-        await _RoleManager.CreateAsync(new IdentityRole(newRole));
-        roles = await adminService.GetRoles();
-        showAddUser = false;
-    }
-
-    protected void Cancel()
-    {
-        showAddUser = false;
-    }
 
     protected async Task DeleteAccount(AspNetUser user)
     {
