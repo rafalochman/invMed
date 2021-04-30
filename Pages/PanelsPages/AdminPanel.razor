@@ -1,6 +1,7 @@
 ﻿@page "/adminPanel"
 @using Microsoft.AspNetCore.Identity;
 @using invMed.Data
+@using System.Diagnostics
 @inject AdminService adminService
 
 
@@ -8,7 +9,7 @@
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Admin Panel Dashboard</MudText>
 <MudGrid>
-    <MudItem xs="12" sm="6" md="3">
+    <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Success" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
@@ -17,7 +18,7 @@
             </div>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" sm="6" md="3">
+    <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Secondary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
@@ -29,7 +30,7 @@
             </div>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" sm="6" md="3">
+    <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Primary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
@@ -38,7 +39,7 @@
             </div>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" sm="6" md="3">
+    <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Warning" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
@@ -90,9 +91,13 @@
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" sm="4">
+    <MudItem xs="12" sm="12" lg="4">
         <MudPaper Elevation="25" Class="pa-4" Style="height: 608px;">
-            User roles chart
+            <MudText Class="mt-4 ml-2" Typo="Typo.h6">User Roles</MudText>
+            @if (rolesNumbers is not null)
+            {
+                <MudChart Class="pt-16" ChartType="ChartType.Donut" InputData="@rolesNumbers" InputLabels="@rolesLabels" Style="max-height: 440px"></MudChart>
+            }
         </MudPaper>
     </MudItem>
 </MudGrid>
@@ -101,17 +106,20 @@
 @code {
     private List<UserView> users;
     private string searchString = "";
+    private double[] rolesNumbers;
+    private string[] rolesLabels = {"Admin", "Manager", "User"};
 
     protected override async Task OnInitializedAsync()
     {
         users = await Task.Run(() => adminService.GetUsers());
+        rolesNumbers = new double[] {users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User") };
     }
 
     private bool FilterFunc(UserView user)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if ($"{user.Name} {user.Surname} {user.Email} {user.UserName}".Contains(searchString))
+        if ($"{user.Name} {user.Surname} {user.Email} {user.UserName} {user.Role}".Contains(searchString))
             return true;
         return false;
     }

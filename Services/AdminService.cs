@@ -28,7 +28,7 @@ namespace invMed.Services
                         Id = u.Id,
                         Name = u.Name,
                         Surname = u.Surname,
-                        UserName = u.Surname,
+                        UserName = u.UserName,
                         Email = u.Email,
                         Role = r.Name
                     })
