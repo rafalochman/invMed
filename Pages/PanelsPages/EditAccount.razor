@@ -1,6 +1,7 @@
 ﻿@page "/editAccount/{id}"
 @using Microsoft.AspNetCore.Identity;
-@inject UserManager<IdentityUser> _UserManager
+@using invMed.Data
+@inject UserManager<AspNetUser> _UserManager
 @inject NavigationManager NavigationManager
 
 <h3>Edit Account</h3>
@@ -61,7 +62,7 @@
     [Parameter]
     public string Id { get; set; }
 
-    IdentityUser user;
+    AspNetUser user;
     bool showResetPassword = false;
     string newPassword;
 

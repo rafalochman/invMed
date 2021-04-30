@@ -18,8 +18,8 @@ namespace invMed.Services
 
         public Task<List<AspNetUser>> GetUsers()
         {
-            var identityUsers = _db.Users.ToList();
-            return Task.FromResult(identityUsers);
+            var AspNetUsers = _db.Users.ToList();
+            return Task.FromResult(AspNetUsers);
         }
 
         public Task<List<IdentityRole>> GetRoles()
