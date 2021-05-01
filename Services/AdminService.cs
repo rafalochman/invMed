@@ -56,12 +56,9 @@ namespace invMed.Services
             return true;
         }
 
-        public async Task<bool[]> CheckIsInRoles(AspNetUser user)
+        public async Task<bool> CheckIsInRole(AspNetUser user, string role)
         {
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            var isManager = await _userManager.IsInRoleAsync(user, "Manager");
-            var isUser = await _userManager.IsInRoleAsync(user, "User");
-            return new[]{isAdmin, isManager, isUser};
+            return await _userManager.IsInRoleAsync(user, role);
         }
 
         public async Task<bool> UpdateRole(AspNetUser user, string role, bool beInRole)

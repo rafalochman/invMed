@@ -11,11 +11,11 @@
                     <MudText Class="mt-4">@user.Name @user.Surname</MudText>
                     <MudText>@role</MudText>
                     <MudText Class="mt-8" Typo="Typo.h6">Change roles</MudText>
-                    if (roles is not null)
+                    if (isAdmin || isManager || isUser)
                     {
-                        <MudCheckBox @bind-Checked="@isUser" Label="User" Color="Color.Primary"></MudCheckBox>
-                        <MudCheckBox @bind-Checked="@isManager" Label="Manager" Color="Color.Primary"></MudCheckBox>
-                        <MudCheckBox @bind-Checked="@isAdmin" Label="Admin" Color="Color.Primary"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@isUser" Disabled="@(!isAdmin && !isManager && isUser)" Label="User" Color="Color.Primary"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@isManager" Disabled="@(!isAdmin && isManager && !isUser)" Label="Manager" Color="Color.Primary"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@isAdmin" Disabled="@(isAdmin && !isManager && !isUser)" Label="Admin" Color="Color.Primary"></MudCheckBox>
                         <br />
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRoles">Save</MudButton>
                     }
@@ -51,7 +51,6 @@
     [Parameter] public string role { get; set; }
     private AspNetUser user;
     private bool tryRemove = false;
-    private bool[] roles;
     private bool isAdmin;
     private bool isManager;
     private bool isUser;
@@ -67,13 +66,10 @@
     protected override async Task OnInitializedAsync()
     {
         user = await Task.Run(() => adminService.GetUserById(userId));
-        roles = await Task.Run(() => adminService.CheckIsInRoles(user));
-        if (roles is not null)
-        {
-            isAdmin = roles[0];
-            isManager = roles[1];
-            isUser = roles[2];
-        }
+
+        isAdmin = await Task.Run(() => adminService.CheckIsInRole(user, "Admin"));
+        isManager = await Task.Run(() => adminService.CheckIsInRole(user, "Manager"));
+        isUser = await Task.Run(() => adminService.CheckIsInRole(user, "User"));
     }
 
     private async void UpdateRoles()
