@@ -2,12 +2,14 @@
 @using Microsoft.AspNetCore.Identity;
 @using invMed.Data
 @using System.Diagnostics
+@using invMed.Controls
 @inject AdminService adminService
+@inject IDialogService DialogService
 
 
 @attribute [Authorize(Roles = "Admin")]
 
-<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Admin Panel Dashboard</MudText>
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Admin Panel Dashboard</MudText>
 <MudGrid>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
@@ -26,6 +28,10 @@
                 @if (users is not null)
                 {
                     <MudText Typo="Typo.h5">@users.Count</MudText>
+                }
+                else
+                {
+                    <MudProgressCircular Size="Size.Small" Color="Color.Primary" Indeterminate="true"/>
                 }
             </div>
         </MudPaper>
@@ -56,31 +62,33 @@
                     <ToolBarContent>
                         <MudText Typo="Typo.h6">Users</MudText>
                         <MudToolBarSpacer/>
-                        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <ColGroup>
                         <col/>
                         <col/>
                         <col/>
                         <col/>
-                        <col style="width: 60px;"/>
+                        <col style="width: 60px"/>
                     </ColGroup>
                     <HeaderContent>
                         <MudTh>Name</MudTh>
-                        <MudTh>Login</MudTh>
+                        <MudTh>UserName</MudTh>
                         <MudTh>Email</MudTh>
                         <MudTh>Role</MudTh>
                         <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
-                        <MudTd DataLabel="Login" HideSmall="true">@context.UserName</MudTd>
+                        <MudTd DataLabel="UserName" HideSmall="true">@context.UserName</MudTd>
                         <MudTd DataLabel="Email">@context.Email</MudTd>
                         <MudTd DataLabel="Role">@context.Role</MudTd>
-                        <MudTd DataLabel="Actions">
-                            <MudTooltip Text="More">
-                                <MudIconButton Icon="@Icons.Material.Filled.MoreVert"/>
-                            </MudTooltip>
+                        <MudTd DataLabel="Manage">
+                            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+                                <MudMenuItem @onclick="@((e) => OpenDetailsDialog(context))">Details</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenEditDialog(context))">Edit</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenManageDialog(context))">Manage</MudMenuItem>
+                            </MudMenu>
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
@@ -88,15 +96,23 @@
                     </PagerContent>
                 </MudTable>
             }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
+            }
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" sm="12" lg="4">
         <MudPaper Elevation="25" Class="pa-4" Style="height: 608px;">
-            <MudText Class="mt-4 ml-2" Typo="Typo.h6">User Roles</MudText>
             @if (rolesNumbers is not null)
             {
+                <MudText Class="mt-4 ml-2" Typo="Typo.h6">User Roles</MudText>
                 <MudChart Class="pt-16" ChartType="ChartType.Donut" InputData="@rolesNumbers" InputLabels="@rolesLabels" Style="max-height: 440px"></MudChart>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
             }
         </MudPaper>
     </MudItem>
@@ -108,21 +124,52 @@
     private string searchString = "";
     private double[] rolesNumbers;
     private string[] rolesLabels = {"Admin", "Manager", "User"};
+    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
         users = await Task.Run(() => adminService.GetUsers());
-        rolesNumbers = new double[] {users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User") };
+        rolesNumbers = new double[] {users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User")};
     }
 
     private bool FilterFunc(UserView user)
     {
         if (string.IsNullOrWhiteSpace(searchString))
             return true;
-        if ($"{user.Name} {user.Surname} {user.Email} {user.UserName} {user.Role}".Contains(searchString))
+        if ($"{user.Name} {user.Surname} {user.Email} {user.UserName} {user.Role}".Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
     }
 
+    private void OpenDetailsDialog(UserView user)
+    {
+        var parameters = new DialogParameters {["user"] = user};
+        DialogService.Show<UserDetailsDialog>("User details", parameters, maxDialogWidth);
+    }
+
+    private async Task OpenEditDialog(UserView user)
+    {
+        var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
+        var dialog = DialogService.Show<UserEditDialog>("Edit user", parameters, maxDialogWidth);
+        var result = await dialog.Result;
+
+        if (result is not null)
+        {
+            users = await Task.Run(() => adminService.GetUsers());
+        }
+    }
+
+    private async Task OpenManageDialog(UserView user)
+    {
+        var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
+        var dialog = DialogService.Show<UserManageDialog>("Manage user", parameters, maxDialogWidth);
+        var result = await dialog.Result;
+
+        if (result is not null)
+        {
+            users = await Task.Run(() => adminService.GetUsers());
+            rolesNumbers = new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User") };
+        }
+    }
 
 }

@@ -1,0 +1,87 @@
+﻿@using invMed.Data
+@inject AdminService adminService
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                @if (user is not null)
+                {
+                    <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@user.Name[0]@user.Surname[0]</MudAvatar>
+                    <MudText Class="mt-4">@user.Name @user.Surname</MudText>
+                    <MudText>@role</MudText>
+                    <MudText Class="mt-8" Typo="Typo.h6">Change roles</MudText>
+                    if (roles is not null)
+                    {
+                        <MudCheckBox @bind-Checked="@isUser" Label="User" Color="Color.Primary"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@isManager" Label="Manager" Color="Color.Primary"></MudCheckBox>
+                        <MudCheckBox @bind-Checked="@isAdmin" Label="Admin" Color="Color.Primary"></MudCheckBox>
+                        <br />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRoles">Save</MudButton>
+                    }
+                    else
+                    {
+                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                    }
+                    <MudText Class="mt-8" Typo="Typo.h6">Remove account</MudText>
+                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" @onclick="() => tryRemove = true">Remove account</MudButton>
+                    if (tryRemove)
+                    {
+                        <MudText Class="mt-8" Typo="Typo.h6">Are you sure?</MudText>
+                        <MudButton Class="mt-4 mr-4" Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => tryRemove = false">No</MudButton>
+                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Default" @onclick="@RemoveUser">Yes</MudButton>
+                    }
+                }
+                else
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                }
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string userId { get; set; }
+    [Parameter] public string role { get; set; }
+    private AspNetUser user;
+    private bool tryRemove = false;
+    private bool[] roles;
+    private bool isAdmin;
+    private bool isManager;
+    private bool isUser;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async void RemoveUser()
+    {
+        await adminService.DeleteUser(user);
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await Task.Run(() => adminService.GetUserById(userId));
+        roles = await Task.Run(() => adminService.CheckIsInRoles(user));
+        if (roles is not null)
+        {
+            isAdmin = roles[0];
+            isManager = roles[1];
+            isUser = roles[2];
+        }
+    }
+
+    private async void UpdateRoles()
+    {
+        await adminService.UpdateRole(user, "Admin", isAdmin);
+        await adminService.UpdateRole(user, "Manager", isManager);
+        await adminService.UpdateRole(user, "User", isUser);
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

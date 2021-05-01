@@ -1,0 +1,31 @@
+﻿@using invMed.Data
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                <MudContainer Style="text-align: center">
+                    <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@user.Name[0]@user.Surname[0]</MudAvatar>
+                    <MudText Class="mt-4">@user.Name @user.Surname</MudText>
+                    <MudText>@user.Role</MudText>
+                </MudContainer>
+                <MudField Variant="Variant.Text" Class="mt-6" Label="Id"> @user.Id</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Name"> @user.Name</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Surname"> @user.Surname</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="UserName"> @user.UserName</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Email"> @user.Email</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Role">@user.Role</MudField>
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public UserView user { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}

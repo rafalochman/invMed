@@ -12,10 +12,12 @@ namespace invMed.Services
     public class AdminService
     {
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<AspNetUser> _userManager;
 
-        public AdminService(ApplicationDbContext db)
+        public AdminService(ApplicationDbContext db, UserManager<AspNetUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         public async Task<List<UserView>> GetUsers()
@@ -33,6 +35,48 @@ namespace invMed.Services
                         Role = r.Name
                     })
                 .ToListAsync();
+        }
+
+        public async Task<AspNetUser> GetUserById(string id)
+        {
+            return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<bool> UpdateUser(AspNetUser user)
+        {
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteUser(AspNetUser user)
+        {
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool[]> CheckIsInRoles(AspNetUser user)
+        {
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            var isManager = await _userManager.IsInRoleAsync(user, "Manager");
+            var isUser = await _userManager.IsInRoleAsync(user, "User");
+            return new[]{isAdmin, isManager, isUser};
+        }
+
+        public async Task<bool> UpdateRole(AspNetUser user, string role, bool beInRole)
+        {
+            var isInRole = await _userManager.IsInRoleAsync(user, role);
+            if (isInRole && !beInRole)
+            {
+                await _userManager.RemoveFromRoleAsync(user, role);
+            }
+            else if (!isInRole && beInRole)
+            {
+                await _userManager.AddToRoleAsync(user, role);
+            }
+
+            return true;
         }
 
     }
