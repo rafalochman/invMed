@@ -1,0 +1,66 @@
+﻿@using invMed.Data
+@inject AdminService adminService
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudText Class="pt-8" Typo="Typo.h6">Register</MudText>
+                    <MudTextField Label="Name" Immediate="true" @bind-Value="input.Name" For="@(() => input.Name)" />
+                    <MudTextField Label="Surname" Immediate="true" Class="mt-2" @bind-Value="input.Surname" For="@(() => input.Surname)" />
+                    <MudTextField Label="Email" Immediate="true" Class="mt-2" @bind-Value="input.Email" For="@(() => input.Email)" />
+                    <MudTextField Label="Password" Immediate="true" Class="mt-2" @bind-Value="input.Password" For="@(() => input.Password)" InputType="InputType.Password" />
+                    <MudTextField Label="Confirm password" Immediate="true" HelperText="Repeat the password" Class="mt-2" @bind-Value="input.ConfirmPassword" For="@(() => input.ConfirmPassword)" InputType="InputType.Password" />
+                    <MudText Class="mt-6" Typo="Typo.h6">Choose role</MudText>
+                    <MudCheckBox @bind-Checked="@isAdmin" Label="Admin" Color="Color.Primary"></MudCheckBox>
+                    <MudCheckBox @bind-Checked="@isManager" Label="Manager" Color="Color.Primary"></MudCheckBox>
+                    <MudCheckBox @bind-Checked="@isUser" Label="User" Color="Color.Primary"></MudCheckBox>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4" Disabled="@(!(isAdmin || isManager || isUser))">Register</MudButton>
+                </EditForm>
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    private CreateAccountInput input = new CreateAccountInput();
+    bool success;
+    private bool isAdmin;
+    private bool isManager;
+    private bool isUser;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async void OnValidSubmit()
+    {
+        var user = new AspNetUser {Name = input.Name, Surname = input.Surname, UserName = input.Email, Email = input.Email};
+        var result = await adminService.AddUser(user, input.Password);
+        if (result)
+        {
+            if (isAdmin)
+            {
+                await adminService.AddToRole(user, "Admin");
+            }
+            if (isManager)
+            {
+                await adminService.AddToRole(user, "Manager");
+            }
+            if (isUser)
+            {
+                await adminService.AddToRole(user, "User");
+            }
+        }
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+}

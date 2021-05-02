@@ -72,9 +72,19 @@ namespace invMed.Services
             {
                 await _userManager.AddToRoleAsync(user, role);
             }
-
             return true;
         }
 
+        public async Task<bool> AddUser(AspNetUser user, string password)
+        {
+            await _userManager.CreateAsync(user, password);
+            return true;
+        }
+
+        public async Task<bool> AddToRole(AspNetUser user, string role)
+        {
+            await _userManager.AddToRoleAsync(user, role);
+            return true;
+        }
     }
 }

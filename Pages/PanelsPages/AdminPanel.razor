@@ -49,7 +49,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Warning" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Primary">Create Account</MudButton>
+                <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenCreateAccountDialog">Create Account</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -124,12 +124,12 @@
     private string searchString = "";
     private double[] rolesNumbers;
     private string[] rolesLabels = {"Admin", "Manager", "User"};
-    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+    private DialogOptions maxDialogWidth = new DialogOptions() {MaxWidth = MaxWidth.Medium, FullWidth = true};
 
     protected override async Task OnInitializedAsync()
     {
         users = await Task.Run(() => adminService.GetUsers());
-        rolesNumbers = new double[] {users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User")};
+        rolesNumbers = GetRolesArray();
     }
 
     private bool FilterFunc(UserView user)
@@ -149,7 +149,7 @@
 
     private async Task OpenEditDialog(UserView user)
     {
-        var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
+        var parameters = new DialogParameters {["userId"] = user.Id, ["role"] = user.Role};
         var dialog = DialogService.Show<UserEditDialog>("Edit user", parameters, maxDialogWidth);
         var result = await dialog.Result;
 
@@ -161,15 +161,31 @@
 
     private async Task OpenManageDialog(UserView user)
     {
-        var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
+        var parameters = new DialogParameters {["userId"] = user.Id, ["role"] = user.Role};
         var dialog = DialogService.Show<UserManageDialog>("Manage user", parameters, maxDialogWidth);
         var result = await dialog.Result;
 
         if (result is not null)
         {
             users = await Task.Run(() => adminService.GetUsers());
-            rolesNumbers = new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User") };
+            rolesNumbers = GetRolesArray();
         }
+    }
+
+    private async Task OpenCreateAccountDialog()
+    {
+        var dialog = DialogService.Show<CreateAccountDialog>("Create account", maxDialogWidth);
+        var result = await dialog.Result;
+        if (result is not null)
+        {
+            users = await Task.Run(() => adminService.GetUsers());
+            rolesNumbers = GetRolesArray();
+        }
+    }
+
+    private double[] GetRolesArray()
+    {
+        return new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User") };
     }
 
 }
