@@ -12,6 +12,11 @@ namespace invMed.Data
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new RolesConfiguration());
+        }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Item> Items { get; set; }
