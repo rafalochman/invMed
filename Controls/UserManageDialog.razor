@@ -51,6 +51,12 @@
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 
+    protected override async Task OnInitializedAsync()
+    {
+        user = await Task.Run(() => adminService.GetUserById(userId));
+        newRole = role;
+    }
+
     private async void RemoveUser()
     {
         var result = await adminService.DeleteUser(user);
@@ -63,11 +69,6 @@
         {
             Snackbar.Add("Error, account not removed", Severity.Error);
         }
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        user = await Task.Run(() => adminService.GetUserById(userId));
     }
 
     private async void UpdateRole()
