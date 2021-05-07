@@ -56,25 +56,6 @@ namespace invMed.Services
             return true;
         }
 
-        public async Task<bool> CheckIsInRole(AspNetUser user, string role)
-        {
-            return await _userManager.IsInRoleAsync(user, role);
-        }
-
-        public async Task<bool> UpdateRole(AspNetUser user, string role, bool beInRole)
-        {
-            var isInRole = await _userManager.IsInRoleAsync(user, role);
-            if (isInRole && !beInRole)
-            {
-                await _userManager.RemoveFromRoleAsync(user, role);
-            }
-            else if (!isInRole && beInRole)
-            {
-                await _userManager.AddToRoleAsync(user, role);
-            }
-            return true;
-        }
-
         public async Task<bool> AddUser(AspNetUser user, string password)
         {
             await _userManager.CreateAsync(user, password);
@@ -84,6 +65,12 @@ namespace invMed.Services
         public async Task<bool> AddToRole(AspNetUser user, string role)
         {
             await _userManager.AddToRoleAsync(user, role);
+            return true;
+        }
+
+        public async Task<bool> RemoveFromRole(AspNetUser user, string role)
+        {
+            await _userManager.RemoveFromRoleAsync(user, role);
             return true;
         }
     }

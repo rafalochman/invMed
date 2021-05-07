@@ -10,20 +10,15 @@
                     <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@user.Name[0]@user.Surname[0]</MudAvatar>
                     <MudText Class="mt-4">@user.Name @user.Surname</MudText>
                     <MudText>@role</MudText>
-                    <MudText Class="mt-8" Typo="Typo.h6">Change roles</MudText>
-                    if (isAdmin || isManager || isUser)
-                    {
-                        <MudCheckBox @bind-Checked="@isUser" Disabled="@(!isAdmin && !isManager && isUser)" Label="User" Color="Color.Primary"></MudCheckBox>
-                        <MudCheckBox @bind-Checked="@isManager" Disabled="@(!isAdmin && isManager && !isUser)" Label="Manager" Color="Color.Primary"></MudCheckBox>
-                        <MudCheckBox @bind-Checked="@isAdmin" Disabled="@(isAdmin && !isManager && !isUser)" Label="Admin" Color="Color.Primary"></MudCheckBox>
+                    <MudText Class="mt-8" Typo="Typo.h6">Change role</MudText>
+                    <MudSelect Label="Select role" @bind-Value="newRole">
+                        <MudSelectItem Value="@("User")">User</MudSelectItem>
+                        <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
+                        <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
+                    </MudSelect>
                         <br />
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRoles">Save</MudButton>
-                    }
-                    else
-                    {
-                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-                    }
-                    <MudText Class="mt-8" Typo="Typo.h6">Remove account</MudText>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRole">Save</MudButton>
+                        <MudText Class="mt-8" Typo="Typo.h6">Remove account</MudText>
                     <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" @onclick="() => tryRemove = true">Remove account</MudButton>
                     if (tryRemove)
                     {
@@ -51,9 +46,7 @@
     [Parameter] public string role { get; set; }
     private AspNetUser user;
     private bool tryRemove = false;
-    private bool isAdmin;
-    private bool isManager;
-    private bool isUser;
+    private string newRole;
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 
@@ -66,17 +59,16 @@
     protected override async Task OnInitializedAsync()
     {
         user = await Task.Run(() => adminService.GetUserById(userId));
-
-        isAdmin = await Task.Run(() => adminService.CheckIsInRole(user, "Admin"));
-        isManager = await Task.Run(() => adminService.CheckIsInRole(user, "Manager"));
-        isUser = await Task.Run(() => adminService.CheckIsInRole(user, "User"));
     }
 
-    private async void UpdateRoles()
+    private async void UpdateRole()
     {
-        await adminService.UpdateRole(user, "Admin", isAdmin);
-        await adminService.UpdateRole(user, "Manager", isManager);
-        await adminService.UpdateRole(user, "User", isUser);
+        var result = await adminService.RemoveFromRole(user, role);
+        if (result)
+        {
+            role = newRole;
+            await adminService.AddToRole(user, newRole);
+        }
         await InvokeAsync(StateHasChanged);
     }
 

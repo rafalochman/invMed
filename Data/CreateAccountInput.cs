@@ -32,13 +32,9 @@ namespace invMed.Data
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "Admin")]
-        public bool isAdmin { get; set; }
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; }
 
-        [Display(Name = "Manager")]
-        public bool isManager { get; set; }
-
-        [Display(Name = "User")]
-        public bool isUser { get; set; }
     }
 }

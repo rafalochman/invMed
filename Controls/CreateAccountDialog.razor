@@ -14,10 +14,12 @@
                     <MudTextField Label="Password" Immediate="true" Class="mt-2" @bind-Value="input.Password" For="@(() => input.Password)" InputType="InputType.Password" />
                     <MudTextField Label="Confirm password" Immediate="true" HelperText="Repeat the password" Class="mt-2" @bind-Value="input.ConfirmPassword" For="@(() => input.ConfirmPassword)" InputType="InputType.Password" />
                     <MudText Class="mt-6" Typo="Typo.h6">Choose role</MudText>
-                    <MudCheckBox @bind-Checked="@isAdmin" Label="Admin" Color="Color.Primary"></MudCheckBox>
-                    <MudCheckBox @bind-Checked="@isManager" Label="Manager" Color="Color.Primary"></MudCheckBox>
-                    <MudCheckBox @bind-Checked="@isUser" Label="User" Color="Color.Primary"></MudCheckBox>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4" Disabled="@(!(isAdmin || isManager || isUser))">Register</MudButton>
+                    <MudSelect Label="Select role" @bind-Value="input.Role">
+                        <MudSelectItem Value="@("User")">User</MudSelectItem>
+                        <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
+                        <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
+                    </MudSelect>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Register</MudButton>
                 </EditForm>
             </MudContainer>
         </MudPaper>
@@ -35,9 +37,6 @@
 
     private CreateAccountInput input = new CreateAccountInput();
     bool success;
-    private bool isAdmin;
-    private bool isManager;
-    private bool isUser;
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 
@@ -47,18 +46,7 @@
         var result = await adminService.AddUser(user, input.Password);
         if (result)
         {
-            if (isAdmin)
-            {
-                await adminService.AddToRole(user, "Admin");
-            }
-            if (isManager)
-            {
-                await adminService.AddToRole(user, "Manager");
-            }
-            if (isUser)
-            {
-                await adminService.AddToRole(user, "User");
-            }
+            await adminService.AddToRole(user, input.Role);
         }
         MudDialog.Close(DialogResult.Ok(true));
     }
