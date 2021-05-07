@@ -1,5 +1,6 @@
 ﻿@using invMed.Data
 @inject AdminService adminService
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <DialogContent>
@@ -43,7 +44,15 @@
 
     private async void OnValidSubmit()
     {
-        await adminService.UpdateUser(model);
+        var result = await adminService.UpdateUser(model);
+        if (result)
+        {
+            Snackbar.Add("Success, changes saved", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Error, changes not changed", Severity.Error);
+        }
         await InvokeAsync(StateHasChanged);
     }
 

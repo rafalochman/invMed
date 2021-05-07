@@ -1,5 +1,6 @@
 ﻿@using invMed.Data
 @inject AdminService adminService
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <DialogContent>
@@ -16,9 +17,9 @@
                         <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
                         <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
                     </MudSelect>
-                        <br />
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRole">Save</MudButton>
-                        <MudText Class="mt-8" Typo="Typo.h6">Remove account</MudText>
+                    <br />
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRole">Save</MudButton>
+                    <MudText Class="mt-8" Typo="Typo.h6">Remove account</MudText>
                     <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" @onclick="() => tryRemove = true">Remove account</MudButton>
                     if (tryRemove)
                     {
@@ -52,8 +53,16 @@
 
     private async void RemoveUser()
     {
-        await adminService.DeleteUser(user);
-        MudDialog.Close(DialogResult.Ok(true));
+        var result = await adminService.DeleteUser(user);
+        if (result)
+        {
+            Snackbar.Add("Success, account removed", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+            Snackbar.Add("Error, account not removed", Severity.Error);
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -66,8 +75,20 @@
         var result = await adminService.RemoveFromRole(user, role);
         if (result)
         {
-            role = newRole;
-            await adminService.AddToRole(user, newRole);
+            var res = await adminService.AddToRole(user, newRole);
+            if (res)
+            {
+                role = newRole;
+                Snackbar.Add("Success, role changed", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Warning, user do not have any role", Severity.Warning);
+            }
+        }
+        else
+        {
+            Snackbar.Add("Error, role not changed", Severity.Error);
         }
         await InvokeAsync(StateHasChanged);
     }

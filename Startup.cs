@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using invMed.Services;
 using Microsoft.AspNetCore.Authorization;
+using MudBlazor;
 using MudBlazor.Services;
 
 namespace invMed
@@ -63,7 +64,17 @@ namespace invMed
                     .Build();
             });
 
-            services.AddMudServices();
+            services.AddMudServices(config =>
+            {
+                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+                config.SnackbarConfiguration.PreventDuplicates = false;
+                config.SnackbarConfiguration.NewestOnTop = false;
+                config.SnackbarConfiguration.ShowCloseIcon = true;
+                config.SnackbarConfiguration.VisibleStateDuration = 2500;
+                config.SnackbarConfiguration.HideTransitionDuration = 500;
+                config.SnackbarConfiguration.ShowTransitionDuration = 200;
+                config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

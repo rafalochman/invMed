@@ -1,5 +1,6 @@
 ﻿@using invMed.Data
 @inject AdminService adminService
+@inject ISnackbar Snackbar
 
 <MudDialog>
     <DialogContent>
@@ -42,11 +43,23 @@
 
     private async void OnValidSubmit()
     {
-        var user = new AspNetUser {Name = input.Name, Surname = input.Surname, UserName = input.Email, Email = input.Email};
+        var user = new AspNetUser { Name = input.Name, Surname = input.Surname, UserName = input.Email, Email = input.Email };
         var result = await adminService.AddUser(user, input.Password);
         if (result)
         {
-            await adminService.AddToRole(user, input.Role);
+            var res = await adminService.AddToRole(user, input.Role);
+            if (res)
+            {
+                Snackbar.Add("Success, account created", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Warning, account created, role not added", Severity.Warning);
+            }
+        }
+        else
+        {
+            Snackbar.Add("Error, account not created", Severity.Error);
         }
         MudDialog.Close(DialogResult.Ok(true));
     }

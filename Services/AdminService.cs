@@ -44,34 +44,48 @@ namespace invMed.Services
 
         public async Task<bool> UpdateUser(AspNetUser user)
         {
-            _db.Users.Update(user);
-            await _db.SaveChangesAsync();
-            return true;
+            try
+            {
+                _db.Users.Update(user);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> DeleteUser(AspNetUser user)
         {
-            _db.Users.Remove(user);
-            await _db.SaveChangesAsync();
-            return true;
+            try
+            {
+                _db.Users.Remove(user);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> AddUser(AspNetUser user, string password)
         {
-            await _userManager.CreateAsync(user, password);
-            return true;
+            var result = await _userManager.CreateAsync(user, password);
+            return result.Succeeded;
         }
 
         public async Task<bool> AddToRole(AspNetUser user, string role)
         {
-            await _userManager.AddToRoleAsync(user, role);
-            return true;
+            var result = await _userManager.AddToRoleAsync(user, role);
+            return result.Succeeded;
         }
 
         public async Task<bool> RemoveFromRole(AspNetUser user, string role)
         {
-            await _userManager.RemoveFromRoleAsync(user, role);
-            return true;
+            var result = await _userManager.RemoveFromRoleAsync(user, role);
+            return result.Succeeded;
         }
     }
 }
