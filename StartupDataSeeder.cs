@@ -17,6 +17,7 @@ namespace invMed
                 Email = "admin@admin.com",
                 Name = "admin",
                 Surname = "admin",
+                IsActive = true
             };
             await userManager.CreateAsync(admin, "1qaz@WSX");
             await userManager.AddToRoleAsync(admin, "ADMIN");
@@ -27,6 +28,7 @@ namespace invMed
                 Email = "anna@kowalska.com",
                 Name = "Anna",
                 Surname = "Kowalska",
+                IsActive = true
             };
             await userManager.CreateAsync(user1, "1qaz@WSX");
             await userManager.AddToRoleAsync(user1, "USER");
@@ -37,6 +39,7 @@ namespace invMed
                 Email = "jan@nowak.com",
                 Name = "Jan",
                 Surname = "Nowak",
+                IsActive = true
             };
             await userManager.CreateAsync(user2, "1qaz@WSX");
             await userManager.AddToRoleAsync(user2, "USER");
@@ -47,6 +50,7 @@ namespace invMed
                 Email = "aleksandra@kot.com",
                 Name = "Aleksandra",
                 Surname = "Kot",
+                IsActive = true
             };
             await userManager.CreateAsync(user3, "1qaz@WSX");
             await userManager.AddToRoleAsync(user3, "USER");
@@ -57,6 +61,7 @@ namespace invMed
                 Email = "marek@kowalczewski.com",
                 Name = "Marek",
                 Surname = "Kowalczewski",
+                IsActive = true
             };
             await userManager.CreateAsync(manager, "1qaz@WSX");
             await userManager.AddToRoleAsync(manager, "MANAGER");
