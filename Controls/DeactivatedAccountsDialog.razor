@@ -1,0 +1,86 @@
+﻿@using invMed.Data
+@inject AdminService adminService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            @if (users is not null)
+            {
+                <MudTable Breakpoint="Breakpoint.None" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Users</MudText>
+                        <MudToolBarSpacer />
+                        <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <ColGroup>
+                        <col />
+                        <col style="width: 20px" />
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
+                        <MudTd DataLabel="Activate">
+                            <MudTooltip Text="Activate">
+                                <MudIconButton OnClick="@((e) => ActivateAccount(context.Id))" Icon="@Icons.Material.Filled.PersonAdd" aria-label="Activate"></MudIconButton>
+                            </MudTooltip>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="" />
+                    </PagerContent>
+                </MudTable>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    private List<UserView> users;
+    private string searchString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await Task.Run(() => adminService.GetDeactivatedUsers());
+    }
+
+    private bool FilterFunc(UserView user)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if ($"{user.Name} {user.Surname} {user.Email} {user.UserName} {user.Role}".Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    private async void ActivateAccount(string userId)
+    {
+        var result = await adminService.ActivateAccount(userId);
+        if (result)
+        {
+            Snackbar.Add("Success, account activated", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+            Snackbar.Add("Error, account not activated", Severity.Error);
+        }
+    }
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+}

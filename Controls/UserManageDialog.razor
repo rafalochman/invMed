@@ -19,13 +19,13 @@
                     </MudSelect>
                     <br />
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRole">Save</MudButton>
-                    <MudText Class="mt-8" Typo="Typo.h6">Remove account</MudText>
-                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" @onclick="() => tryRemove = true">Remove account</MudButton>
-                    if (tryRemove)
+                    <MudText Class="mt-8" Typo="Typo.h6">Deactivate account</MudText>
+                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" @onclick="() => tryDeactivate = true">Deactivate account</MudButton>
+                    if (tryDeactivate)
                     {
                         <MudText Class="mt-8" Typo="Typo.h6">Are you sure?</MudText>
-                        <MudButton Class="mt-4 mr-4" Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => tryRemove = false">No</MudButton>
-                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Default" @onclick="@RemoveUser">Yes</MudButton>
+                        <MudButton Class="mt-4 mr-4" Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => tryDeactivate = false">No</MudButton>
+                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Default" @onclick="@DeactivateAccount">Yes</MudButton>
                     }
                 }
                 else
@@ -46,7 +46,7 @@
     [Parameter] public string userId { get; set; }
     [Parameter] public string role { get; set; }
     private AspNetUser user;
-    private bool tryRemove = false;
+    private bool tryDeactivate = false;
     private string newRole;
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
@@ -57,17 +57,17 @@
         newRole = role;
     }
 
-    private async void RemoveUser()
+    private async void DeactivateAccount()
     {
-        var result = await adminService.DeleteUser(user);
+        var result = await adminService.DeactivateAccount(user);
         if (result)
         {
-            Snackbar.Add("Success, account removed", Severity.Success);
+            Snackbar.Add("Success, account deactivated", Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }
         else
         {
-            Snackbar.Add("Error, account not removed", Severity.Error);
+            Snackbar.Add("Error, account not deactivated", Severity.Error);
         }
     }
 

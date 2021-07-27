@@ -43,7 +43,7 @@
 
     private async void OnValidSubmit()
     {
-        var user = new AspNetUser { Name = input.Name, Surname = input.Surname, UserName = input.Email, Email = input.Email };
+        var user = new AspNetUser { Name = input.Name, Surname = input.Surname, UserName = input.Email, Email = input.Email, IsActive = true };
         var result = await adminService.AddUser(user, input.Password);
         if (result)
         {

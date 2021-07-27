@@ -24,6 +24,7 @@ namespace invMed.Services
         {
             using var db = _dbFactory.CreateDbContext();
             return await (from u in db.Users
+                          where u.IsActive == true
                           join ur in db.UserRoles on u.Id equals ur.UserId
                           join r in db.Roles on ur.RoleId equals r.Id
                           select new UserView
@@ -59,12 +60,13 @@ namespace invMed.Services
             }
         }
 
-        public async Task<bool> DeleteUser(AspNetUser user)
+        public async Task<bool> DeactivateAccount(AspNetUser user)
         {
             using var db = _dbFactory.CreateDbContext();
+            user.IsActive = false;
             try
             {
-                db.Users.Remove(user);
+                db.Users.Update(user);
                 await db.SaveChangesAsync();
                 return true;
             }
@@ -90,6 +92,42 @@ namespace invMed.Services
         {
             var result = await _userManager.RemoveFromRoleAsync(user, role);
             return result.Succeeded;
+        }
+
+        public async Task<List<UserView>> GetDeactivatedUsers()
+        {
+            using var db = _dbFactory.CreateDbContext();
+            return await (from u in db.Users
+                          where u.IsActive == false
+                          join ur in db.UserRoles on u.Id equals ur.UserId
+                          join r in db.Roles on ur.RoleId equals r.Id
+                          select new UserView
+                          {
+                              Id = u.Id,
+                              Name = u.Name,
+                              Surname = u.Surname,
+                              UserName = u.UserName,
+                              Email = u.Email,
+                              Role = r.Name
+                          })
+            .ToListAsync();
+        }
+
+        public async Task<bool> ActivateAccount(string userId)
+        {
+            using var db = _dbFactory.CreateDbContext();
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                user.IsActive = true;
+                db.Users.Update(user);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
