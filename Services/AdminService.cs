@@ -11,43 +11,46 @@ namespace invMed.Services
 {
     public class AdminService
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IDbContextFactory<ApplicationDbContext> _dbFactory;
         private readonly UserManager<AspNetUser> _userManager;
 
-        public AdminService(ApplicationDbContext db, UserManager<AspNetUser> userManager)
+        public AdminService(IDbContextFactory<ApplicationDbContext> dbFactory, UserManager<AspNetUser> userManager)
         {
-            _db = db;
+            _dbFactory = dbFactory;
             _userManager = userManager;
         }
 
         public async Task<List<UserView>> GetUsers()
         {
-            return await (from u in _db.Users
-                    join ur in _db.UserRoles on u.Id equals ur.UserId
-                    join r in _db.Roles on ur.RoleId equals r.Id
-                    select new UserView
-                    {
-                        Id = u.Id,
-                        Name = u.Name,
-                        Surname = u.Surname,
-                        UserName = u.UserName,
-                        Email = u.Email,
-                        Role = r.Name
-                    })
-                .ToListAsync();
+            using var db = _dbFactory.CreateDbContext();
+            return await (from u in db.Users
+                          join ur in db.UserRoles on u.Id equals ur.UserId
+                          join r in db.Roles on ur.RoleId equals r.Id
+                          select new UserView
+                          {
+                              Id = u.Id,
+                              Name = u.Name,
+                              Surname = u.Surname,
+                              UserName = u.UserName,
+                              Email = u.Email,
+                              Role = r.Name
+                          })
+            .ToListAsync();
         }
 
         public async Task<AspNetUser> GetUserById(string id)
         {
-            return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            using var db = _dbFactory.CreateDbContext();
+            return await db.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<bool> UpdateUser(AspNetUser user)
         {
+            using var db = _dbFactory.CreateDbContext();
             try
             {
-                _db.Users.Update(user);
-                await _db.SaveChangesAsync();
+                db.Users.Update(user);
+                await db.SaveChangesAsync();
                 return true;
             }
             catch
@@ -58,10 +61,11 @@ namespace invMed.Services
 
         public async Task<bool> DeleteUser(AspNetUser user)
         {
+            using var db = _dbFactory.CreateDbContext();
             try
             {
-                _db.Users.Remove(user);
-                await _db.SaveChangesAsync();
+                db.Users.Remove(user);
+                await db.SaveChangesAsync();
                 return true;
             }
             catch
