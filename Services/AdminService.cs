@@ -11,22 +11,21 @@ namespace invMed.Services
 {
     public class AdminService
     {
-        private readonly IDbContextFactory<ApplicationDbContext> _dbFactory;
+        private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;
 
-        public AdminService(IDbContextFactory<ApplicationDbContext> dbFactory, UserManager<AspNetUser> userManager)
+        public AdminService(ApplicationDbContext db, UserManager<AspNetUser> userManager)
         {
-            _dbFactory = dbFactory;
+            _db = db;
             _userManager = userManager;
         }
 
         public async Task<List<UserView>> GetUsers()
         {
-            using var db = _dbFactory.CreateDbContext();
-            return await (from u in db.Users
+            return await (from u in _db.Users
                           where u.IsActive == true
-                          join ur in db.UserRoles on u.Id equals ur.UserId
-                          join r in db.Roles on ur.RoleId equals r.Id
+                          join ur in _db.UserRoles on u.Id equals ur.UserId
+                          join r in _db.Roles on ur.RoleId equals r.Id
                           select new UserView
                           {
                               Id = u.Id,
@@ -41,17 +40,15 @@ namespace invMed.Services
 
         public async Task<AspNetUser> GetUserById(string id)
         {
-            using var db = _dbFactory.CreateDbContext();
-            return await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<bool> UpdateUser(AspNetUser user)
         {
-            using var db = _dbFactory.CreateDbContext();
             try
             {
-                db.Users.Update(user);
-                await db.SaveChangesAsync();
+                _db.Users.Update(user);
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch
@@ -62,12 +59,11 @@ namespace invMed.Services
 
         public async Task<bool> DeactivateAccount(AspNetUser user)
         {
-            using var db = _dbFactory.CreateDbContext();
             user.IsActive = false;
             try
             {
-                db.Users.Update(user);
-                await db.SaveChangesAsync();
+                _db.Users.Update(user);
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch
@@ -96,11 +92,10 @@ namespace invMed.Services
 
         public async Task<List<UserView>> GetDeactivatedUsers()
         {
-            using var db = _dbFactory.CreateDbContext();
-            return await (from u in db.Users
+            return await (from u in _db.Users
                           where u.IsActive == false
-                          join ur in db.UserRoles on u.Id equals ur.UserId
-                          join r in db.Roles on ur.RoleId equals r.Id
+                          join ur in _db.UserRoles on u.Id equals ur.UserId
+                          join r in _db.Roles on ur.RoleId equals r.Id
                           select new UserView
                           {
                               Id = u.Id,
@@ -115,13 +110,12 @@ namespace invMed.Services
 
         public async Task<bool> ActivateAccount(string userId)
         {
-            using var db = _dbFactory.CreateDbContext();
             try
             {
                 var user = await _userManager.FindByIdAsync(userId);
                 user.IsActive = true;
-                db.Users.Update(user);
-                await db.SaveChangesAsync();
+                _db.Users.Update(user);
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch
