@@ -86,6 +86,7 @@
                             <MudMenu Icon="@Icons.Material.Filled.MoreVert">
                                 <MudMenuItem @onclick="@((e) => OpenDetailsDialog(context))">Details</MudMenuItem>
                                 <MudMenuItem @onclick="@((e) => OpenEditDialog(context))">Edit</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenResetPasswordDialog(context))">Reset<br />password</MudMenuItem>
                                 <MudMenuItem @onclick="@((e) => OpenManageDialog(context))">Manage</MudMenuItem>
                             </MudMenu>
                         </MudTd>
@@ -191,6 +192,12 @@
             users = await Task.Run(() => adminService.GetUsers());
             rolesNumbers = GetRolesArray();
         }
+    }
+
+    private async Task OpenResetPasswordDialog(UserView user)
+    {
+        var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
+        var dialog = DialogService.Show<PasswordResetDialog>("Reset password", parameters, maxDialogWidth);
     }
 
     private double[] GetRolesArray()

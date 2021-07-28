@@ -123,5 +123,12 @@ namespace invMed.Services
                 return false;
             }
         }
+
+        public async Task<bool> ResetPassword(AspNetUser user, string newPassword)
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            return result.Succeeded;
+        }
     }
 }
