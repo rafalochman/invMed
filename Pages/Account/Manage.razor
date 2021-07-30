@@ -1,0 +1,58 @@
+﻿@page "/manage"
+@using Microsoft.AspNetCore.Identity;
+@using invMed.Data
+@using System.Diagnostics
+@using invMed.Controls
+@inject AccountService AccountService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<AuthorizeView>
+    <Authorized>
+        <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Manage account</MudText>
+        <MudGrid>
+    
+            <MudItem xs="12" sm="6" md="6" lg="4">
+                <MudPaper Elevation="25" Class="pa-4" Style="min-height: 630px;">
+                    <MudText Typo="Typo.h6">Account</MudText>
+                    @if (user is not null)
+                    {
+                        <MudContainer Style="text-align: center">
+                            <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@user.Name[0]@user.Surname[0]</MudAvatar>
+                            <MudText Class="mt-4">@user.Name @user.Surname</MudText>
+                            <MudText>@user.Role</MudText>
+                        </MudContainer>
+                        <MudField Variant="Variant.Text" Class="mt-6" Label="Id"> @user.Id</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Name"> @user.Name</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Surname"> @user.Surname</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="User name"> @user.UserName</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Email"> @user.Email</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Role">@user.Role</MudField>
+                    }
+                    else
+                    {
+                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                    }
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" sm="6" md="6" lg="4">
+                <MudPaper Elevation="25" Class="pa-4" Style="height: 630px;">
+                    <MudText Typo="Typo.h6">Change password</MudText>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </Authorized>
+</AuthorizeView>
+
+
+@code {
+    private UserView user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authstate = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = await AccountService.GetUserByName(authstate.User.Identity.Name);
+    }
+
+}

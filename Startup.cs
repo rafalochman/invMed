@@ -57,6 +57,7 @@ namespace invMed
             services.AddScoped<ProductsService>();
             services.AddScoped<ItemsService>();
             services.AddScoped<AdminService>();
+            services.AddScoped<AccountService>();
 
             services.AddAuthorization(options =>
             {
