@@ -130,5 +130,31 @@ namespace invMed.Services
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
             return result.Succeeded;
         }
+
+        public async Task<EditAccountInput> GetEditUserInputById(string id)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return new EditAccountInput() { Id = user.Id, Name = user.Name, Surname = user.Surname, Email = user.Email, UserName = user.UserName };
+        }
+
+        public async Task<bool> UpdateUserInput(EditAccountInput input)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == input.Id);
+            user.Name = input.Name;
+            user.Surname = input.Surname;
+            user.Email = input.Email;
+            user.UserName = input.UserName;
+            try
+            {
+                _db.Users.Update(user);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }

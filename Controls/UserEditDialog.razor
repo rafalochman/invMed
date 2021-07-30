@@ -6,18 +6,23 @@
     <DialogContent>
         <MudPaper Style="min-height: 640px" Elevation="2">
             <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
-                @if (model is not null)
+                @if (input is not null)
                 {
-                    <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@model.Name[0]@model.Surname[0]</MudAvatar>
-                    <MudText Class="mt-4">@model.Name @model.Surname</MudText>
+                    <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">
+                    @if (!String.IsNullOrEmpty(input.Name) && !String.IsNullOrEmpty(input.Surname))
+                    {
+                        @input.Name[0]@input.Surname[0]
+                    }
+                    </MudAvatar>
+                    <MudText Class="mt-4">@input.Name @input.Surname</MudText>
                     <MudText>@role</MudText>
-                    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+                    <EditForm Model="@input" OnValidSubmit="OnValidSubmit">
                         <DataAnnotationsValidator />
-                        <MudTextField Class="mt-6" Label="Id" Disabled="true" @bind-Value="model.Id" For="@(() => model.Id)" />
-                        <MudTextField Class="mt-4" Label="Name" @bind-Value="model.Name" For="@(() => model.Name)" />
-                        <MudTextField Class="mt-4" Label="Surname" @bind-Value="model.Surname" For="@(() => model.Surname)" />
-                        <MudTextField Class="mt-4" Label="User name" @bind-Value="model.UserName" For="@(() => model.UserName)" />
-                        <MudTextField Class="mt-4" Label="Email" @bind-Value="model.Email" For="@(() => model.Email)" />
+                        <MudTextField Class="mt-6" Label="Id" Disabled="true" @bind-Value="input.Id" For="@(() => input.Id)" />
+                        <MudTextField Class="mt-4" Label="Name" @bind-Value="input.Name" For="@(() => input.Name)" />
+                        <MudTextField Class="mt-4" Label="Surname" @bind-Value="input.Surname" For="@(() => input.Surname)" />
+                        <MudTextField Class="mt-4" Label="User name" @bind-Value="input.UserName" For="@(() => input.UserName)" />
+                        <MudTextField Class="mt-4" Label="Email" @bind-Value="input.Email" For="@(() => input.Email)" />
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Save</MudButton>
                     </EditForm>
                 }
@@ -38,13 +43,13 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     [Parameter] public string userId { get; set; }
     [Parameter] public string role { get; set; }
-    private AspNetUser model;
+    private EditAccountInput input;
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 
     private async void OnValidSubmit()
     {
-        var result = await adminService.UpdateUser(model);
+        var result = await adminService.UpdateUserInput(input);
         if (result)
         {
             Snackbar.Add("Success, changes saved", Severity.Success);
@@ -58,6 +63,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        model = await Task.Run(() => adminService.GetUserById(userId));
+        input = await Task.Run(() => adminService.GetEditUserInputById(userId));
     }
 }
