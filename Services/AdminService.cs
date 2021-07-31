@@ -146,9 +146,8 @@ namespace invMed.Services
             user.UserName = input.UserName;
             try
             {
-                _db.Users.Update(user);
-                await _db.SaveChangesAsync();
-                return true;
+                var result = await _userManager.UpdateAsync(user);
+                return result.Succeeded;
             }
             catch
             {
