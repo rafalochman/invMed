@@ -1,7 +1,5 @@
 ﻿@page "/adminPanel"
-@using Microsoft.AspNetCore.Identity;
 @using invMed.Data
-@using System.Diagnostics
 @using invMed.Controls
 @inject AdminService adminService
 @inject IDialogService DialogService
@@ -16,7 +14,14 @@
             <MudIcon Icon="@Icons.Material.Filled.Public" Color="Color.Success" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
                 <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">System</MudText>
-                <MudText Typo="Typo.h5">online</MudText>
+                @if (users is not null)
+                {
+                    <MudText Typo="Typo.h5">online</MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h5">ofline</MudText>
+                }
             </div>
         </MudPaper>
     </MudItem>
@@ -31,7 +36,7 @@
                 }
                 else
                 {
-                    <MudProgressCircular Size="Size.Small" Color="Color.Primary" Indeterminate="true"/>
+                    <MudProgressCircular Size="Size.Small" Color="Color.Primary" Indeterminate="true" />
                 }
             </div>
         </MudPaper>
@@ -60,15 +65,15 @@
                 <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6">Users</MudText>
-                        <MudToolBarSpacer/>
+                        <MudToolBarSpacer />
                         <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <ColGroup>
-                        <col/>
-                        <col/>
-                        <col/>
-                        <col/>
-                        <col style="width: 20px"/>
+                        <col />
+                        <col />
+                        <col />
+                        <col />
+                        <col style="width: 20px" />
                     </ColGroup>
                     <HeaderContent>
                         <MudTh>Name</MudTh>
@@ -92,13 +97,13 @@
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
-                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Users per page"/>
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Users per page" />
                     </PagerContent>
                 </MudTable>
             }
             else
             {
-                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
             }
         </MudPaper>
     </MudItem>
@@ -112,7 +117,7 @@
             }
             else
             {
-                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
             }
         </MudPaper>
     </MudItem>
@@ -123,8 +128,8 @@
     private List<UserView> users;
     private string searchString = "";
     private double[] rolesNumbers;
-    private string[] rolesLabels = {"Admin", "Manager", "User"};
-    private DialogOptions maxDialogWidth = new DialogOptions() {MaxWidth = MaxWidth.Medium, FullWidth = true};
+    private string[] rolesLabels = { "Admin", "Manager", "User" };
+    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
@@ -143,13 +148,13 @@
 
     private void OpenDetailsDialog(UserView user)
     {
-        var parameters = new DialogParameters {["user"] = user};
+        var parameters = new DialogParameters { ["user"] = user };
         DialogService.Show<UserDetailsDialog>("User details", parameters, maxDialogWidth);
     }
 
     private async Task OpenEditDialog(UserView user)
     {
-        var parameters = new DialogParameters {["userId"] = user.Id, ["role"] = user.Role};
+        var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
         var dialog = DialogService.Show<UserEditDialog>("Edit user", parameters, maxDialogWidth);
         var result = await dialog.Result;
 
@@ -161,7 +166,7 @@
 
     private async Task OpenManageDialog(UserView user)
     {
-        var parameters = new DialogParameters {["userId"] = user.Id, ["role"] = user.Role};
+        var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
         var dialog = DialogService.Show<UserManageDialog>("Manage user", parameters, maxDialogWidth);
         var result = await dialog.Result;
 
