@@ -1,6 +1,6 @@
 ﻿@page "/adminPanel"
 @using invMed.Data
-@using invMed.Controls
+@using invMed.Controls.Admin
 @inject AdminService adminService
 @inject IDialogService DialogService
 
@@ -202,7 +202,7 @@
     private async Task OpenResetPasswordDialog(UserView user)
     {
         var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
-        var dialog = DialogService.Show<PasswordResetDialog>("Reset password", parameters, maxDialogWidth);
+        var dialog = DialogService.Show<UserPasswordResetDialog>("Reset password", parameters, maxDialogWidth);
     }
 
     private double[] GetRolesArray()
