@@ -45,7 +45,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.People" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2" Variant="Variant.Filled" @onclick="OpenDeactivatedAccountsDialog">Deactivated Accounts</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" @onclick="OpenDeactivatedAccountsDialog">Deactivated Accounts</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -53,16 +53,16 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Warning" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenCreateAccountDialog">Create Account</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenCreateAccountDialog">Create Account</MudButton>
             </div>
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" sm="12" lg="8">
+    <MudItem xs="12" lg="8">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 608px;">
             @if (users is not null)
             {
-                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)">
+                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)" HorizontalScrollbar="true">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6">Users</MudText>
                         <MudToolBarSpacer />
@@ -84,8 +84,8 @@
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
-                        <MudTd DataLabel="UserName" HideSmall="true">@context.UserName</MudTd>
-                        <MudTd DataLabel="Email">@context.Email</MudTd>
+                        <MudTd DataLabel="UserName">@context.UserName</MudTd>
+                        <MudTd DataLabel="Email" HideSmall="true">@context.Email</MudTd>
                         <MudTd DataLabel="Role">@context.Role</MudTd>
                         <MudTd DataLabel="Manage">
                             <MudMenu Icon="@Icons.Material.Filled.MoreVert">
@@ -108,7 +108,7 @@
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" sm="12" lg="4">
+    <MudItem xs="12" lg="4">
         <MudPaper Elevation="25" Class="pa-4" Style="height: 608px;">
             @if (rolesNumbers is not null)
             {
