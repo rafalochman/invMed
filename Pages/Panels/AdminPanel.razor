@@ -128,7 +128,7 @@
     private List<UserView> users;
     private string searchString = "";
     private double[] rolesNumbers;
-    private string[] rolesLabels = { "Admin", "Manager", "User" };
+    private string[] rolesLabels = { "Admin", "Manager", "Warehouseman" };
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
@@ -207,7 +207,7 @@
 
     private double[] GetRolesArray()
     {
-        return new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "User") };
+        return new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "Warehouseman") };
     }
 
 }

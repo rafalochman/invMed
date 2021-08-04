@@ -16,7 +16,7 @@
                     <MudTextField Label="Confirm password" Immediate="true" HelperText="Repeat the password" Class="mt-2" @bind-Value="input.ConfirmPassword" For="@(() => input.ConfirmPassword)" InputType="InputType.Password" />
                     <MudText Class="mt-6" Typo="Typo.h6">Choose role</MudText>
                     <MudSelect Label="Select role" @bind-Value="input.Role">
-                        <MudSelectItem Value="@("User")">User</MudSelectItem>
+                        <MudSelectItem Value="@("Warehouseman")">Warehouseman</MudSelectItem>
                         <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
                         <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
                     </MudSelect>

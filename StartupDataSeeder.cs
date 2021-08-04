@@ -22,7 +22,7 @@ namespace invMed
             await userManager.CreateAsync(admin, "1qaz@WSX");
             await userManager.AddToRoleAsync(admin, "ADMIN");
 
-            var user1 = new AspNetUser
+            var warehouseman1 = new AspNetUser
             {
                 UserName = "anna@kowalska.com",
                 Email = "anna@kowalska.com",
@@ -30,10 +30,10 @@ namespace invMed
                 Surname = "Kowalska",
                 IsActive = true
             };
-            await userManager.CreateAsync(user1, "1qaz@WSX");
-            await userManager.AddToRoleAsync(user1, "USER");
+            await userManager.CreateAsync(warehouseman1, "1qaz@WSX");
+            await userManager.AddToRoleAsync(warehouseman1, "WAREHOUSEMAN");
 
-            var user2 = new AspNetUser
+            var warehouseman2 = new AspNetUser
             {
                 UserName = "jan@nowak.com",
                 Email = "jan@nowak.com",
@@ -41,10 +41,10 @@ namespace invMed
                 Surname = "Nowak",
                 IsActive = true
             };
-            await userManager.CreateAsync(user2, "1qaz@WSX");
-            await userManager.AddToRoleAsync(user2, "USER");
+            await userManager.CreateAsync(warehouseman2, "1qaz@WSX");
+            await userManager.AddToRoleAsync(warehouseman2, "WAREHOUSEMAN");
 
-            var user3 = new AspNetUser
+            var warehouseman3 = new AspNetUser
             {
                 UserName = "aleksandra@kot.com",
                 Email = "aleksandra@kot.com",
@@ -52,8 +52,8 @@ namespace invMed
                 Surname = "Kot",
                 IsActive = true
             };
-            await userManager.CreateAsync(user3, "1qaz@WSX");
-            await userManager.AddToRoleAsync(user3, "USER");
+            await userManager.CreateAsync(warehouseman3, "1qaz@WSX");
+            await userManager.AddToRoleAsync(warehouseman3, "WAREHOUSEMAN");
 
             var manager = new AspNetUser
             {
