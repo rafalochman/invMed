@@ -26,6 +26,7 @@ namespace invMed.Services
                           where u.IsActive == true
                           join ur in _db.UserRoles on u.Id equals ur.UserId
                           join r in _db.Roles on ur.RoleId equals r.Id
+                          orderby u.Name
                           select new UserView
                           {
                               Id = u.Id,
@@ -96,6 +97,7 @@ namespace invMed.Services
                           where u.IsActive == false
                           join ur in _db.UserRoles on u.Id equals ur.UserId
                           join r in _db.Roles on ur.RoleId equals r.Id
+                          orderby u.Name
                           select new UserView
                           {
                               Id = u.Id,
