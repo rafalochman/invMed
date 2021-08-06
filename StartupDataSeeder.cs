@@ -31,7 +31,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(warehouseman1, "1qaz@WSX");
-            await userManager.AddToRoleAsync(warehouseman1, "WAREHOUSEMAN");
+            await userManager.AddToRoleAsync(warehouseman1, "MAGAZYNIER");
 
             var warehouseman2 = new AspNetUser
             {
@@ -42,7 +42,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(warehouseman2, "1qaz@WSX");
-            await userManager.AddToRoleAsync(warehouseman2, "WAREHOUSEMAN");
+            await userManager.AddToRoleAsync(warehouseman2, "MAGAZYNIER");
 
             var warehouseman3 = new AspNetUser
             {
@@ -53,7 +53,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(warehouseman3, "1qaz@WSX");
-            await userManager.AddToRoleAsync(warehouseman3, "WAREHOUSEMAN");
+            await userManager.AddToRoleAsync(warehouseman3, "MAGAZYNIER");
 
             var manager = new AspNetUser
             {

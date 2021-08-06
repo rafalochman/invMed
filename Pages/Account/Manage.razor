@@ -5,12 +5,12 @@
 @inject ISnackbar Snackbar
 
 
-<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Manage account</MudText>
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Zarządzaj kontem</MudText>
 <MudGrid>
 
     <MudItem xs="12" sm="6" md="6" lg="4">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 630px;">
-            <MudText Typo="Typo.h6">Account</MudText>
+            <MudText Typo="Typo.h6">Konto</MudText>
             @if (user is not null)
             {
                 <MudContainer Style="text-align: center">
@@ -19,11 +19,11 @@
                     <MudText>@user.Role</MudText>
                 </MudContainer>
                 <MudField Variant="Variant.Text" Class="mt-6" Label="Id"> @user.Id</MudField>
-                <MudField Variant="Variant.Text" Class="mt-4" Label="Name"> @user.Name</MudField>
-                <MudField Variant="Variant.Text" Class="mt-4" Label="Surname"> @user.Surname</MudField>
-                <MudField Variant="Variant.Text" Class="mt-4" Label="User name"> @user.UserName</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Imię"> @user.Name</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Nazwisko"> @user.Surname</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Nazwa użytkownika"> @user.UserName</MudField>
                 <MudField Variant="Variant.Text" Class="mt-4" Label="Email"> @user.Email</MudField>
-                <MudField Variant="Variant.Text" Class="mt-4" Label="Role">@user.Role</MudField>
+                <MudField Variant="Variant.Text" Class="mt-4" Label="Rola">@user.Role</MudField>
             }
             else
             {
@@ -34,14 +34,14 @@
 
     <MudItem xs="12" sm="6" md="6" lg="4">
         <MudPaper Elevation="25" Class="pa-4" Style="height: 630px;">
-            <MudText Typo="Typo.h6">Change password</MudText>
+            <MudText Typo="Typo.h6">Zmień hasło</MudText>
             <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
                 <DataAnnotationsValidator />
-                <MudTextField Class="mt-6" Label="Current password" @bind-Value="model.CurrentPassword" For="@(() => model.CurrentPassword)" InputType="InputType.Password" />
-                <MudTextField Class="mt-4" Label="New password" @bind-Value="model.NewPassword" For="@(() => model.NewPassword)" InputType="InputType.Password" />
-                <MudTextField Class="mt-4" Label="Confirm new password" @bind-Value="model.ConfirmNewPassword" For="@(() => model.ConfirmNewPassword)" InputType="InputType.Password" />
+                <MudTextField Class="mt-6" Label="Aktualne hasło" @bind-Value="model.CurrentPassword" For="@(() => model.CurrentPassword)" InputType="InputType.Password" />
+                <MudTextField Class="mt-4" Label="Nowe hasło" @bind-Value="model.NewPassword" For="@(() => model.NewPassword)" InputType="InputType.Password" />
+                <MudTextField Class="mt-4" Label="Potwierdź nowe hasło" @bind-Value="model.ConfirmNewPassword" For="@(() => model.ConfirmNewPassword)" InputType="InputType.Password" />
                 <MudContainer Style="text-align: center">
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-12">Save</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-12">Zapisz</MudButton>
                 </MudContainer>
             </EditForm>
         </MudPaper>
@@ -65,11 +65,11 @@
         var result = await AccountService.ChangeUserPassword(authstate.User.Identity.Name, model.CurrentPassword, model.NewPassword);
         if (result)
         {
-            Snackbar.Add("Success, password changed", Severity.Success);
+            Snackbar.Add("Sukces, hasło zostało zmienione.", Severity.Success);
         }
         else
         {
-            Snackbar.Add("Error, password not changed", Severity.Error);
+            Snackbar.Add("Błąd, hasło nie zostało zmienione.", Severity.Error);
         }
     }
 }

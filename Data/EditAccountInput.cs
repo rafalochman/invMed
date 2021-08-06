@@ -8,24 +8,24 @@ namespace invMed.Data
 {
     public class EditAccountInput
     {
-        [Required]
+        [Required(ErrorMessage = "Pole Id jest wymagane.")]
         [Display(Name = "Id")]
         public string Id { get; set; }
 
-        [Required]
-        [Display(Name = "Name")]
+        [Required(ErrorMessage = "Pole Imię jest wymagane.")]
+        [Display(Name = "Imię")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Surname")]
+        [Required(ErrorMessage = "Pole Nazwisko jest wymagane.")]
+        [Display(Name = "Nazwisko")]
         public string Surname { get; set; }
 
-        [Required]
-        [Display(Name = "User name")]
+        [Required(ErrorMessage = "Pole Nazwa użytkownika jest wymagane.")]
+        [Display(Name = "Nazwa użytkownika")]
         public string UserName { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Pole Email jest wymagane.")]
+        [EmailAddress(ErrorMessage = "Pole Email nie zawiera poprawnego adresu email.")]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }

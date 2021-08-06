@@ -1,11 +1,11 @@
 ﻿
 <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Products</MudNavLink>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Strona główna</MudNavLink>
+    <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Produkty</MudNavLink>
 
     <AuthorizeView Roles="Admin">
         <Authorized>
-            <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Admin Panel</MudNavLink>
+            <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Panel Administratora</MudNavLink>
         </Authorized>
     </AuthorizeView>
 

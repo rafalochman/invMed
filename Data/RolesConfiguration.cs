@@ -25,8 +25,8 @@ namespace invMed.Data
                 },
                 new IdentityRole
                 {
-                    Name = "Warehouseman",
-                    NormalizedName = "WAREHOUSEMAN"
+                    Name = "Magazynier",
+                    NormalizedName = "MAGAZYNIER"
                 }
             );
         }

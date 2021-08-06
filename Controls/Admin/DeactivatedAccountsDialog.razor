@@ -9,28 +9,28 @@
             {
                 <MudTable Breakpoint="Breakpoint.None" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)">
                     <ToolBarContent>
-                        <MudText Typo="Typo.h6">Users</MudText>
+                        <MudText Typo="Typo.h6">Użytkownicy</MudText>
                         <MudToolBarSpacer />
-                        <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Szukaj" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <ColGroup>
                         <col />
                         <col style="width: 20px" />
                     </ColGroup>
                     <HeaderContent>
-                        <MudTh>Name</MudTh>
+                        <MudTh>Użytkownik</MudTh>
                         <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate>
-                        <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
-                        <MudTd DataLabel="Activate">
-                            <MudTooltip Text="Activate">
-                                <MudIconButton OnClick="@((e) => ActivateAccount(context.Id))" Icon="@Icons.Material.Filled.PersonAdd" aria-label="Activate"></MudIconButton>
+                        <MudTd DataLabel="Użytkownik">@context.Name @context.Surname</MudTd>
+                        <MudTd DataLabel="Aktywuj">
+                            <MudTooltip Text="Aktywuj">
+                                <MudIconButton OnClick="@((e) => ActivateAccount(context.Id))" Icon="@Icons.Material.Filled.PersonAdd"></MudIconButton>
                             </MudTooltip>
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
-                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="" />
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Użytkownicy na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
                     </PagerContent>
                 </MudTable>
             }
@@ -72,12 +72,12 @@
         var result = await adminService.ActivateAccount(userId);
         if (result)
         {
-            Snackbar.Add("Success, account activated", Severity.Success);
+            Snackbar.Add("Sukces, konto zostało aktywowane.", Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }
         else
         {
-            Snackbar.Add("Error, account not activated", Severity.Error);
+            Snackbar.Add("Błąd, konto nie zostało utworzone.", Severity.Error);
         }
     }
 

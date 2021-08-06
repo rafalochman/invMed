@@ -7,7 +7,7 @@
 
 @attribute [Authorize(Roles = "Admin")]
 
-<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Admin Panel Dashboard</MudText>
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Panel Administratora</MudText>
 <MudGrid>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
@@ -29,7 +29,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.People" Color="Color.Secondary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Users</MudText>
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Użytkownicy</MudText>
                 @if (users is not null)
                 {
                     <MudText Typo="Typo.h5">@users.Count</MudText>
@@ -45,7 +45,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.People" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" @onclick="OpenDeactivatedAccountsDialog">Deactivated Accounts</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" @onclick="OpenDeactivatedAccountsDialog">Nieaktywne konta</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -53,7 +53,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Warning" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenCreateAccountDialog">Create Account</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenCreateAccountDialog">Utwórz konto</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -64,9 +64,9 @@
             {
                 <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)" HorizontalScrollbar="true">
                     <ToolBarContent>
-                        <MudText Typo="Typo.h6">Users</MudText>
+                        <MudText Typo="Typo.h6">Użytkownicy</MudText>
                         <MudToolBarSpacer />
-                        <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Szukaj" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <ColGroup>
                         <col />
@@ -76,28 +76,28 @@
                         <col style="width: 20px" />
                     </ColGroup>
                     <HeaderContent>
-                        <MudTh>Name</MudTh>
-                        <MudTh>UserName</MudTh>
+                        <MudTh>Użytkownik</MudTh>
+                        <MudTh>Nazwa użytkownika</MudTh>
                         <MudTh>Email</MudTh>
-                        <MudTh>Role</MudTh>
+                        <MudTh>Rola</MudTh>
                         <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate>
-                        <MudTd DataLabel="Name">@context.Name @context.Surname</MudTd>
-                        <MudTd DataLabel="UserName">@context.UserName</MudTd>
+                        <MudTd DataLabel="Użytkownik">@context.Name @context.Surname</MudTd>
+                        <MudTd DataLabel="Nazwa użytkownika">@context.UserName</MudTd>
                         <MudTd DataLabel="Email" HideSmall="true">@context.Email</MudTd>
-                        <MudTd DataLabel="Role">@context.Role</MudTd>
-                        <MudTd DataLabel="Manage">
+                        <MudTd DataLabel="Rola">@context.Role</MudTd>
+                        <MudTd DataLabel="Zarządzaj">
                             <MudMenu Icon="@Icons.Material.Filled.MoreVert">
-                                <MudMenuItem @onclick="@((e) => OpenDetailsDialog(context))">Details</MudMenuItem>
-                                <MudMenuItem @onclick="@((e) => OpenEditDialog(context))">Edit</MudMenuItem>
-                                <MudMenuItem @onclick="@((e) => OpenResetPasswordDialog(context))">Reset<br />password</MudMenuItem>
-                                <MudMenuItem @onclick="@((e) => OpenManageDialog(context))">Manage</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenDetailsDialog(context))">Szczegóły</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenEditDialog(context))">Edytuj</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenResetPasswordDialog(context))">Resetuj<br />hasło</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenManageDialog(context))">Zarządzaj</MudMenuItem>
                             </MudMenu>
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
-                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Users per page" />
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Użytkownicy na stronę" InfoFormat="{first_item}-{last_item} z {all_items}"/>
                     </PagerContent>
                 </MudTable>
             }
@@ -112,7 +112,7 @@
         <MudPaper Elevation="25" Class="pa-4" Style="height: 608px;">
             @if (rolesNumbers is not null)
             {
-                <MudText Class="mt-4 ml-2" Typo="Typo.h6">User Roles</MudText>
+                <MudText Class="mt-4 ml-2" Typo="Typo.h6">Role użytkowników</MudText>
                 <MudChart Class="pt-16" ChartType="ChartType.Donut" InputData="@rolesNumbers" InputLabels="@rolesLabels" Style="max-height: 440px"></MudChart>
             }
             else
@@ -128,7 +128,7 @@
     private List<UserView> users;
     private string searchString = "";
     private double[] rolesNumbers;
-    private string[] rolesLabels = { "Admin", "Manager", "Warehouseman" };
+    private string[] rolesLabels = { "Admin", "Manager", "Magazynier" };
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
@@ -149,13 +149,13 @@
     private void OpenDetailsDialog(UserView user)
     {
         var parameters = new DialogParameters { ["user"] = user };
-        DialogService.Show<UserDetailsDialog>("User details", parameters, maxDialogWidth);
+        DialogService.Show<UserDetailsDialog>("Szczegóły użytkownika", parameters, maxDialogWidth);
     }
 
     private async Task OpenEditDialog(UserView user)
     {
         var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
-        var dialog = DialogService.Show<UserEditDialog>("Edit user", parameters, maxDialogWidth);
+        var dialog = DialogService.Show<UserEditDialog>("Edytuj użytkownika", parameters, maxDialogWidth);
         var result = await dialog.Result;
 
         if (result is not null)
@@ -167,7 +167,7 @@
     private async Task OpenManageDialog(UserView user)
     {
         var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
-        var dialog = DialogService.Show<UserManageDialog>("Manage user", parameters, maxDialogWidth);
+        var dialog = DialogService.Show<UserManageDialog>("Zarządzaj użytkownikiem", parameters, maxDialogWidth);
         var result = await dialog.Result;
 
         if (result is not null)
@@ -179,7 +179,7 @@
 
     private async Task OpenCreateAccountDialog()
     {
-        var dialog = DialogService.Show<CreateAccountDialog>("Create account", maxDialogWidth);
+        var dialog = DialogService.Show<CreateAccountDialog>("Utwórz konto", maxDialogWidth);
         var result = await dialog.Result;
         if (result is not null)
         {
@@ -190,7 +190,7 @@
 
     private async Task OpenDeactivatedAccountsDialog()
     {
-        var dialog = DialogService.Show<DeactivatedAccountsDialog>("Deactivated accounts", maxDialogWidth);
+        var dialog = DialogService.Show<DeactivatedAccountsDialog>("Nieaktywne konta", maxDialogWidth);
         var result = await dialog.Result;
         if (result is not null)
         {
@@ -202,12 +202,12 @@
     private async Task OpenResetPasswordDialog(UserView user)
     {
         var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
-        var dialog = DialogService.Show<UserPasswordResetDialog>("Reset password", parameters, maxDialogWidth);
+        var dialog = DialogService.Show<UserPasswordResetDialog>("Resetuj hasło", parameters, maxDialogWidth);
     }
 
     private double[] GetRolesArray()
     {
-        return new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "Warehouseman") };
+        return new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "Magazynier") };
     }
 
 }

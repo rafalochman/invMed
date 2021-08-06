@@ -4,23 +4,23 @@ namespace invMed.Data
 {
     public class ChangePasswordInput
     {
-        [Required]
-        [StringLength(36, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$", ErrorMessage = "The password must contain at lest one uppercase, lowercase, special character and numeric value.")]
+        [Required(ErrorMessage = "Pole Aktualne hasło jest wymagane.")]
+        [StringLength(36, ErrorMessage = "{0} musi mieć minimum {2} znaków i maksymalnie {1} znaków.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$", ErrorMessage = "Hasło musi zawierać co najmniej jedną małą literę, wielką literę, znak specjalny oraz cyfrę.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
+        [Display(Name = "Aktualne hasło")]
         public string CurrentPassword { get; set; }
 
-        [Required]
-        [StringLength(36, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$", ErrorMessage = "The password must contain at lest one uppercase, lowercase, special character and numeric value.")]
+        [Required(ErrorMessage = "Pole Nowe hasło jest wymagane.")]
+        [StringLength(36, ErrorMessage = "{0} musi mieć minimum {2} znaków i maksymalnie {1} znaków.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$", ErrorMessage = "Hasło musi zawierać co najmniej jedną małą literę, wielką literę, znak specjalny oraz cyfrę.")]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(Name = "Nowe hasło")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Potwierdź hasło")]
+        [Compare("NewPassword", ErrorMessage = "Hasła nie są zgodne.")]
         public string ConfirmNewPassword { get; set; }
     }
 }

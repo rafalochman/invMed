@@ -8,19 +8,19 @@
             <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
-                    <MudText Class="pt-8" Typo="Typo.h6">Register</MudText>
-                    <MudTextField Label="Name" Immediate="true" @bind-Value="input.Name" For="@(() => input.Name)" />
-                    <MudTextField Label="Surname" Immediate="true" Class="mt-2" @bind-Value="input.Surname" For="@(() => input.Surname)" />
+                    <MudText Class="pt-8" Typo="Typo.h6">Zarejestruj użytkownika</MudText>
+                    <MudTextField Label="Imię" Immediate="true" @bind-Value="input.Name" For="@(() => input.Name)" />
+                    <MudTextField Label="Nazwisko" Immediate="true" Class="mt-2" @bind-Value="input.Surname" For="@(() => input.Surname)" />
                     <MudTextField Label="Email" Immediate="true" Class="mt-2" @bind-Value="input.Email" For="@(() => input.Email)" />
-                    <MudTextField Label="Password" Immediate="true" Class="mt-2" @bind-Value="input.Password" For="@(() => input.Password)" InputType="InputType.Password" />
-                    <MudTextField Label="Confirm password" Immediate="true" HelperText="Repeat the password" Class="mt-2" @bind-Value="input.ConfirmPassword" For="@(() => input.ConfirmPassword)" InputType="InputType.Password" />
-                    <MudText Class="mt-6" Typo="Typo.h6">Choose role</MudText>
-                    <MudSelect Label="Select role" @bind-Value="input.Role">
-                        <MudSelectItem Value="@("Warehouseman")">Warehouseman</MudSelectItem>
+                    <MudTextField Label="Hasło" Immediate="true" Class="mt-2" @bind-Value="input.Password" For="@(() => input.Password)" InputType="InputType.Password" />
+                    <MudTextField Label="Potwierdź hasło" Immediate="true" Class="mt-2" @bind-Value="input.ConfirmPassword" For="@(() => input.ConfirmPassword)" InputType="InputType.Password" />
+                    <MudText Class="mt-6" Typo="Typo.h6">Wybierz rolę</MudText>
+                    <MudSelect Label="Wybierz rolę" @bind-Value="input.Role">
+                        <MudSelectItem Value="@("Magazynier")">Magazynier</MudSelectItem>
                         <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
                         <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
                     </MudSelect>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Register</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Zarejestruj</MudButton>
                 </EditForm>
             </MudContainer>
         </MudPaper>
@@ -50,16 +50,16 @@
             var res = await adminService.AddToRole(user, input.Role);
             if (res)
             {
-                Snackbar.Add("Success, account created", Severity.Success);
+                Snackbar.Add("Sukces, konto zostało utworzone.", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Warning, account created, role not added", Severity.Warning);
+                Snackbar.Add("Uwaga, konto utworzone, ale rola nie nadana.", Severity.Warning);
             }
         }
         else
         {
-            Snackbar.Add("Error, account not created", Severity.Error);
+            Snackbar.Add("Błąd, konto nie zostało utworzone.", Severity.Error);
         }
         MudDialog.Close(DialogResult.Ok(true));
     }

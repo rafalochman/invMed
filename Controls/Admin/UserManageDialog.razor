@@ -11,21 +11,21 @@
                     <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@user.Name[0]@user.Surname[0]</MudAvatar>
                     <MudText Class="mt-4">@user.Name @user.Surname</MudText>
                     <MudText>@role</MudText>
-                    <MudText Class="mt-8" Typo="Typo.h6">Change role</MudText>
-                    <MudSelect Label="Select role" @bind-Value="newRole">
-                        <MudSelectItem Value="@("Warehouseman")">Warehouseman</MudSelectItem>
+                    <MudText Class="mt-8" Typo="Typo.h6">Zmień rolę</MudText>
+                    <MudSelect Label="Wybierz rolę" @bind-Value="newRole">
+                        <MudSelectItem Value="@("Magazynier")">Magazynier</MudSelectItem>
                         <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
                         <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
                     </MudSelect>
                     <br />
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRole">Save</MudButton>
-                    <MudText Class="mt-8" Typo="Typo.h6">Deactivate account</MudText>
-                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" @onclick="() => tryDeactivate = true">Deactivate account</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRole">Zapisz</MudButton>
+                    <MudText Class="mt-8" Typo="Typo.h6">Dezaktywuj konto</MudText>
+                    <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Primary" @onclick="() => tryDeactivate = true">Dezaktywuj</MudButton>
                     if (tryDeactivate)
                     {
-                        <MudText Class="mt-8" Typo="Typo.h6">Are you sure?</MudText>
-                        <MudButton Class="mt-4 mr-4" Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => tryDeactivate = false">No</MudButton>
-                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Default" @onclick="@DeactivateAccount">Yes</MudButton>
+                        <MudText Class="mt-8" Typo="Typo.h6">Jesteś pewien?</MudText>
+                        <MudButton Class="mt-4 mr-4" Variant="Variant.Filled" Color="Color.Secondary" @onclick="() => tryDeactivate = false">Nie</MudButton>
+                        <MudButton Class="mt-4" Variant="Variant.Filled" Color="Color.Default" @onclick="@DeactivateAccount">Tak</MudButton>
                     }
                 }
                 else
@@ -62,12 +62,12 @@
         var result = await adminService.DeactivateAccount(user);
         if (result)
         {
-            Snackbar.Add("Success, account deactivated", Severity.Success);
+            Snackbar.Add("Sukces, konto zostało dezaktywowane.", Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }
         else
         {
-            Snackbar.Add("Error, account not deactivated", Severity.Error);
+            Snackbar.Add("Błąd, konto nie zostało dezaktywowane.", Severity.Error);
         }
     }
 
@@ -80,16 +80,16 @@
             if (res)
             {
                 role = newRole;
-                Snackbar.Add("Success, role changed", Severity.Success);
+                Snackbar.Add("Sukces, rola została zmieniona.", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Warning, user do not have any role", Severity.Warning);
+                Snackbar.Add("Uwaga, do użytkownika nie jest przypisana rzadna rola.", Severity.Warning);
             }
         }
         else
         {
-            Snackbar.Add("Error, role not changed", Severity.Error);
+            Snackbar.Add("Błąd, rola nie została zmieniona.", Severity.Error);
         }
         await InvokeAsync(StateHasChanged);
     }

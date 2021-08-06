@@ -1,8 +1,8 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <MudLink Class="mud-theme-primary" Href="/manage">Hello, @context.User.Identity.Name!</MudLink>
+        <MudLink Class="mud-theme-primary" Href="/manage">Witaj, @context.User.Identity.Name!</MudLink>
         <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="ml-8 mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-body1 mud-theme-primary">Log out</button>
+            <button type="submit" class="ml-8 mud-typography mud-link mud-primary-text mud-link-underline-hover mud-typography-body1 mud-theme-primary">Wyloguj się</button>
         </form>
     </Authorized>
 </AuthorizeView>

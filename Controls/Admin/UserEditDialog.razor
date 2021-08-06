@@ -19,11 +19,11 @@
                     <EditForm Model="@input" OnValidSubmit="OnValidSubmit">
                         <DataAnnotationsValidator />
                         <MudTextField Class="mt-6" Label="Id" Disabled="true" @bind-Value="input.Id" For="@(() => input.Id)" />
-                        <MudTextField Class="mt-4" Label="Name" @bind-Value="input.Name" For="@(() => input.Name)" />
-                        <MudTextField Class="mt-4" Label="Surname" @bind-Value="input.Surname" For="@(() => input.Surname)" />
-                        <MudTextField Class="mt-4" Label="User name" @bind-Value="input.UserName" For="@(() => input.UserName)" />
+                        <MudTextField Class="mt-4" Label="Imię" @bind-Value="input.Name" For="@(() => input.Name)" />
+                        <MudTextField Class="mt-4" Label="Nazwisko" @bind-Value="input.Surname" For="@(() => input.Surname)" />
+                        <MudTextField Class="mt-4" Label="Nazwa użytkownika" @bind-Value="input.UserName" For="@(() => input.UserName)" />
                         <MudTextField Class="mt-4" Label="Email" @bind-Value="input.Email" For="@(() => input.Email)" />
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Save</MudButton>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Zapisz</MudButton>
                     </EditForm>
                 }
                 else
@@ -52,11 +52,11 @@
         var result = await adminService.UpdateUserInput(input);
         if (result)
         {
-            Snackbar.Add("Success, changes saved", Severity.Success);
+            Snackbar.Add("Sukces, zmiany zostały zapisane", Severity.Success);
         }
         else
         {
-            Snackbar.Add("Error, changes not saved", Severity.Error);
+            Snackbar.Add("Błąd, zmiany nie zostały zapisane", Severity.Error);
         }
         await InvokeAsync(StateHasChanged);
     }
