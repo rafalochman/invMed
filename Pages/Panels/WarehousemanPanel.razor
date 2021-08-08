@@ -1,38 +1,42 @@
 ﻿@page "/warehousemanPanel"
-
+@inject WarehousemanService warehousemanService
 
 @attribute [Authorize(Roles = "Admin")]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Panel Magazyniera</MudText>
 <MudGrid>
     <MudItem xs="12">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Wyszukiwarka</MudText>
+            <MudAutocomplete T="string" Label="Szukaj" Class="ml-4 mr-4" Clearable="true" ResetValueOnEmptyText="true" @bind-Value="searchValue" SearchFunc="@Search" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="6" lg="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
 
-    </MudItem>
-    <MudItem xs="12" sm="6" md="6" lg="3">
-        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-            
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-           
+
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-           
+
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" lg="8">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 608px;">
-           
+
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" lg="4">
         <MudPaper Elevation="25" Class="pa-4" Style="height: 608px;">
-           
+
         </MudPaper>
     </MudItem>
 </MudGrid>
@@ -42,6 +46,15 @@
     protected override async Task OnInitializedAsync()
     {
 
+    }
+    private string searchValue;
+
+    private async Task<IEnumerable<string>> Search(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return new string[0];
+
+        return await warehousemanService.Search(value); 
     }
 
 }

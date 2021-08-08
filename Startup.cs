@@ -58,6 +58,7 @@ namespace invMed
             services.AddScoped<ItemsService>();
             services.AddScoped<AdminService>();
             services.AddScoped<AccountService>();
+            services.AddScoped<WarehousemanService>();
 
             services.AddAuthorization(options =>
             {
@@ -93,6 +94,7 @@ namespace invMed
                     applicationDbContext.Database.EnsureCreated();
                     if (Configuration.GetValue<bool>("SeedErasedDatabaseWithData"))
                         StartupDataSeeder.FillWithUsers(userManager).Wait();
+                        StartupDataSeeder.FillWithProducts(applicationDbContext).Wait();
                 }
                 else
                     applicationDbContext.Database.EnsureCreated();

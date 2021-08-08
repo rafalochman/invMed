@@ -66,5 +66,27 @@ namespace invMed
             await userManager.CreateAsync(manager, "1qaz@WSX");
             await userManager.AddToRoleAsync(manager, "MANAGER");
         }
+
+        public static async Task FillWithProducts(ApplicationDbContext db)
+        {
+            var product1 = new Product
+            {
+                Name = "test1",
+                Category = "test1",
+                Amount = 3,
+                Price = 4
+            };
+
+            var product2 = new Product
+            {
+                Name = "test2",
+                Category = "test2",
+                Amount = 66,
+                Price = 22
+            };
+            await db.Products.AddAsync(product1);
+            await db.Products.AddAsync(product2);
+            await db.SaveChangesAsync();
+        }
     }
 }
