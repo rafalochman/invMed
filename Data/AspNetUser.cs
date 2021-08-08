@@ -12,5 +12,7 @@ namespace invMed.Data
         public string Surname { get; set; }
 
         public bool IsActive { get; set; }
+
+        public virtual ICollection<Item> Items { get; set; }
     }
 }

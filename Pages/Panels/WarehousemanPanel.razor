@@ -1,5 +1,7 @@
 ﻿@page "/warehousemanPanel"
 @using invMed.Data
+@inject IDialogService DialogService
+@using invMed.Controls.Warehouseman
 @inject WarehousemanService warehousemanService
 
 @attribute [Authorize(Roles = "Admin")]
@@ -17,7 +19,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Przyjmij towar</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenAddItemDialog">Przyjmij towar</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -113,13 +115,13 @@
                         <MudTd DataLabel="Ilość">@context.Amount</MudTd>
                         <MudTd DataLabel="Pozostało">
                             @if (context.Amount == 0)
-                            {
+                                {
                                 <MudChip Size="Size.Small" Color="Color.Error">Brak towaru</MudChip>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 <MudChip Size="Size.Small" Color="Color.Warning">Pozostało @context.Amount</MudChip>
-                            }
+                                }
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
@@ -140,6 +142,7 @@
     private string searchValue;
     private List<Product> newProducts;
     private List<Product> runOutProducts;
+    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
@@ -155,4 +158,8 @@
         return await warehousemanService.Search(value);
     }
 
+    private async Task OpenAddItemDialog()
+    {
+        var dialog = DialogService.Show<AddItemDialog>("Przyjmij towar", maxDialogWidth);
+    }
 }

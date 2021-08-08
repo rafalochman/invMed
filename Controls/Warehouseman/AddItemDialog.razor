@@ -1,0 +1,67 @@
+﻿@using invMed.Data
+@inject WarehousemanService warehousemanService
+@inject ISnackbar Snackbar
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudText Class="pt-8" Typo="Typo.h6">Dodaj towar</MudText>
+                    <MudAutocomplete T="string" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@Search" />
+                    <MudTextField Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" For="@(() => input.BarCode)" />
+                    <MudTextField Label="Miejsce" Immediate="true" Class="mt-2" @bind-Value="input.Place" For="@(() => input.Place)" />
+                    <MudDatePicker @ref="_picker" Label="Data ważności" @bind-Date="input.ExpirationDate" AutoClose="true" DateFormat="dd/MM/yyyy" >
+                        <PickerActions>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
+                            <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
+                        </PickerActions>
+                    </MudDatePicker>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Dodaj i generuj kod</MudButton>
+                </EditForm>
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    private AddItemInput input = new AddItemInput();
+    private bool success;
+    private MudDatePicker _picker;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async void OnValidSubmit()
+    {
+        var userName = httpContextAccessor.HttpContext.User.Identity.Name;
+        var result = await warehousemanService.AddItem(input, userName);
+        if (result)
+        {
+            Snackbar.Add("Sukces, towar został dodany.", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Błąd, towar nie został dodany.", Severity.Error);
+        }
+    }
+
+    private async Task<IEnumerable<string>> Search(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return await warehousemanService.GetAllProductsNames();
+
+        return await warehousemanService.SearchProductsNames(value);
+    }
+
+}

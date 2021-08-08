@@ -60,6 +60,8 @@ namespace invMed
             services.AddScoped<AccountService>();
             services.AddScoped<WarehousemanService>();
 
+            services.AddHttpContextAccessor();
+
             services.AddAuthorization(options =>
             {
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()

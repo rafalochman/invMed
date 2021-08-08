@@ -84,8 +84,17 @@ namespace invMed
                 Amount = 66,
                 Price = 22
             };
+
+            var product3 = new Product
+            {
+                Name = "Bandaż elastyczny x22",
+                Category = "Opatrunki",
+                Amount = 66,
+                Price = 22
+            };
             await db.Products.AddAsync(product1);
             await db.Products.AddAsync(product2);
+            await db.Products.AddAsync(product3);
             await db.SaveChangesAsync();
         }
     }
