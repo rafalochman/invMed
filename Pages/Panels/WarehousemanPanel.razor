@@ -1,4 +1,5 @@
 ﻿@page "/warehousemanPanel"
+@using invMed.Data
 @inject WarehousemanService warehousemanService
 
 @attribute [Authorize(Roles = "Admin")]
@@ -14,47 +15,144 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Przyjmij towar</MudButton>
+            </div>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-
+            <MudIcon Icon="@Icons.Material.Filled.Remove" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Wydaj towar</MudButton>
+            </div>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-
+            <MudIcon Icon="@Icons.Material.Filled.HorizontalSplit" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Produkty</MudButton>
+            </div>
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" lg="8">
-        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 608px;">
-
+    <MudItem xs="12" sm="6" md="6" lg="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Inventory" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Inwentaryzacja</MudButton>
+            </div>
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" lg="4">
-        <MudPaper Elevation="25" Class="pa-4" Style="height: 608px;">
+    <MudItem xs="12" lg="7">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
+            @if (newProducts is not null)
+            {
+                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="6" Elevation="0" Items="@newProducts" Hover="true">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Przyjęte towary</MudText>
+                        <MudToolBarSpacer />
+                    </ToolBarContent>
+                    <ColGroup>
+                        <col />
+                        <col />
+                        <col />
+                        <col />
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>Nazwa</MudTh>
+                        <MudTh>Kategoria</MudTh>
+                        <MudTh>Ilość</MudTh>
+                        <MudTh>Cena</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nazwa">@context.Name</MudTd>
+                        <MudTd DataLabel="Kategoria">@context.Category</MudTd>
+                        <MudTd DataLabel="Ilość">@context.Amount</MudTd>
+                        <MudTd DataLabel="Cena">@context.Price</MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Produkty na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
+                    </PagerContent>
+                </MudTable>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+        </MudPaper>
+    </MudItem>
 
+    <MudItem xs="12" lg="5">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
+            @if (runOutProducts is not null)
+            {
+                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@runOutProducts" Hover="true">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Wyczerpujące się towary</MudText>
+                        <MudToolBarSpacer />
+                    </ToolBarContent>
+                    <ColGroup>
+                        <col />
+                        <col />
+                        <col />
+                        <col />
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>Nazwa</MudTh>
+                        <MudTh>Kategoria</MudTh>
+                        <MudTh>Ilość</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nazwa">@context.Name</MudTd>
+                        <MudTd DataLabel="Kategoria">@context.Category</MudTd>
+                        <MudTd DataLabel="Ilość">@context.Amount</MudTd>
+                        <MudTd DataLabel="Pozostało">
+                            @if (context.Amount == 0)
+                            {
+                                <MudChip Size="Size.Small" Color="Color.Error">Brak towaru</MudChip>
+                            }
+                            else
+                            {
+                                <MudChip Size="Size.Small" Color="Color.Warning">Pozostało @context.Amount</MudChip>
+                            }
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Produkty na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
+                    </PagerContent>
+                </MudTable>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
         </MudPaper>
     </MudItem>
 </MudGrid>
 
 
 @code {
+    private string searchValue;
+    private List<Product> newProducts;
+    private List<Product> runOutProducts;
+
     protected override async Task OnInitializedAsync()
     {
-
+        newProducts = new List<Product> { new Product { Name = "test", Category = "test", Amount = 3, Price = 33 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 } };
+        runOutProducts = new List<Product> { new Product { Name = "test", Category = "test", Amount = 3, Price = 33 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 } };
     }
-    private string searchValue;
 
     private async Task<IEnumerable<string>> Search(string value)
     {
         if (string.IsNullOrEmpty(value))
             return new string[0];
 
-        return await warehousemanService.Search(value); 
+        return await warehousemanService.Search(value);
     }
 
 }
