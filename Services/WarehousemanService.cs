@@ -51,5 +51,40 @@ namespace invMed.Services
                 return false;
             }
         }
+
+        public async Task<RemoveItemView> GetRemoveItemViewByItemBarCode(string barCode, int number)
+        {
+            var item = await _db.Items.FirstOrDefaultAsync(x => x.BarCode == barCode);
+            if(item is not null)
+            {
+                return new RemoveItemView()
+                {
+                    Id = item.Id,
+                    Number = number,
+                    BarCode = item.BarCode,
+                    ProductName = item.Product.Name
+                };
+            }
+            return new RemoveItemView();
+            
+        }
+
+        public async Task<bool> RemoveItems(List<RemoveItemView> items)
+        {
+            try
+            {
+                foreach(var itemView in items)
+                {
+                    var item = await _db.Items.FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
+                    _db.Remove(item);
+                }
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

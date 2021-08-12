@@ -27,7 +27,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.Remove" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Wydaj towar</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenRemoveItemDialog">Wydaj towar</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -161,5 +161,10 @@
     private async Task OpenAddItemDialog()
     {
         var dialog = DialogService.Show<AddItemDialog>("Przyjmij towar", maxDialogWidth);
+    }
+
+    private async Task OpenRemoveItemDialog()
+    {
+        var dialog = DialogService.Show<RemoveItemDialog>("Wydaj towar", maxDialogWidth);
     }
 }
