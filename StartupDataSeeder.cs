@@ -71,18 +71,22 @@ namespace invMed
         {
             var product1 = new Product
             {
-                Name = "test1",
-                Category = "test1",
+                Name = "Chusta trójkątna bawełniana",
+                Category = "Opatrunki",
                 Amount = 3,
-                Price = 4
+                Price = 4,
+                Producer = "Firma x",
+                Supplier = "Firma x",
             };
 
             var product2 = new Product
             {
-                Name = "test2",
-                Category = "test2",
+                Name = "Kompresy gazowe niesterylne 12-warst 500 szt",
+                Category = "Opatrunki",
                 Amount = 66,
-                Price = 22
+                Price = 22,
+                Producer = "Firma x",
+                Supplier = "Firma x",
             };
 
             var product3 = new Product
@@ -90,11 +94,69 @@ namespace invMed
                 Name = "Bandaż elastyczny x22",
                 Category = "Opatrunki",
                 Amount = 66,
-                Price = 22
+                Price = 22,
+                Producer = "Firma x",
+                Supplier = "Firma x",
             };
+
+            var product4 = new Product
+            {
+                Name = "Igły do mezoterapii",
+                Category = "Igły",
+                Amount = 66,
+                Price = 27,
+                Producer = "Firma x",
+                Supplier = "Firma x",
+            };
+
+            var product5 = new Product
+            {
+                Name = "Igły iniekcyjne jednorazowe MICROLANCE 100 szt",
+                Category = "Igły",
+                Amount = 66,
+                Price = 2.5,
+                Producer = "Firma x",
+                Supplier = "Firma x",
+            };
+
+            var product6 = new Product
+            {
+                Name = "Plaster DURAPORE",
+                Category = "Plastry",
+                Amount = 66,
+                Price = 22,
+                Producer = "Firma x",
+                Supplier = "Firma x",
+            };
+
+            var product7 = new Product
+            {
+                Name = "PLASTER DERMAFOIL",
+                Category = "Plastry",
+                Amount = 66,
+                Price = 22,
+                Producer = "Firma x",
+                Supplier = "Firma x",
+            };
+
+            var product8 = new Product
+            {
+                Name = "PLASTER ELASTOPOR TAŚMA ELASTYCZNA WŁÓKNINOWA 10 MB",
+                Category = "Plastry",
+                Amount = 66,
+                Price = 22,
+                Producer = "Firma x",
+                Supplier = "Firma x",
+            };
+
             await db.Products.AddAsync(product1);
             await db.Products.AddAsync(product2);
             await db.Products.AddAsync(product3);
+            await db.Products.AddAsync(product4);
+            await db.Products.AddAsync(product5);
+            await db.Products.AddAsync(product6);
+            await db.Products.AddAsync(product7);
+            await db.Products.AddAsync(product8);
             await db.SaveChangesAsync();
         }
     }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
 {
@@ -16,34 +17,14 @@ namespace invMed.Services
             _db = db;
         }
 
-        public Task<List<Product>> GetProducts()
+        public async Task<List<Product>> GetProducts()
         {
-            List<Product> products = _db.Products.ToList();
-            return Task.FromResult(products);
+          return await _db.Products.OrderBy(x => x.Category).ToListAsync();
         }
 
-        public Task<Product> GetProductById(int id)
+        public async Task<IEnumerable<string>> Search(string searchValue)
         {
-            Product product = _db.Products.FirstOrDefault(p => p.Id == id);
-            return Task.FromResult(product);
-        }
-
-        public void AddProduct(Product product)
-        {
-            _db.Products.Add(product);
-            _db.SaveChanges();
-        }
-
-        public void EditProduct(Product product)
-        {
-            _db.Products.Update(product);
-            _db.SaveChanges();
-        }
-
-        public void DeleteProduct(Product product)
-        {
-            _db.Products.Remove(product);
-            _db.SaveChanges();
+            return await _db.Products.Where(x => x.Name.Contains(searchValue)).Select(x => x.Name).ToArrayAsync();
         }
     }
 }

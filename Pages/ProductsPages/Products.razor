@@ -1,58 +1,116 @@
 ﻿@page "/products"
 @using invMed.Data
+@inject IDialogService DialogService
 @inject ProductsService productsService
 
-<h3>Products</h3>
+@attribute [Authorize(Roles = "Admin")]
 
-<NavLink href="addProduct">
-    Add product
-</NavLink>
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Produkty</MudText>
+<MudGrid>
+    <MudItem xs="12" sm="6" md="6" lg="9">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Wyszukiwarka</MudText>
+            <MudAutocomplete T="string" Label="Szukaj" Class="ml-4 mr-4" Clearable="true" ResetValueOnEmptyText="true" @bind-Value="searchValue" SearchFunc="@Search" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="6" lg="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Utwórz produkt</MudButton>
+            </div>
+        </MudPaper>
+    </MudItem>
 
-@if (products == null)
-{
-    <p><em>Loading...</em></p>
-}
+    <MudItem xs="12">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 680px;">
+            @if (products is not null)
+            {
+                <MudTable Dense="true" Breakpoint="Breakpoint.Sm" RowsPerPage="8" Elevation="0" Items="@products" Hover="true" Filter="new Func<Product, bool>(FilterFunc)" HorizontalScrollbar="true" >
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Produkty</MudText>
+                        <MudToolBarSpacer />
+                        <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Szukaj" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+                    <ColGroup>
+                        <col />
+                        <col />
+                        <col />
+                        <col style="width: 20px" />
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>Nazwa</MudTh>
+                        <MudTh>Kategoria</MudTh>
+                        <MudTh>Producent</MudTh>
+                        <MudTh>Dostawca</MudTh>
+                        <MudTh>Cena</MudTh>
+                        <MudTh>Ilość</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nazwa">@context.Name</MudTd>
+                        <MudTd DataLabel="Kategoria">@context.Category</MudTd>
+                        <MudTd DataLabel="Ilość" HideSmall="true">@context.Producer</MudTd>
+                        <MudTd DataLabel="Kategoria" HideSmall="true">@context.Supplier</MudTd>
+                        <MudTd DataLabel="Kategoria" HideSmall="true">@context.Price zł</MudTd>
+                        <MudTd DataLabel="Kategoria">@context.Amount</MudTd>
+                        <MudTd DataLabel="Egzęplarze">
+                            <MudTooltip Text="Egzęplarze">
+                                <MudIconButton OnClick="@((e) => OpenShowItemsDialog(context.Id))" Icon="@Icons.Material.Filled.MoreVert"></MudIconButton>
+                            </MudTooltip>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] {8}" RowsPerPageString="Produkty na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
+                    </PagerContent>
+                </MudTable>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+        </MudPaper>
+    </MudItem>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product Id</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Price</th>
-            <th>Action</th>
-            <th>Items</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in products)
-        {
-        <tr>
-            <td>@product.Id</td>
-            <td>@product.Name</td>
-            <td>@product.Category</td>
-            <td>@product.Amount</td>
-            <td>@product.Price</td>
-            <td>
-                <a href="editProduct/@product.Id">Edit </a>
-                <a href="deleteProduct/@product.Id">Delete </a>
-                <a href="detailsProduct/@product.Id">Details </a>
-            </td>
-            <td>
-                <a href="items/@product.Id">Items</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+</MudGrid>
+
 
 @code {
     private List<Product> products;
+    private string searchString = "";
+    private string searchValue;
+    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
         products = await productsService.GetProducts();
     }
 
+    private bool FilterFunc(Product product)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if ($"{product.Name} {product.Category} {product.Producer} {product.Supplier}".Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    private async Task<IEnumerable<string>> Search(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return new string[0];
+
+        return await productsService.Search(value);
+    }
+
+    private async Task OpenAddProductDialog()
+    {
+        //var dialog = DialogService.Show<AddProductDialog>("Utwórz produkt", maxDialogWidth);
+    }
+
+    private async Task OpenShowItemsDialog(int id)
+    {
+        //var dialog = DialogService.Show<ShowItemsDialog>("Egzęplarze", maxDialogWidth);
+    }
 }

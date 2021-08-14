@@ -35,7 +35,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.HorizontalSplit" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Produkty</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="products">Produkty</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -74,7 +74,7 @@
                         <MudTd DataLabel="Nazwa">@context.Name</MudTd>
                         <MudTd DataLabel="Kategoria">@context.Category</MudTd>
                         <MudTd DataLabel="Ilość">@context.Amount</MudTd>
-                        <MudTd DataLabel="Cena">@context.Price</MudTd>
+                        <MudTd DataLabel="Cena">@context.Price zł</MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Produkty na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
