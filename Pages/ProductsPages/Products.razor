@@ -1,5 +1,6 @@
 ﻿@page "/products"
 @using invMed.Data
+@using invMed.Controls.Products
 @inject IDialogService DialogService
 @inject ProductsService productsService
 
@@ -18,7 +19,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Utwórz produkt</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenAddProductDialog">Utwórz produkt</MudButton>
             </div>
         </MudPaper>
     </MudItem>
@@ -27,7 +28,7 @@
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 680px;">
             @if (products is not null)
             {
-                <MudTable Dense="true" Breakpoint="Breakpoint.Sm" RowsPerPage="8" Elevation="0" Items="@products" Hover="true" Filter="new Func<Product, bool>(FilterFunc)" HorizontalScrollbar="true" >
+                <MudTable Dense="true" Breakpoint="Breakpoint.Sm" RowsPerPage="8" Elevation="0" Items="@products" Hover="true" Filter="new Func<Product, bool>(FilterFunc)" HorizontalScrollbar="true">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6">Produkty</MudText>
                         <MudToolBarSpacer />
@@ -106,7 +107,12 @@
 
     private async Task OpenAddProductDialog()
     {
-        //var dialog = DialogService.Show<AddProductDialog>("Utwórz produkt", maxDialogWidth);
+        var dialog = DialogService.Show<AddProductDialog>("Utwórz produkt", maxDialogWidth);
+        var result = await dialog.Result;
+        if (result is not null)
+        {
+            products = await productsService.GetProducts();
+        }
     }
 
     private async Task OpenShowItemsDialog(int id)

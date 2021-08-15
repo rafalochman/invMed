@@ -1,0 +1,53 @@
+﻿@using invMed.Data
+@inject ProductsService productsService
+@inject ISnackbar Snackbar
+@using System.Globalization
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudText Class="pt-8" Typo="Typo.h6">Utwórz produkt</MudText>
+                    <MudTextField Label="Nazwa" Immediate="true" Class="mt-2" @bind-Value="input.Name" For="@(() => input.Name)" />
+                    <MudTextField Label="Kategoria" Immediate="true" Class="mt-2" @bind-Value="input.Category" For="@(() => input.Category)" />
+                    <MudTextField Label="Producent" Immediate="true" Class="mt-2" @bind-Value="input.Producer" For="@(() => input.Producer)" />
+                    <MudTextField Label="Dostawca" Immediate="true" Class="mt-2" @bind-Value="input.Supplier" For="@(() => input.Supplier)" />
+                    <MudNumericField Label="Cena" Immediate="true" Class="mt-2" @bind-Value="input.Price" For="@(() => input.Price)" Adornment="Adornment.End" AdornmentText="zł" Min="0.01" Format="F2" Culture="@_pl" HideSpinButtons="true" />
+                    <MudNumericField Label="Ilość minimalna" Immediate="true" Class="mt-2" @bind-Value="input.MinAmount" For="@(() => input.MinAmount)" Min="0" HideSpinButtons="true" />
+                    <MudNumericField Label="Ilość maksymalna" Immediate="true" Class="mt-2" @bind-Value="input.MaxAmount" For="@(() => input.MaxAmount)" Min="0" HideSpinButtons="true" />
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Utwórz</MudButton>
+                </EditForm>
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    private AddProductInput input = new AddProductInput();
+    private CultureInfo _pl = CultureInfo.GetCultureInfo("pl-PL");
+    private bool success;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async void OnValidSubmit()
+    {
+        var result = await productsService.AddProduct(input);
+        if (result)
+        {
+            Snackbar.Add("Sukces, produkt został utworzony.", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Błąd, produkt nie został utworzony.", Severity.Error);
+        }
+    }
+
+}
