@@ -86,5 +86,30 @@ namespace invMed.Services
                 return false;
             }
         }
+
+        public async Task<List<RunOutProductsView>> GetRunOutProducts()
+        {
+            var products = await _db.Products.Where(x => (x.Amount <= (x.MinAmount * 1.1))).ToListAsync();
+            var runOutProducts = new List<RunOutProductsView>();
+            foreach(var product in products)
+            {
+                var runOutProduct = new RunOutProductsView();
+                runOutProduct.Id = product.Id;
+                runOutProduct.Name = product.Name;
+                runOutProduct.Category = product.Category;
+                runOutProduct.Amount = product.Amount;
+                if(product.Amount < product.MinAmount)
+                {
+                    runOutProduct.CommunicateType = true;
+                }
+                else
+                {
+                    runOutProduct.CommunicateType = false;
+                }
+                runOutProducts.Add(runOutProduct);
+            }
+
+            return runOutProducts.OrderBy(x => x.Category).ToList();
+        }
     }
 }

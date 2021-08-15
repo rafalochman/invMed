@@ -113,15 +113,15 @@
                         <MudTd DataLabel="Nazwa">@context.Name</MudTd>
                         <MudTd DataLabel="Kategoria">@context.Category</MudTd>
                         <MudTd DataLabel="Ilość">@context.Amount</MudTd>
-                        <MudTd DataLabel="Pozostało">
-                            @if (context.Amount == 0)
-                                {
-                                <MudChip Size="Size.Small" Color="Color.Error">Brak towaru</MudChip>
-                                }
-                                else
-                                {
-                                <MudChip Size="Size.Small" Color="Color.Warning">Pozostało @context.Amount</MudChip>
-                                }
+                        <MudTd DataLabel="Komunikat">
+                            @if (context.CommunicateType == true)
+                            {
+                                <MudChip Size="Size.Small" Color="Color.Error">Przekroczono stan minimalny</MudChip>
+                            }
+                            else
+                            {
+                                <MudChip Size="Size.Small" Color="Color.Warning">Pozostała mała ilość</MudChip>
+                            }
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
@@ -141,13 +141,13 @@
 @code {
     private string searchValue;
     private List<Product> newProducts;
-    private List<Product> runOutProducts;
+    private List<RunOutProductsView> runOutProducts;
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
         newProducts = new List<Product> { new Product { Name = "test", Category = "test", Amount = 3, Price = 33 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 } };
-        runOutProducts = new List<Product> { new Product { Name = "test", Category = "test", Amount = 3, Price = 33 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 } };
+        runOutProducts = await warehousemanService.GetRunOutProducts();
     }
 
     private async Task<IEnumerable<string>> Search(string value)

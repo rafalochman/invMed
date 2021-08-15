@@ -73,8 +73,9 @@ namespace invMed
             {
                 Name = "Chusta trójkątna bawełniana",
                 Category = "Opatrunki",
-                Amount = 3,
+                Amount = 1,
                 Price = 4,
+                MinAmount = 2,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
@@ -83,8 +84,9 @@ namespace invMed
             {
                 Name = "Kompresy gazowe niesterylne 12-warst 500 szt",
                 Category = "Opatrunki",
-                Amount = 66,
+                Amount = 5,
                 Price = 22,
+                MinAmount = 3,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
@@ -95,6 +97,7 @@ namespace invMed
                 Category = "Opatrunki",
                 Amount = 66,
                 Price = 22,
+                MinAmount = 63,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
@@ -103,8 +106,9 @@ namespace invMed
             {
                 Name = "Igły do mezoterapii",
                 Category = "Igły",
-                Amount = 66,
+                Amount = 24,
                 Price = 27,
+                MinAmount = 22,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
@@ -115,6 +119,7 @@ namespace invMed
                 Category = "Igły",
                 Amount = 66,
                 Price = 2.5,
+                MinAmount = 10,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
@@ -125,6 +130,7 @@ namespace invMed
                 Category = "Plastry",
                 Amount = 66,
                 Price = 22,
+                MinAmount = 10,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
@@ -135,6 +141,7 @@ namespace invMed
                 Category = "Plastry",
                 Amount = 66,
                 Price = 22,
+                MinAmount = 10,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
@@ -145,6 +152,7 @@ namespace invMed
                 Category = "Plastry",
                 Amount = 66,
                 Price = 22,
+                MinAmount = 100,
                 Producer = "Firma x",
                 Supplier = "Firma x",
             };
