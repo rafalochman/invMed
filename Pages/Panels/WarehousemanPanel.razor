@@ -168,5 +168,10 @@
     private async Task OpenRemoveItemDialog()
     {
         var dialog = DialogService.Show<RemoveItemDialog>("Wydaj towar", maxDialogWidth);
+        var result = await dialog.Result;
+        if (result is not null)
+        {
+            runOutProducts = await warehousemanService.GetRunOutProducts();
+        }
     }
 }
