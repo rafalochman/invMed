@@ -111,5 +111,24 @@ namespace invMed.Services
 
             return runOutProducts.OrderBy(x => x.Category).ToList();
         }
+
+        public async Task<List<NewItemsView>> GetNewItems()
+        {
+            var items = await _db.Items.Include(x => x.Product).OrderByDescending(x => x.AddDate).Take(20).ToListAsync();
+            var newItems = new List<NewItemsView>();
+            foreach(var item in items)
+            {
+                var newItem = new NewItemsView
+                {
+                    Id = item.Id,
+                    Name = item.Product.Name,
+                    Category = item.Product.Category,
+                    BarCode = item.BarCode,
+                    AddDate = item.AddDate
+                };
+                newItems.Add(newItem);
+            }
+            return newItems;
+        }
     }
 }

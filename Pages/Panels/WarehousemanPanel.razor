@@ -49,11 +49,11 @@
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" lg="7">
+    <MudItem xs="12" lg="6">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
-            @if (newProducts is not null)
+            @if (newItems is not null)
             {
-                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="6" Elevation="0" Items="@newProducts" Hover="true">
+                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="6" Elevation="0" Items="@newItems" Hover="true">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6">Przyjęte towary</MudText>
                         <MudToolBarSpacer />
@@ -62,22 +62,19 @@
                         <col />
                         <col />
                         <col />
-                        <col />
                     </ColGroup>
                     <HeaderContent>
                         <MudTh>Nazwa</MudTh>
                         <MudTh>Kategoria</MudTh>
-                        <MudTh>Ilość</MudTh>
-                        <MudTh>Cena</MudTh>
+                        <MudTh>Barkod</MudTh>
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="Nazwa">@context.Name</MudTd>
                         <MudTd DataLabel="Kategoria">@context.Category</MudTd>
-                        <MudTd DataLabel="Ilość">@context.Amount</MudTd>
-                        <MudTd DataLabel="Cena">@context.Price zł</MudTd>
+                        <MudTd DataLabel="Barkod">@context.BarCode</MudTd>
                     </RowTemplate>
                     <PagerContent>
-                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Produkty na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
+                        <MudTablePager PageSizeOptions="new int[] {6}" RowsPerPageString="Towary na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
                     </PagerContent>
                 </MudTable>
             }
@@ -88,13 +85,13 @@
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" lg="5">
+    <MudItem xs="12" lg="6">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
             @if (runOutProducts is not null)
             {
                 <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@runOutProducts" Hover="true">
                     <ToolBarContent>
-                        <MudText Typo="Typo.h6">Wyczerpujące się towary</MudText>
+                        <MudText Typo="Typo.h6">Wyczerpujące się produkty</MudText>
                         <MudToolBarSpacer />
                     </ToolBarContent>
                     <ColGroup>
@@ -140,13 +137,13 @@
 
 @code {
     private string searchValue;
-    private List<Product> newProducts;
+    private List<NewItemsView> newItems;
     private List<RunOutProductsView> runOutProducts;
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
-        newProducts = new List<Product> { new Product { Name = "test", Category = "test", Amount = 3, Price = 33 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 }, new Product { Name = "test2", Category = "test2", Amount = 4, Price = 11 } };
+        newItems = await warehousemanService.GetNewItems();
         runOutProducts = await warehousemanService.GetRunOutProducts();
     }
 
@@ -161,6 +158,11 @@
     private async Task OpenAddItemDialog()
     {
         var dialog = DialogService.Show<AddItemDialog>("Przyjmij towar", maxDialogWidth);
+        var result = await dialog.Result;
+        if (result is not null)
+        {
+            newItems = await warehousemanService.GetNewItems();
+        }
     }
 
     private async Task OpenRemoveItemDialog()
