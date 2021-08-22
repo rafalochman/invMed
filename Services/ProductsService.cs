@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
@@ -53,7 +54,7 @@ namespace invMed.Services
                     Id = item.Id,
                     BarCode = item.BarCode,
                     Place = item.Place,
-                    ExpirationDate = item.ExpirationDate
+                    ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy")
                 };
                 itemsView.Add(itemView);
             }

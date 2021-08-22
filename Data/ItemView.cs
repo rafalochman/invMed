@@ -10,6 +10,6 @@ namespace invMed.Data
         public int Id { get; set; }
         public string? BarCode { get; set; }
         public string Place { get; set; }
-        public DateTime? ExpirationDate { get; set; }
+        public string? ExpirationDate { get; set; }
     }
 }
