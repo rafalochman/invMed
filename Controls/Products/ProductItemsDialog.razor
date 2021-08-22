@@ -1,0 +1,57 @@
+﻿@using invMed.Data
+@inject ProductsService productsService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                <MudText Class="pt-8"><b>@product.Name</b></MudText>
+                <MudText Class="mt-2">@product.Category</MudText>
+                <MudText Class="mt-2">@product.Producer</MudText>
+
+                @if (items is not null)
+                {
+                    <MudTable Class="mt-4" Height="400px" Elevation="0" Items="@items" Hover="true" FixedHeader="true" HorizontalScrollbar="true">
+                        <HeaderContent>
+                            <MudTh>Bar kod</MudTh>
+                            <MudTh>Miejsce</MudTh>
+                            <MudTh>Data ważności</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Bar kod">@context.BarCode</MudTd>
+                            <MudTd DataLabel="Miejsce">@context.Place</MudTd>
+                            <MudTd DataLabel="Data ważności">@context.ExpirationDate</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                }
+                else
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                }
+            </MudContainer>
+            
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+    [Parameter] public Product product { get; set; }
+
+    private List<ItemView> items;
+    private string searchString = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await Task.Run(() => productsService.GetItemsByProductId(product.Id));
+    }
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+}

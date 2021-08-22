@@ -41,5 +41,23 @@ namespace invMed.Services
                 return false;
             }
         }
+
+        public async Task<List<ItemView>> GetItemsByProductId(int productId)
+        {
+            var items = await _db.Items.Where(x => x.Product.Id == productId).ToListAsync();
+            var itemsView = new List<ItemView>();
+            foreach(var item in items)
+            {
+                var itemView = new ItemView
+                {
+                    Id = item.Id,
+                    BarCode = item.BarCode,
+                    Place = item.Place,
+                    ExpirationDate = item.ExpirationDate
+                };
+                itemsView.Add(itemView);
+            }
+            return itemsView;
+        }
     }
 }

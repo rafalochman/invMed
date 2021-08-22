@@ -58,7 +58,7 @@
                         <MudTd DataLabel="Kategoria">@context.Amount</MudTd>
                         <MudTd DataLabel="Egzęplarze">
                             <MudTooltip Text="Egzęplarze">
-                                <MudIconButton OnClick="@((e) => OpenShowItemsDialog(context.Id))" Icon="@Icons.Material.Filled.MoreVert"></MudIconButton>
+                                <MudIconButton OnClick="@((e) => OpenProductItemsDialog(context))" Icon="@Icons.Material.Filled.MoreVert"></MudIconButton>
                             </MudTooltip>
                         </MudTd>
                     </RowTemplate>
@@ -115,8 +115,9 @@
         }
     }
 
-    private async Task OpenShowItemsDialog(int id)
+    private async Task OpenProductItemsDialog(Product product)
     {
-        //var dialog = DialogService.Show<ShowItemsDialog>("Egzęplarze", maxDialogWidth);
+        var parameters = new DialogParameters { ["product"] = product };
+        DialogService.Show<ProductItemsDialog>("Egzęplarze produktu", parameters, maxDialogWidth);
     }
 }
