@@ -8,9 +8,6 @@ namespace invMed.Data
 {
     public class AddItemInput
     {
-        [Display(Name = "Bar kod")]
-        public string? BarCode { get; set; }
-
         [Required(ErrorMessage = "Pole Miejsce jest wymagane.")]
         [Display(Name = "Miejsce")]
         public string Place { get; set; }
