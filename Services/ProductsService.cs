@@ -53,9 +53,12 @@ namespace invMed.Services
                 {
                     Id = item.Id,
                     BarCode = item.BarCode,
-                    Place = item.Place,
-                    ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy")
+                    Place = item.Place
                 };
+                if(item.ExpirationDate is not null)
+                {
+                    itemView.ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
+                }
                 itemsView.Add(itemView);
             }
             return itemsView;
