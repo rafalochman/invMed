@@ -39,7 +39,7 @@ namespace invMed.Services
             return await _db.Products.Where(x => x.Name.Contains(searchValue)).Select(x => x.Name).ToArrayAsync();
         }
 
-        public async Task<string> AddItemAndGetBarcode(AddItemInput input, string userName)
+        public async Task<(string barcode, string barcodeUrl)> AddItemAndGetBarcode(AddItemInput input, string userName)
         {
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
             var user = await _userManager.FindByNameAsync(userName);
@@ -50,11 +50,11 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 item.BarCode = item.Id.ToString("D8");
                 await _db.SaveChangesAsync();
-                return GenerateBarCode(item.BarCode);
+                return (barcode: item.BarCode, barcodeUrl: GenerateBarCode(item.BarCode));
             }
             catch
             {
-                return "";
+                return ("", "");
             }
         }
 

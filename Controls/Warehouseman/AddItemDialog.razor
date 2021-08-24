@@ -11,7 +11,7 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Dodaj towar</MudText>
-                    <MudAutocomplete T="string" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@Search" />
+                    <MudAutocomplete T="string" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@Search" Clearable="true"/>
                     <MudTextField Label="Miejsce" Immediate="true" Class="mt-2" @bind-Value="input.Place" For="@(() => input.Place)" />
                     <MudDatePicker @ref="_picker" Label="Data ważności" @bind-Date="input.ExpirationDate" AutoClose="true" DateFormat="dd/MM/yyyy" >
                         <PickerActions>
@@ -22,12 +22,13 @@
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-8">Dodaj i generuj kod</MudButton>
                 </EditForm>
             </MudContainer>
-            @if(barcode != null && barcode != "")
+            @if(barcodeUrl != null && barcodeUrl != "")
             {
-                <MudContainer Class="mt-16" Style="text-align: center">
-                    <div><img src="@barcode" /></div>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-8">Pobierz</MudButton>
-                </MudContainer>
+            <MudContainer Class="mt-16" Style="text-align: center">
+                <div><img src="@barcodeUrl" /></div>
+                <MudText Style="color: black">@barcode</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-8"><a href="@barcodeUrl" download="@(barcode).jpg" style="color: white">Pobierz kod</a></MudButton>
+            </MudContainer>
             }
         </MudPaper>
     </DialogContent>
@@ -46,14 +47,17 @@
     private bool success;
     private MudDatePicker _picker;
     private string barcode;
+    private string barcodeUrl;
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 
     private async void OnValidSubmit()
     {
         var userName = httpContextAccessor.HttpContext.User.Identity.Name;
-        barcode = await warehousemanService.AddItemAndGetBarcode(input, userName);
-        if (barcode != null && barcode != "")
+        var barcodeTuple = await warehousemanService.AddItemAndGetBarcode(input, userName);
+        barcode = barcodeTuple.barcode;
+        barcodeUrl = barcodeTuple.barcodeUrl;
+        if (barcodeUrl != null && barcodeUrl != "")
         {
             Snackbar.Add("Sukces, towar został dodany.", Severity.Success);
         }
