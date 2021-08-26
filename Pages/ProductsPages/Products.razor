@@ -56,10 +56,11 @@
                         <MudTd DataLabel="Kategoria" HideSmall="true">@context.Supplier</MudTd>
                         <MudTd DataLabel="Kategoria" HideSmall="true">@context.Price zł</MudTd>
                         <MudTd DataLabel="Kategoria">@context.Amount</MudTd>
-                        <MudTd DataLabel="Egzęplarze">
-                            <MudTooltip Text="Egzęplarze">
-                                <MudIconButton OnClick="@((e) => OpenProductItemsDialog(context))" Icon="@Icons.Material.Filled.MoreVert"></MudIconButton>
-                            </MudTooltip>
+                        <MudTd DataLabel="Zarządzaj">
+                            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+                                <MudMenuItem @onclick="@((e) => OpenProductItemsDialog(context))">Egzęplarze</MudMenuItem>
+                                <MudMenuItem @onclick="@((e) => OpenProductDetailsDialog(context.Id))">Szczegóły</MudMenuItem>
+                            </MudMenu>
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
@@ -119,5 +120,11 @@
     {
         var parameters = new DialogParameters { ["product"] = product };
         DialogService.Show<ProductItemsDialog>("Egzęplarze produktu", parameters, maxDialogWidth);
+    }
+
+    private async Task OpenProductDetailsDialog(int productId)
+    {
+        var parameters = new DialogParameters { ["productId"] = productId };
+        DialogService.Show<ProductDetailsDialog>("Szczegóły produktu", parameters, maxDialogWidth);
     }
 }

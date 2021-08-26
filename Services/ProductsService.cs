@@ -63,5 +63,22 @@ namespace invMed.Services
             }
             return itemsView;
         }
+
+        public async Task<ProductDetailsView> GetProductDetailsViewById(int id)
+        {
+            var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
+            return new ProductDetailsView
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Category = product.Category,
+                Producer = product.Producer,
+                Supplier = product.Supplier,
+                Amount = product.Amount,
+                Price = product.Price,
+                MinAmount = product.MinAmount,
+                MaxAmount = product.MaxAmount
+            };
+        }
     }
 }
