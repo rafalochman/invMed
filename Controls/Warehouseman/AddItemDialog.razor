@@ -12,7 +12,7 @@
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Dodaj towar</MudText>
                     <MudAutocomplete T="string" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@Search" Clearable="true"/>
-                    <MudTextField Label="Miejsce" Immediate="true" Class="mt-2" @bind-Value="input.Place" For="@(() => input.Place)" />
+                    <MudTextField Label="Miejsce" Immediate="true" Class="mt-2" @bind-Value="input.Place" For="@(() => input.Place)" Clearable="true"/>
                     <MudDatePicker @ref="_picker" Label="Data ważności" @bind-Date="input.ExpirationDate" AutoClose="true" DateFormat="dd/MM/yyyy" >
                         <PickerActions>
                             <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
