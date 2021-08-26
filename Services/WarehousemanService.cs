@@ -47,6 +47,7 @@ namespace invMed.Services
             try
             {
                 _db.Items.Add(item);
+                product.Amount += 1;
                 await _db.SaveChangesAsync();
                 item.BarCode = item.Id.ToString("D8");
                 await _db.SaveChangesAsync();
