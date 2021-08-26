@@ -52,11 +52,11 @@
                     <RowTemplate>
                         <MudTd DataLabel="Nazwa">@context.Name</MudTd>
                         <MudTd DataLabel="Kategoria">@context.Category</MudTd>
-                        <MudTd DataLabel="Ilość" HideSmall="true">@context.Producer</MudTd>
-                        <MudTd DataLabel="Kategoria" HideSmall="true">@context.Supplier</MudTd>
-                        <MudTd DataLabel="Kategoria" HideSmall="true">@context.Price zł</MudTd>
-                        <MudTd DataLabel="Kategoria">@context.Amount</MudTd>
-                        <MudTd DataLabel="Zarządzaj">
+                        <MudTd DataLabel="Producent" HideSmall="true">@context.Producer</MudTd>
+                        <MudTd DataLabel="Dostawca" HideSmall="true">@context.Supplier</MudTd>
+                        <MudTd DataLabel="Cena" HideSmall="true">@context.Price zł</MudTd>
+                        <MudTd DataLabel="Ilość">@context.Amount</MudTd>
+                        <MudTd>
                             <MudMenu Icon="@Icons.Material.Filled.MoreVert">
                                 <MudMenuItem @onclick="@((e) => OpenProductItemsDialog(context))">Egzęplarze</MudMenuItem>
                                 <MudMenuItem @onclick="@((e) => OpenProductDetailsDialog(context.Id))">Szczegóły</MudMenuItem>
