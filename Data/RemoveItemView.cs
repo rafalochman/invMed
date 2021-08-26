@@ -11,5 +11,7 @@ namespace invMed.Data
         public int Number { get; set; }
         public string? BarCode { get; set; }
         public string ProductName { get; set; }
+
+        public int ProductId { get; set; }
     }
 }

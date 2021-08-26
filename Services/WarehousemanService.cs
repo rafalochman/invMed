@@ -71,7 +71,8 @@ namespace invMed.Services
                     Id = item.Id,
                     Number = number,
                     BarCode = item.BarCode,
-                    ProductName = item.Product.Name
+                    ProductName = item.Product.Name,
+                    ProductId = item.Product.Id
                 };
             }
             return new RemoveItemView();
@@ -85,6 +86,8 @@ namespace invMed.Services
                 foreach(var itemView in items)
                 {
                     var item = await _db.Items.FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
+                    var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == itemView.ProductId);
+                    product.Amount -= 1;
                     _db.Remove(item);
                 }
                 await _db.SaveChangesAsync();
