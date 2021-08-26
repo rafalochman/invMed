@@ -50,8 +50,10 @@ namespace invMed.Services
                 product.Amount += 1;
                 await _db.SaveChangesAsync();
                 item.BarCode = item.Id.ToString("D8");
+                var barcodeUrl = GenerateBarCode(item.BarCode);
+                item.BarcodeUrl = barcodeUrl;
                 await _db.SaveChangesAsync();
-                return (barcode: item.BarCode, barcodeUrl: GenerateBarCode(item.BarCode));
+                return (barcode: item.BarCode, barcodeUrl: barcodeUrl);
             }
             catch
             {

@@ -55,7 +55,6 @@ namespace invMed
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddScoped<ProductsService>();
-            services.AddScoped<ItemsService>();
             services.AddScoped<AdminService>();
             services.AddScoped<AccountService>();
             services.AddScoped<WarehousemanService>();
