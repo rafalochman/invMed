@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace invMed.Data
 {
-    public class ItemView
+    public class ProductItemView
     {
         public int Id { get; set; }
         public string BarCode { get; set; }

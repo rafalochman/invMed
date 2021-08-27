@@ -120,13 +120,13 @@
                         <MudTd DataLabel="Ilość">@context.Amount</MudTd>
                         <MudTd DataLabel="Komunikat">
                             @if (context.CommunicateType == true)
-                                {
+                            {
                                 <MudChip Size="Size.Small" Color="Color.Error">Przekroczono stan minimalny</MudChip>
-                                }
-                                else
-                                {
+                            }
+                            else
+                            {
                                 <MudChip Size="Size.Small" Color="Color.Warning">Pozostała mała ilość</MudChip>
-                                }
+                            }
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
