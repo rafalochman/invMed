@@ -43,13 +43,13 @@ namespace invMed.Services
             }
         }
 
-        public async Task<List<ItemView>> GetItemsByProductId(int productId)
+        public async Task<List<ProductItemView>> GetItemsByProductId(int productId)
         {
             var items = await _db.Items.Where(x => x.Product.Id == productId).ToListAsync();
-            var itemsView = new List<ItemView>();
+            var itemsView = new List<ProductItemView>();
             foreach(var item in items)
             {
-                var itemView = new ItemView
+                var itemView = new ProductItemView
                 {
                     Id = item.Id,
                     BarCode = item.BarCode,
