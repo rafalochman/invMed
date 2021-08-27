@@ -2,6 +2,7 @@
 @using invMed.Data
 @inject IDialogService DialogService
 @using invMed.Controls.Warehouseman
+@using invMed.Controls.Products
 @inject WarehousemanService warehousemanService
 
 @attribute [Authorize(Roles = "Admin")]
@@ -62,16 +63,23 @@
                         <col />
                         <col />
                         <col />
+                        <col style="width: 20px" />
                     </ColGroup>
                     <HeaderContent>
                         <MudTh>Nazwa</MudTh>
                         <MudTh>Kategoria</MudTh>
                         <MudTh>Bar kod</MudTh>
+                        <MudTh></MudTh>
                     </HeaderContent>
                     <RowTemplate>
                         <MudTd DataLabel="Nazwa">@context.Name</MudTd>
                         <MudTd DataLabel="Kategoria">@context.Category</MudTd>
                         <MudTd DataLabel="Bar kod">@context.BarCode</MudTd>
+                        <MudTd DataLabel="Szczegóły">
+                            <MudTooltip Text="Szczegóły">
+                                <MudIconButton OnClick="@((e) => OpenItemDetailsDialog(context.Id))" Icon="@Icons.Material.Filled.MoreVert"></MudIconButton>
+                            </MudTooltip>
+                        </MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager PageSizeOptions="new int[] {6}" RowsPerPageString="Towary na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
@@ -112,13 +120,13 @@
                         <MudTd DataLabel="Ilość">@context.Amount</MudTd>
                         <MudTd DataLabel="Komunikat">
                             @if (context.CommunicateType == true)
-                            {
+                                {
                                 <MudChip Size="Size.Small" Color="Color.Error">Przekroczono stan minimalny</MudChip>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 <MudChip Size="Size.Small" Color="Color.Warning">Pozostała mała ilość</MudChip>
-                            }
+                                }
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
@@ -173,5 +181,11 @@
         {
             runOutProducts = await warehousemanService.GetRunOutProducts();
         }
+    }
+
+    private async Task OpenItemDetailsDialog(int itemId)
+    {
+        var parameters = new DialogParameters { ["itemId"] = itemId };
+        var dialog = DialogService.Show<ItemDetailsDialog>("Szczegóły", parameters, maxDialogWidth);
     }
 }

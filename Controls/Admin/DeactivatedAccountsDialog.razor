@@ -4,7 +4,7 @@
 
 <MudDialog>
     <DialogContent>
-        <MudPaper Style="min-height: 640px" Elevation="2">
+        <MudPaper Style="min-height: 640px" Elevation="2" Class="pa-4">
             @if (users is not null)
             {
                 <MudTable Breakpoint="Breakpoint.None" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)">

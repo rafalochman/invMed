@@ -1,0 +1,47 @@
+﻿@using invMed.Data
+@inject ProductsService productsService
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                @if (item is not null)
+                {
+                    <MudContainer Style="text-align: center">
+                        <MudText Class="pt-8"><b>@item.ProductName</b></MudText>
+                        <MudText Class="mt-2">@item.ProductCategory</MudText>
+                    </MudContainer>
+                    <MudField Variant="Variant.Text" Class="mt-6" Label="Bar kod"> @item.BarCode</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Kategoria"> @item.Place</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Data przyjęcia"> @item.AddDate</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Data ważności"> @item.ExpirationDate</MudField>
+                    <MudContainer Class="mt-8" Style="text-align: center">
+                        <div><img src="@item.BarcodeUrl" /></div>
+                        <MudText Style="color: black">@item.BarCode</MudText>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-8"><a href="@item.BarcodeUrl" download="@(item.BarCode).jpg" style="color: white">Pobierz kod</a></MudButton>
+                    </MudContainer>
+                }
+                else
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                }
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public int itemId { get; set; }
+    private ItemDetailsView item;
+
+    protected override async Task OnInitializedAsync()
+    {
+        item = await productsService.GetItemDetailsViewById(itemId);
+    }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}
