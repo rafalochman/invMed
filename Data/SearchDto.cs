@@ -11,8 +11,6 @@ namespace invMed.Data
         public string Type { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
-
         public string? Barcode { get; set; }
-
     }
 }
