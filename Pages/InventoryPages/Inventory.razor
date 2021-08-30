@@ -1,0 +1,41 @@
+﻿@page "/inventory"
+@using invMed.Data
+@inject IDialogService DialogService
+
+@attribute [Authorize(Roles = "Admin")]
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Inwentaryzacja</MudText>
+<MudGrid>
+    <MudItem xs="12" sm="6" md="6" lg="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenNewInventoryDialog">Nowa inwentaryzacja</MudButton>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="6">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 680px;">
+           <MudText Typo="Typo.h6">Trwające inwentaryzacje</MudText>
+        </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+
+@code {
+    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
+
+    private async Task OpenNewInventoryDialog()
+    {
+        //DialogService.Show<ProductItemsDialog>("Nowa inwentaryzacja", maxDialogWidth);
+    }
+
+   
+}
