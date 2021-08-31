@@ -96,6 +96,7 @@ namespace invMed
                     if (Configuration.GetValue<bool>("SeedErasedDatabaseWithData"))
                         StartupDataSeeder.FillWithUsers(userManager).Wait();
                         StartupDataSeeder.FillWithProducts(applicationDbContext).Wait();
+                        StartupDataSeeder.FillWithItems(applicationDbContext).Wait();
                 }
                 else
                     applicationDbContext.Database.EnsureCreated();

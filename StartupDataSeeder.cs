@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace invMed
 {
@@ -69,102 +70,182 @@ namespace invMed
 
         public static async Task FillWithProducts(ApplicationDbContext db)
         {
-            var product1 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "Chusta trójkątna bawełniana",
                 Category = "Opatrunki",
-                Amount = 1,
+                Amount = 0,
                 Price = 4,
                 MinAmount = 2,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
 
-            var product2 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "Kompresy gazowe niesterylne 12-warst 500 szt",
                 Category = "Opatrunki",
-                Amount = 5,
+                Amount = 0,
                 Price = 22,
                 MinAmount = 3,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
 
-            var product3 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "Bandaż elastyczny x22",
                 Category = "Opatrunki",
-                Amount = 66,
+                Amount = 0,
                 Price = 22,
-                MinAmount = 63,
+                MinAmount = 1,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
 
-            var product4 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "Igły do mezoterapii",
                 Category = "Igły",
-                Amount = 24,
+                Amount = 0,
                 Price = 27,
-                MinAmount = 22,
+                MinAmount = 1,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
 
-            var product5 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "Igły iniekcyjne jednorazowe MICROLANCE 100 szt",
                 Category = "Igły",
-                Amount = 66,
+                Amount = 0,
                 Price = 2.5,
-                MinAmount = 10,
+                MinAmount = 1,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
 
-            var product6 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "Plaster DURAPORE",
                 Category = "Plastry",
-                Amount = 66,
+                Amount = 0,
                 Price = 22,
-                MinAmount = 10,
+                MinAmount = 0,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
 
-            var product7 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "PLASTER DERMAFOIL",
                 Category = "Plastry",
-                Amount = 66,
+                Amount = 0,
                 Price = 22,
-                MinAmount = 10,
+                MinAmount = 0,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
 
-            var product8 = new Product
+            await db.Products.AddAsync(new Product
             {
                 Name = "PLASTER ELASTOPOR TAŚMA ELASTYCZNA WŁÓKNINOWA 10 MB",
                 Category = "Plastry",
-                Amount = 66,
+                Amount = 0,
                 Price = 22,
-                MinAmount = 100,
+                MinAmount = 0,
                 Producer = "Firma x",
                 Supplier = "Firma x",
-            };
+            });
+            await db.SaveChangesAsync();
+        }
 
-            await db.Products.AddAsync(product1);
-            await db.Products.AddAsync(product2);
-            await db.Products.AddAsync(product3);
-            await db.Products.AddAsync(product4);
-            await db.Products.AddAsync(product5);
-            await db.Products.AddAsync(product6);
-            await db.Products.AddAsync(product7);
-            await db.Products.AddAsync(product8);
+        public static async Task FillWithItems(ApplicationDbContext db)
+        {
+            var product1 = await db.Products.FirstOrDefaultAsync(x => x.Id == 1);
+            var product2 = await db.Products.FirstOrDefaultAsync(x => x.Id == 2);
+            var product3 = await db.Products.FirstOrDefaultAsync(x => x.Id == 3);
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000001",
+                Place = "A/1",
+                AddDate = DateTime.Now,
+                Product = product1,
+                ExpirationDate = DateTime.Now.AddDays(3)
+            });
+            product1.Amount++;
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000002",
+                Place = "A/1",
+                AddDate = DateTime.Now,
+                Product = product1,
+                ExpirationDate = DateTime.Now.AddDays(4)
+            });
+            product1.Amount++;
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000003",
+                Place = "A/2",
+                AddDate = DateTime.Now,
+                Product = product1,
+                ExpirationDate = DateTime.Now.AddDays(5)
+            });
+            product1.Amount++;
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000004",
+                Place = "B/1",
+                AddDate = DateTime.Now,
+                Product = product1,
+                ExpirationDate = DateTime.Now.AddDays(6)
+            });
+            product1.Amount++;
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000005",
+                Place = "A/1",
+                AddDate = DateTime.Now,
+                Product = product2,
+                ExpirationDate = DateTime.Now.AddDays(3)
+            });
+            product2.Amount++;
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000006",
+                Place = "A/12",
+                AddDate = DateTime.Now,
+                Product = product2,
+                ExpirationDate = DateTime.Now.AddDays(3)
+            });
+            product2.Amount++;
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000007",
+                Place = "B/1",
+                AddDate = DateTime.Now,
+                Product = product2,
+                ExpirationDate = DateTime.Now.AddDays(3)
+            });
+            product2.Amount++;
+
+            await db.Items.AddAsync(new Item
+            {
+                BarCode = "00000008",
+                Place = "A/1",
+                AddDate = DateTime.Now,
+                Product = product3,
+                ExpirationDate = DateTime.Now.AddDays(3)
+            });
+            product3.Amount++;
+
             await db.SaveChangesAsync();
         }
     }
