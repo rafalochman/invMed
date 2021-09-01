@@ -1,0 +1,63 @@
+﻿@using invMed.Data
+@inject InventoryService inventoryService
+@inject ISnackbar Snackbar
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudText Class="pt-8" Typo="Typo.h6">Utwórz inwentaryzację</MudText>
+                    <MudTextField Label="Typ" Immediate="true" Class="mt-2" @bind-Value="input.Type" For="@(() => input.Type)" />
+                    <MudTextField Label="Opis" Immediate="true" Class="mt-2" @bind-Value="input.Description" For="@(() => input.Description)" />
+                    <MudDatePicker @ref="_startPicker" Label="Data rozpoczęcia" @bind-Date="input.StartDate" AutoClose="true" DateFormat="dd/MM/yyyy" For="@(() => input.StartDate)">
+                        <PickerActions>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _startPicker.Clear())">Clear</MudButton>
+                            <MudButton OnClick="@(() => _startPicker.Close(false))">Cancel</MudButton>
+                        </PickerActions>
+                    </MudDatePicker>
+                    <MudDatePicker @ref="_endPicker" Label="Data planowanego zakończenia" @bind-Date="input.PlanedEndDate" AutoClose="true" DateFormat="dd/MM/yyyy">
+                        <PickerActions>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _endPicker.Clear())">Clear</MudButton>
+                            <MudButton OnClick="@(() => _endPicker.Close(false))">Cancel</MudButton>
+                        </PickerActions>
+                    </MudDatePicker>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Utwórz</MudButton>
+                </EditForm>
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    private CreateInventoryInput input = new CreateInventoryInput();
+    private MudDatePicker _startPicker;
+    private MudDatePicker _endPicker;
+    private bool success;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async void OnValidSubmit()
+    {
+        var userName = httpContextAccessor.HttpContext.User.Identity.Name;
+        var result = await inventoryService.CreateInventory(input, userName);
+        if (result)
+        {
+            Snackbar.Add("Sukces, inwentaryzacja została utworzona.", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Błąd, inwentaryzacja nie została utworzona.", Severity.Error);
+        }
+    }
+
+}
