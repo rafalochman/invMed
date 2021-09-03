@@ -1,4 +1,5 @@
-﻿using System;
+﻿using invMed.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace invMed.Data
     public class Inventory
     {
         public int Id { get; set; }
-        public string Type { get; set; }
+        public InventoryType? Type { get; set; }
         public string Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

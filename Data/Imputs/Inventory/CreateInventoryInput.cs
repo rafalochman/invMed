@@ -1,4 +1,5 @@
-﻿using System;
+﻿using invMed.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace invMed.Data
     {
         [Required(ErrorMessage = "Pole Typ jest wymagane.")]
         [Display(Name = "Typ")]
-        public string Type { get; set; }
+        public InventoryType? Type { get; set; }
 
         [Required(ErrorMessage = "Pole Opis jest wymagane.")]
         [Display(Name = "Opis")]

@@ -1,4 +1,5 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 @inject InventoryService inventoryService
 @inject ISnackbar Snackbar
 @using Microsoft.AspNetCore.Http
@@ -11,7 +12,10 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Utwórz inwentaryzację</MudText>
-                    <MudTextField Label="Typ" Immediate="true" Class="mt-2" @bind-Value="input.Type" For="@(() => input.Type)" />
+                    <MudSelect Style="text-align: left" T="InventoryType?" @bind-Value="input.Type" For="@(() => input.Type)" Immediate="true" Label="Typ">
+                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Full">Pełna</MudSelectItem>
+                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Partial">Częściowa</MudSelectItem>
+                    </MudSelect>
                     <MudTextField Label="Opis" Immediate="true" Class="mt-2" @bind-Value="input.Description" For="@(() => input.Description)" />
                     <MudDatePicker @ref="_startPicker" Label="Data rozpoczęcia" @bind-Date="input.StartDate" AutoClose="true" DateFormat="dd/MM/yyyy" For="@(() => input.StartDate)">
                         <PickerActions>
