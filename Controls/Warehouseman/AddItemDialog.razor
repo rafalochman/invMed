@@ -15,8 +15,8 @@
                     <MudTextField Label="Miejsce" Immediate="true" Class="mt-2" @bind-Value="input.Place" For="@(() => input.Place)" Clearable="true"/>
                     <MudDatePicker @ref="_picker" Label="Data ważności" @bind-Date="input.ExpirationDate" AutoClose="true" DateFormat="dd/MM/yyyy" >
                         <PickerActions>
-                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
-                            <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Wyczyść</MudButton>
+                            <MudButton OnClick="@(() => _picker.Close(false))">Anuluj</MudButton>
                         </PickerActions>
                     </MudDatePicker>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-8">Dodaj i generuj kod</MudButton>

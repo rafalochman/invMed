@@ -19,14 +19,14 @@
                     <MudTextField Label="Opis" Immediate="true" Class="mt-2" @bind-Value="input.Description" For="@(() => input.Description)" />
                     <MudDatePicker @ref="_startPicker" Label="Data rozpoczęcia" @bind-Date="input.StartDate" AutoClose="true" DateFormat="dd/MM/yyyy" For="@(() => input.StartDate)">
                         <PickerActions>
-                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _startPicker.Clear())">Clear</MudButton>
-                            <MudButton OnClick="@(() => _startPicker.Close(false))">Cancel</MudButton>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _startPicker.Clear())">Wyczyść</MudButton>
+                            <MudButton OnClick="@(() => _startPicker.Close(false))">Anuluj</MudButton>
                         </PickerActions>
                     </MudDatePicker>
                     <MudDatePicker @ref="_endPicker" Label="Data planowanego zakończenia" @bind-Date="input.PlanedEndDate" AutoClose="true" DateFormat="dd/MM/yyyy">
                         <PickerActions>
-                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _endPicker.Clear())">Clear</MudButton>
-                            <MudButton OnClick="@(() => _endPicker.Close(false))">Cancel</MudButton>
+                            <MudButton Class="mr-auto align-self-start" OnClick="@(() => _endPicker.Clear())">Wyczyść</MudButton>
+                            <MudButton OnClick="@(() => _endPicker.Close(false))">Anuluj</MudButton>
                         </PickerActions>
                     </MudDatePicker>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Utwórz</MudButton>
