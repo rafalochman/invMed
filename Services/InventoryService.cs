@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
+using invMed.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,7 @@ namespace invMed.Services
         public async Task<bool> CreateInventory(CreateInventoryInput input, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var inventory = new Inventory { Type = input.Type, Description = input.Description, StartDate = input.StartDate, PlanedEndDate = input.PlanedEndDate, CreateUser = user };
+            var inventory = new Inventory { Type = input.Type, State = InventoryState.Inactive, Description = input.Description, StartDate = input.StartDate, PlanedEndDate = input.PlanedEndDate, CreateUser = user };
             try
             {
                 _db.Inventories.Add(inventory);

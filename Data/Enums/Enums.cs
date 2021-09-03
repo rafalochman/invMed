@@ -11,4 +11,16 @@ namespace invMed.Data.Enums
         [Display(Name = "Częściowa")]
         Partial
     }
+
+    public enum InventoryState
+    {
+        [Display(Name = "Nieaktywna")]
+        Inactive,
+
+        [Display(Name = "Aktywna")]
+        Active, 
+
+        [Display(Name = "Zakończona")]
+        Finished
+    }
 }
