@@ -13,8 +13,8 @@
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Utwórz inwentaryzację</MudText>
                     <MudSelect Style="text-align: left" T="InventoryType?" @bind-Value="input.Type" For="@(() => input.Type)" Immediate="true" Label="Typ">
-                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Full">Pełna</MudSelectItem>
-                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Partial">Częściowa</MudSelectItem>
+                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Full">@InventoryType.Full.GetDisplayName()</MudSelectItem>
+                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Partial">@InventoryType.Partial.GetDisplayName()</MudSelectItem>
                     </MudSelect>
                     <MudTextField Label="Opis" Immediate="true" Class="mt-2" @bind-Value="input.Description" For="@(() => input.Description)" />
                     <MudDatePicker @ref="_startPicker" Label="Data rozpoczęcia" @bind-Date="input.StartDate" AutoClose="true" DateFormat="dd/MM/yyyy" For="@(() => input.StartDate)">
@@ -62,6 +62,7 @@
         {
             Snackbar.Add("Błąd, inwentaryzacja nie została utworzona.", Severity.Error);
         }
+        MudDialog.Close(DialogResult.Ok(true));
     }
 
 }

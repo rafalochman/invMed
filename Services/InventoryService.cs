@@ -37,5 +37,31 @@ namespace invMed.Services
                 return (false);
             }
         }
+
+        public async Task<List<InventoryView>> GetInactiveAndActiveInventories()
+        {
+            var inventories = await _db.Inventories.Where(x => x.State == InventoryState.Inactive || x.State == InventoryState.Active).ToListAsync();
+            var inventoriesView = new List<InventoryView>();
+            foreach(var inventory in inventories)
+            {
+                var inventoryView = new InventoryView()
+                {
+                    Id = inventory.Id,
+                    State = inventory.State,
+                    Type = inventory.Type,
+                    Description = inventory.Description,
+                };
+                if(inventory.StartDate is not null)
+                {
+                    inventoryView.StartDate = inventory.StartDate.Value.ToString("dd/MM/yyyy");
+                }
+                if(inventory.PlanedEndDate is not null)
+                {
+                    inventoryView.PlanedEndDate = inventory.PlanedEndDate.Value.ToString("dd/MM/yyyy");
+                }
+                inventoriesView.Add(inventoryView);
+            }
+            return inventoriesView;
+        }
     }
 }

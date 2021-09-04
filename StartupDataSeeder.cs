@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
+using invMed.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -248,5 +249,46 @@ namespace invMed
 
             await db.SaveChangesAsync();
         }
+
+        public static async Task FillWithInventories(ApplicationDbContext db)
+        {
+            await db.Inventories.AddAsync(new Inventory
+            {
+                State = InventoryState.Inactive,
+                Type = InventoryType.Full,
+                Description = "Pełna inwentaryzacja roczna 2021.",
+                StartDate = DateTime.Now.AddDays(3),
+                PlanedEndDate = DateTime.Now.AddDays(13),
+            });
+
+            await db.Inventories.AddAsync(new Inventory
+            {
+                State = InventoryState.Inactive,
+                Type = InventoryType.Partial,
+                Description = "Inwentaryzacja częściowa regały B1/2, A12, A2/18.",
+                StartDate = DateTime.Now.AddDays(13),
+            });
+
+            await db.Inventories.AddAsync(new Inventory
+            {
+                State = InventoryState.Finished,
+                Type = InventoryType.Full,
+                Description = "Pełna inwentaryzacja roczna 2020.",
+                StartDate = DateTime.Now.AddDays(-13),
+                PlanedEndDate = DateTime.Now.AddDays(-3),
+            });
+
+            await db.Inventories.AddAsync(new Inventory
+            {
+                State = InventoryState.Active,
+                Type = InventoryType.Partial,
+                Description = "Inwentaryzacja częściowa towarów z kategori opatrunki.",
+                StartDate = DateTime.Now.AddDays(30),
+                PlanedEndDate = DateTime.Now.AddDays(40),
+            });
+
+            await db.SaveChangesAsync();
+        }
+
     }
 }
