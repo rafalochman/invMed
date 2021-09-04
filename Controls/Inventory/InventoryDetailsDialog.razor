@@ -1,0 +1,57 @@
+﻿@using invMed.Data
+@using invMed.Data.Enums
+@inject InventoryService inventoryService
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                @if (inventory is not null)
+                {
+                    <MudField Variant="Variant.Text" Class="pt-8" Label="Typ"> @inventory.Type.GetDisplayName()</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Stan"> @inventory.State.GetDisplayName()</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Opis"> @inventory.Description</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Data planowanego rozpoczęcia"> @inventory.PlannedStartDate</MudField>
+                    if (inventory.PlannedEndDate is not null)
+                    {
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Data planowanego zakończenia"> @inventory.PlannedEndDate</MudField>
+                    }
+                    if (inventory.StartDate is not null)
+                    {
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Data rozpoczęcia"> @inventory.StartDate</MudField>
+                    }
+                    if (inventory.EndDate is not null)
+                    {
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Data zakończenia"> @inventory.EndDate</MudField>
+                    }
+                    if (inventory.State != InventoryState.Inactive)
+                    {
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość zeskanowanych produktów">@inventory.ScannedNumber</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość produktów do zeskanowania">@inventory.ItemsNumberScan</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Postęp">@inventory.Progress %</MudField>
+                    }
+                }
+                else
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                }
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public int inventoryId { get; set; }
+    private InventoryDetailsView inventory;
+
+    protected override async Task OnInitializedAsync()
+    {
+        inventory = await inventoryService.GetInventoryDetailsViewById(inventoryId);
+    }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}

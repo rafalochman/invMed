@@ -257,16 +257,17 @@ namespace invMed
                 State = InventoryState.Inactive,
                 Type = InventoryType.Full,
                 Description = "Pełna inwentaryzacja roczna 2021.",
-                StartDate = DateTime.Now.AddDays(3),
-                PlanedEndDate = DateTime.Now.AddDays(13),
-            });
+                PlannedStartDate = DateTime.Now.AddDays(3),
+                PlannedEndDate = DateTime.Now.AddDays(13),
+                ItemsNumberScan = db.Items.Count(),
+            });;
 
             await db.Inventories.AddAsync(new Inventory
             {
                 State = InventoryState.Inactive,
                 Type = InventoryType.Partial,
                 Description = "Inwentaryzacja częściowa regały B1/2, A12, A2/18.",
-                StartDate = DateTime.Now.AddDays(13),
+                PlannedStartDate = DateTime.Now.AddDays(13),
             });
 
             await db.Inventories.AddAsync(new Inventory
@@ -274,8 +275,9 @@ namespace invMed
                 State = InventoryState.Finished,
                 Type = InventoryType.Full,
                 Description = "Pełna inwentaryzacja roczna 2020.",
-                StartDate = DateTime.Now.AddDays(-13),
-                PlanedEndDate = DateTime.Now.AddDays(-3),
+                PlannedStartDate = DateTime.Now.AddDays(-13),
+                PlannedEndDate = DateTime.Now.AddDays(-3),
+                ItemsNumberScan = db.Items.Count(),
             });
 
             await db.Inventories.AddAsync(new Inventory
@@ -283,8 +285,8 @@ namespace invMed
                 State = InventoryState.Active,
                 Type = InventoryType.Partial,
                 Description = "Inwentaryzacja częściowa towarów z kategori opatrunki.",
-                StartDate = DateTime.Now.AddDays(30),
-                PlanedEndDate = DateTime.Now.AddDays(40),
+                PlannedStartDate = DateTime.Now.AddDays(30),
+                PlannedEndDate = DateTime.Now.AddDays(40),
             });
 
             await db.SaveChangesAsync();

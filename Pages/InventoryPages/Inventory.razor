@@ -22,21 +22,29 @@
                                 <MudText><b>Typ:</b> @inventory.Type.GetDisplayName()</MudText>
                                 <MudText><b>Opis:</b> @inventory.Description</MudText>
                                 <MudText><b>Stan:</b> @inventory.State.GetDisplayName()</MudText>
-                                <MudText><b>Data rozpoczęcia:</b> @inventory.StartDate</MudText>
-                                @if (inventory.PlanedEndDate is not null)
+                                <MudText><b>Data planowanego rozpoczęcia:</b> @inventory.PlannedStartDate</MudText>
+                                @if (inventory.PlannedEndDate is not null)
                                 {
-                                    <MudText><b>Data planowanego zakończenia:</b> @inventory.PlanedEndDate</MudText>
+                                    <MudText><b>Data planowanego zakończenia:</b> @inventory.PlannedEndDate</MudText>
+                                }
+                                @if (inventory.StartDate is not null)
+                                {
+                                    <MudText><b>Data rozpoczęcia:</b> @inventory.StartDate</MudText>
+                                }
+                                @if (inventory.EndDate is not null)
+                                {
+                                    <MudText><b>Data zakończenia:</b> @inventory.EndDate</MudText>
                                 }
                             </MudItem>
                             <MudItem md="12" lg="5" Style="text-align: right;">
-                                <MudButton Variant="Variant.Filled" Class="mr-4" Color="Color.Default">Szczegóły</MudButton>
+                                <MudButton Variant="Variant.Filled" Class="mr-4" OnClick="@((e) => OpenInventoryDetailsDialog(inventory.Id))" Color="Color.Default">Szczegóły</MudButton>
                                 @if (inventory.State == InventoryState.Inactive)
                                 {
                                     <MudButton Variant="Variant.Filled" Color="Color.Primary">Rozpocznij</MudButton>
                                 }
                                 @if (inventory.State == InventoryState.Active)
                                 {
-                                    <MudButton Variant="Variant.Filled" Color="Color.Primary">Kontynuuj</MudButton>
+                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">Kontynuuj</MudButton>
                                 }
                             </MudItem>
                         </MudGrid>
@@ -80,5 +88,11 @@
         {
             inventories = await inventoryService.GetInactiveAndActiveInventories();
         }
+    }
+
+    private async Task OpenInventoryDetailsDialog(int id)
+    {
+        var parameters = new DialogParameters { ["inventoryId"] = id };
+        DialogService.Show<InventoryDetailsDialog>("Szczegóły inwentaryzacji", parameters, maxDialogWidth);
     }
 }

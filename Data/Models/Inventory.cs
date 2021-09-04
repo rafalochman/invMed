@@ -14,7 +14,9 @@ namespace invMed.Data
         public string Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public DateTime? PlanedEndDate { get; set; }
+        public DateTime? PlannedStartDate { get; set; }
+        public DateTime? PlannedEndDate { get; set; }
+        public int ItemsNumberScan { get; set; }
         public virtual AspNetUser CreateUser { get; set; }
         public virtual ICollection<InventoryItem> InventoryItems { get; set; }
     }

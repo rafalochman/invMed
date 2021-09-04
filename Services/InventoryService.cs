@@ -25,7 +25,7 @@ namespace invMed.Services
         public async Task<bool> CreateInventory(CreateInventoryInput input, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var inventory = new Inventory { Type = input.Type, State = InventoryState.Inactive, Description = input.Description, StartDate = input.StartDate, PlanedEndDate = input.PlanedEndDate, CreateUser = user };
+            var inventory = new Inventory { Type = input.Type, State = InventoryState.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, CreateUser = user };
             try
             {
                 _db.Inventories.Add(inventory);
@@ -51,17 +51,62 @@ namespace invMed.Services
                     Type = inventory.Type,
                     Description = inventory.Description,
                 };
-                if(inventory.StartDate is not null)
+                if(inventory.PlannedStartDate is not null)
                 {
-                    inventoryView.StartDate = inventory.StartDate.Value.ToString("dd/MM/yyyy");
+                    inventoryView.PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
                 }
-                if(inventory.PlanedEndDate is not null)
+                if(inventory.PlannedEndDate is not null)
                 {
-                    inventoryView.PlanedEndDate = inventory.PlanedEndDate.Value.ToString("dd/MM/yyyy");
+                    inventoryView.PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
+                }
+                if(inventory.Type == InventoryType.Full)
+                {
+                    inventory.ItemsNumberScan = await _db.Items.CountAsync();
                 }
                 inventoriesView.Add(inventoryView);
             }
             return inventoriesView;
         }
+
+        public async Task<InventoryDetailsView> GetInventoryDetailsViewById(int id)
+        {
+            var inventory = await _db.Inventories.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.Id == id);
+            var inventoryView = new InventoryDetailsView()
+            {
+                Id = inventory.Id,
+                State = inventory.State,
+                Type = inventory.Type,
+                Description = inventory.Description,
+                ItemsNumberScan = inventory.ItemsNumberScan,
+            };
+            if (inventory.StartDate is not null)
+            {
+                inventoryView.StartDate = inventory.StartDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.PlannedStartDate is not null)
+            {
+                inventoryView.PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.PlannedEndDate is not null)
+            {
+                inventoryView.PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.EndDate is not null)
+            {
+                inventoryView.EndDate = inventory.EndDate.Value.ToString("dd/MM/yyyy");
+            }
+            var scannedItemsNumber = inventory.InventoryItems.Count;
+            inventoryView.ScannedNumber = scannedItemsNumber;
+            if (scannedItemsNumber != 0)
+            {
+                inventoryView.Progress = scannedItemsNumber / inventory.ItemsNumberScan * 100;
+            }
+            else
+            {
+                inventoryView.Progress = 0;
+            }
+            return inventoryView;
+        }
+       
     }
 }

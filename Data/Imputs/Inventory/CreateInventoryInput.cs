@@ -17,11 +17,11 @@ namespace invMed.Data
         [Display(Name = "Opis")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Pole Data rozpoczęcia jest wymagane.")]
-        [Display(Name = "Data rozpoczęcia")]
-        public DateTime? StartDate { get; set; }
+        [Required(ErrorMessage = "Pole Data planowanego rozpoczęcia jest wymagane.")]
+        [Display(Name = "Data planowanego rozpoczęcia")]
+        public DateTime? PlannedStartDate { get; set; }
 
         [Display(Name = "Data planowanego zakończenia")]
-        public DateTime? PlanedEndDate { get; set; }
+        public DateTime? PlannedEndDate { get; set; }
     }
 }
