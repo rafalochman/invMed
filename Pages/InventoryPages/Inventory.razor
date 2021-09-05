@@ -10,29 +10,31 @@
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Inwentaryzacja</MudText>
 <MudGrid>
-    <MudItem xs="12" sm="12" md="8" lg="9">
+    <MudItem xs="12" sm="12" md="7" lg="9">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 680px;">
             <MudText Typo="Typo.h6">Inwentaryzacja</MudText>
            
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" sm="12" md="4" lg="3">
-        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 380px;">
+    <MudItem xs="12" sm="12" md="5" lg="3">
+        <MudPaper Elevation="25" Class="pa-4" >
             <MudText Typo="Typo.h6">Szczegóły inwentaryzacji</MudText>
             @if (inventoryDetails is not null)
             {
-                <MudText Class="mt-4"><b>Typ:</b> @inventoryDetails.Type.GetDisplayName()</MudText>
-                <MudText><b>Opis:</b> @inventoryDetails.Description</MudText>
-                <MudText><b>Stan:</b> @inventoryDetails.State.GetDisplayName()</MudText>
-                <MudText><b>Data rozpoczęcia:</b> @inventoryDetails.StartDate</MudText>
-                if (inventoryDetails.PlannedEndDate is not null)
-                {
-                    <MudText><b>Data planowanego zakończenia:</b> @inventoryDetails.PlannedEndDate</MudText>
-                }
-                <MudText><b>Ilość zeskanowanych produktów:</b> @inventoryDetails.ScannedNumber</MudText>
-                <MudText><b>Ilość produktów do zeskanowania:</b> @inventoryDetails.ItemsNumberScan</MudText>
-                <MudText><b>Postęp:</b> @inventoryDetails.Progress %</MudText>
+                <MudContainer Class="pa-0" Style="height: 240px; overflow-y: scroll">
+                    <MudText Class="mt-4"><b>Typ:</b> @inventoryDetails.Type.GetDisplayName()</MudText>
+                    <MudText><b>Opis:</b> @inventoryDetails.Description</MudText>
+                    <MudText><b>Stan:</b> @inventoryDetails.State.GetDisplayName()</MudText>
+                    <MudText><b>Data rozpoczęcia:</b> @inventoryDetails.StartDate</MudText>
+                    @if (inventoryDetails.PlannedEndDate is not null)
+                    {
+                        <MudText><b>Data planowanego zakończenia:</b> @inventoryDetails.PlannedEndDate</MudText>
+                    }
+                    <MudText><b>Ilość zeskanowanych produktów:</b> @inventoryDetails.ScannedNumber</MudText>
+                    <MudText><b>Ilość produktów do zeskanowania:</b> @inventoryDetails.ItemsNumberScan</MudText>
+                    <MudText><b>Postęp:</b> @inventoryDetails.Progress %</MudText>
+                </MudContainer>  
             }
             else
             {
