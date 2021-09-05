@@ -108,5 +108,20 @@ namespace invMed.Services
             return inventoryView;
         }
        
+        public async Task<bool> StartInventory(int id)
+        {
+            var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
+            inventory.State = InventoryState.Active;
+            inventory.StartDate = DateTime.Now;
+            try
+            {
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
