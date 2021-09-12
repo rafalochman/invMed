@@ -16,8 +16,8 @@ namespace invMed.Data
         public string PlannedEndDate { get; set; }
         public string PlannedStartDate { get; set; }
         public string EndDate { get; set; }
-        public int ItemsNumberScan { get; set; }
-        public int ScannedNumber { get; set; }
+        public int InventoryItemsNumber { get; set; }
+        public int ScannedItemsNumber { get; set; }
         public int Progress { get; set; }
     }
 }

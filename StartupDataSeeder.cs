@@ -259,7 +259,7 @@ namespace invMed
                 Description = "Pełna inwentaryzacja roczna 2021.",
                 PlannedStartDate = DateTime.Now.AddDays(3),
                 PlannedEndDate = DateTime.Now.AddDays(13),
-                ItemsNumberScan = db.Items.Count(),
+                InventoryItemsNumber = db.Items.Count(),
             });;
 
             await db.Inventories.AddAsync(new Inventory
@@ -277,7 +277,7 @@ namespace invMed
                 Description = "Pełna inwentaryzacja roczna 2020.",
                 PlannedStartDate = DateTime.Now.AddDays(-13),
                 PlannedEndDate = DateTime.Now.AddDays(-3),
-                ItemsNumberScan = db.Items.Count(),
+                InventoryItemsNumber = db.Items.Count(),
             });
 
             await db.Inventories.AddAsync(new Inventory

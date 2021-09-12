@@ -26,8 +26,8 @@
                     }
                     if (inventory.State != InventoryState.Inactive)
                     {
-                        <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość zeskanowanych produktów">@inventory.ScannedNumber</MudField>
-                        <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość produktów do zeskanowania">@inventory.ItemsNumberScan</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość zeskanowanych produktów">@inventory.ScannedItemsNumber</MudField>
+                        <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość produktów inwentaryzacyjnych">@inventory.InventoryItemsNumber</MudField>
                         <MudField Variant="Variant.Text" Class="mt-4" Label="Postęp">@inventory.Progress %</MudField>
                     }
                 }

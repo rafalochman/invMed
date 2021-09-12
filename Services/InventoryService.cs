@@ -61,7 +61,7 @@ namespace invMed.Services
                 }
                 if(inventory.Type == InventoryType.Full)
                 {
-                    inventory.ItemsNumberScan = await _db.Items.CountAsync();
+                    inventory.InventoryItemsNumber = await _db.Items.CountAsync();
                 }
                 inventoriesView.Add(inventoryView);
             }
@@ -77,7 +77,7 @@ namespace invMed.Services
                 State = inventory.State,
                 Type = inventory.Type,
                 Description = inventory.Description,
-                ItemsNumberScan = inventory.ItemsNumberScan,
+                InventoryItemsNumber = inventory.InventoryItemsNumber,
             };
             if (inventory.StartDate is not null)
             {
@@ -96,10 +96,10 @@ namespace invMed.Services
                 inventoryView.EndDate = inventory.EndDate.Value.ToString("dd/MM/yyyy");
             }
             var scannedItemsNumber = inventory.InventoryItems.Count;
-            inventoryView.ScannedNumber = scannedItemsNumber;
+            inventoryView.ScannedItemsNumber = scannedItemsNumber;
             if (scannedItemsNumber != 0)
             {
-                inventoryView.Progress = scannedItemsNumber / inventory.ItemsNumberScan * 100;
+                inventoryView.Progress = scannedItemsNumber / inventory.InventoryItemsNumber * 100;
             }
             else
             {
