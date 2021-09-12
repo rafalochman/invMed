@@ -4,6 +4,9 @@
 @using invMed.Controls.Inventory
 @inject InventoryService inventoryService
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 
 
 @attribute [Authorize(Roles = "Admin")]
@@ -11,14 +14,55 @@
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Inwentaryzacja</MudText>
 <MudGrid>
     <MudItem xs="12" sm="12" md="7" lg="9">
-        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 680px;">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 820px;">
             <MudText Typo="Typo.h6">Inwentaryzacja</MudText>
-           
+            @if (items is not null)
+            {
+                <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                    <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
+                        <DataAnnotationsValidator />
+                        <MudTextField Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" For="@(() => input.BarCode)" Clearable="true" />
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Dodaj</MudButton>
+                    </EditForm>
+                </MudContainer>
+
+                <MudPaper Elevation="25" Class="pb-4 pl-4 pr-4 mt-8">
+                    <MudTable Elevation="0" Items="@items" Hover="true" Height="540px" Filter="new Func<ScannedItemView, bool>(FilterFunc)" HorizontalScrollbar="true" FixedHeader="true">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Zeskanowane produkty</MudText>
+                            <MudToolBarSpacer />
+                            <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Szukaj" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        </ToolBarContent>
+                        <ColGroup>
+                            <col />
+                            <col />
+                            <col />
+                            <col style="width: 20px" />
+                        </ColGroup>
+                        <HeaderContent>
+                            <MudTh>Bar kod</MudTh>
+                            <MudTh>Produkt</MudTh>
+                            <MudTh></MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Bar kod">@context.BarCode</MudTd>
+                            <MudTd DataLabel="Produkt">@context.ProductName</MudTd>
+                            <MudTd>
+                                <MudIconButton OnClick="@((e) => RemoveScannedItem(context))" Icon="@Icons.Material.Filled.Clear" Size="Size.Small"></MudIconButton>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudPaper>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" sm="12" md="5" lg="3">
-        <MudPaper Elevation="25" Class="pa-4" >
+        <MudPaper Elevation="25" Class="pa-4">
             <MudText Typo="Typo.h6">Szczegóły inwentaryzacji</MudText>
             @if (inventoryDetails is not null)
             {
@@ -34,7 +78,7 @@
                     <MudText><b>Ilość zeskanowanych produktów:</b> @inventoryDetails.ScannedItemsNumber</MudText>
                     <MudText><b>Ilość produktów inwentaryzacyjnych:</b> @inventoryDetails.InventoryItemsNumber</MudText>
                     <MudText><b>Postęp:</b> @inventoryDetails.Progress %</MudText>
-                </MudContainer>  
+                </MudContainer>
             }
             else
             {
@@ -51,9 +95,48 @@
     public int InventoryId { get; set; }
 
     private InventoryDetailsView inventoryDetails;
+    private ScanItemInput input = new ScanItemInput();
+    private List<ScannedItemView> items;
+    private bool success;
+    private string searchString = "";
 
     protected override async Task OnInitializedAsync()
     {
+        items = await inventoryService.GetScannedItems(InventoryId);
         inventoryDetails = await inventoryService.GetInventoryDetailsViewById(InventoryId);
+    }
+
+    private async void OnValidSubmit()
+    {
+        var userName = httpContextAccessor.HttpContext.User.Identity.Name;
+        var item = await inventoryService.GetScannedItemViewAndAddItemToInventory(input.BarCode, InventoryId, userName);
+        if (item.BarCode != null && !items.Any(x => x.BarCode == item.BarCode))
+        {
+            items.Insert(0, item);
+            StateHasChanged();
+        }
+    }
+
+    private bool FilterFunc(ScannedItemView item)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if ($"{item.BarCode} {item.ProductName}".Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    private async void RemoveScannedItem(ScannedItemView scannedItem)
+    {
+        var result = await inventoryService.RemoveScannedItem(scannedItem.Id);
+        if (result)
+        {
+            items.Remove(scannedItem);
+            StateHasChanged();
+        }
+        else
+        {
+            Snackbar.Add("Błąd, produkt nie został usunięty.", Severity.Error);
+        }
     }
 }

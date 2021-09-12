@@ -45,7 +45,7 @@
                                 }
                                 @if (inventory.State == InventoryState.Active)
                                 {
-                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">Kontynuuj</MudButton>
+                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => ContinueInventory(inventory.Id))">Kontynuuj</MudButton>
                                 }
                             </MudItem>
                         </MudGrid>
@@ -109,5 +109,10 @@
             await inventoryService.StartInventory(inventoryId);
             NavManager.NavigateTo("/inventory/" + inventoryId);
         }
+    }
+
+    private void ContinueInventory(int inventoryId)
+    {
+        NavManager.NavigateTo("/inventory/" + inventoryId);
     }
 }
