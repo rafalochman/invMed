@@ -9,6 +9,7 @@ namespace invMed.Data
     {
         public int Id { get; set; }
         public DateTime AddDate { get; set; }
+        public int ItemId { get; set; }
         public virtual Item Item { get; set; }
         public virtual Inventory Inventory { get; set; }
         public virtual AspNetUser AddUser { get; set; }

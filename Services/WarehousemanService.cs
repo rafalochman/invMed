@@ -100,7 +100,6 @@ namespace invMed.Services
                 };
             }
             return new RemoveItemView();
-            
         }
 
         public async Task<bool> RemoveItems(List<RemoveItemView> items)
@@ -109,7 +108,7 @@ namespace invMed.Services
             {
                 foreach(var itemView in items)
                 {
-                    var item = await _db.Items.FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
+                    var item = await _db.Items.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
                     var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == itemView.ProductId);
                     product.Amount -= 1;
                     _db.Remove(item);
