@@ -21,7 +21,7 @@
                 <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
                     <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                         <DataAnnotationsValidator />
-                        <MudTextField Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" For="@(() => input.BarCode)" Clearable="true" />
+                        <MudTextField Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" For="@(() => input.BarCode)" Clearable="true" AutoFocus="true"/>
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Dodaj</MudButton>
                     </EditForm>
                 </MudContainer>
@@ -113,6 +113,7 @@
         if (item.BarCode != null && !items.Any(x => x.BarCode == item.BarCode))
         {
             items.Insert(0, item);
+            input = new ScanItemInput();
             StateHasChanged();
         }
     }
