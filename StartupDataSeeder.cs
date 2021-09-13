@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using invMed.Data.Enums;
+using invMed.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -289,6 +290,61 @@ namespace invMed
                 PlannedEndDate = DateTime.Now.AddDays(40),
             });
 
+            await db.SaveChangesAsync();
+        }
+
+        public static async Task FillWithPlaces(ApplicationDbContext db)
+        {
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "A/1"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "A/2"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "A/3"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "A/4"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "A/5"
+            }); await db.Places.AddAsync(new Place()
+            {
+                Name = "A/6"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "A/7"
+            }); await db.Places.AddAsync(new Place()
+            {
+                Name = "A/8"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "B/1"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "B/2"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "B/3"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "B/4"
+            });
+            await db.Places.AddAsync(new Place()
+            {
+                Name = "C/1"
+            });
             await db.SaveChangesAsync();
         }
 
