@@ -96,10 +96,10 @@ namespace invMed
                     applicationDbContext.Database.EnsureCreated();
                     if (Configuration.GetValue<bool>("SeedErasedDatabaseWithData"))
                         StartupDataSeeder.FillWithUsers(userManager).Wait();
+                        StartupDataSeeder.FillWithPlaces(applicationDbContext).Wait();
                         StartupDataSeeder.FillWithProducts(applicationDbContext).Wait();
                         StartupDataSeeder.FillWithItems(applicationDbContext).Wait();
-                        StartupDataSeeder.FillWithInventories(applicationDbContext).Wait();
-                        StartupDataSeeder.FillWithPlaces(applicationDbContext).Wait();
+                        StartupDataSeeder.FillWithInventories(applicationDbContext).Wait();  
                 }
                 else
                     applicationDbContext.Database.EnsureCreated();

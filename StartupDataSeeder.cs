@@ -168,10 +168,14 @@ namespace invMed
             var product2 = await db.Products.FirstOrDefaultAsync(x => x.Id == 2);
             var product3 = await db.Products.FirstOrDefaultAsync(x => x.Id == 3);
 
+            var place1 = await db.Places.FirstOrDefaultAsync(x => x.Name == "A/1");
+            var place2 = await db.Places.FirstOrDefaultAsync(x => x.Name == "A/2");
+            var place3 = await db.Places.FirstOrDefaultAsync(x => x.Name == "C/1");
+
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000001",
-                Place = "A/1",
+                Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
                 ExpirationDate = DateTime.Now.AddDays(3)
@@ -181,7 +185,7 @@ namespace invMed
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000002",
-                Place = "A/1",
+                Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
                 ExpirationDate = DateTime.Now.AddDays(4)
@@ -191,7 +195,7 @@ namespace invMed
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000003",
-                Place = "A/2",
+                Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
                 ExpirationDate = DateTime.Now.AddDays(5)
@@ -201,7 +205,7 @@ namespace invMed
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000004",
-                Place = "B/1",
+                Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
                 ExpirationDate = DateTime.Now.AddDays(6)
@@ -211,7 +215,7 @@ namespace invMed
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000005",
-                Place = "A/1",
+                Place = place2,
                 AddDate = DateTime.Now,
                 Product = product2,
                 ExpirationDate = DateTime.Now.AddDays(3)
@@ -221,7 +225,7 @@ namespace invMed
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000006",
-                Place = "A/12",
+                Place = place2,
                 AddDate = DateTime.Now,
                 Product = product2,
                 ExpirationDate = DateTime.Now.AddDays(3)
@@ -231,7 +235,7 @@ namespace invMed
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000007",
-                Place = "B/1",
+                Place = place2,
                 AddDate = DateTime.Now,
                 Product = product2,
                 ExpirationDate = DateTime.Now.AddDays(3)
@@ -241,7 +245,7 @@ namespace invMed
             await db.Items.AddAsync(new Item
             {
                 BarCode = "00000008",
-                Place = "A/1",
+                Place = place3,
                 AddDate = DateTime.Now,
                 Product = product3,
                 ExpirationDate = DateTime.Now.AddDays(3)

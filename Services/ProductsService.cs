@@ -77,7 +77,7 @@ namespace invMed.Services
                 {
                     Id = item.Id,
                     BarCode = item.BarCode,
-                    Place = item.Place
+                    Place = item.Place.Name
                 };
                 if(item.ExpirationDate is not null)
                 {
@@ -107,13 +107,13 @@ namespace invMed.Services
 
         public async Task<ItemDetailsView> GetItemDetailsViewById(int id)
         {
-            var item = await _db.Items.FirstOrDefaultAsync(x => x.Id == id);
+            var item = await _db.Items.Include(x => x.Place).FirstOrDefaultAsync(x => x.Id == id);
             var itemDetailsView = new ItemDetailsView
             {
                 Id = item.Id,
                 BarCode = item.BarCode,
                 BarcodeUrl = item.BarcodeUrl,
-                Place = item.Place,
+                Place = item.Place.Name,
                 AddDate = item.AddDate.ToString("dd/MM/yyyy"),
                 ProductCategory = item.Product.Category,
                 ProductName = item.Product.Name

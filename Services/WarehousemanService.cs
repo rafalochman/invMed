@@ -63,11 +63,22 @@ namespace invMed.Services
             return await _db.Products.Where(x => x.Name.Contains(searchValue)).Select(x => x.Name).ToArrayAsync();
         }
 
+        public async Task<IEnumerable<string>> GetAllPlacesNames()
+        {
+            return await _db.Places.Select(x => x.Name).ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<string>> SearchPlacesNames(string searchValue)
+        {
+            return await _db.Places.Where(x => x.Name.Contains(searchValue)).Select(x => x.Name).ToArrayAsync();
+        }
+
         public async Task<(string barcode, string barcodeUrl)> AddItemAndGetBarcode(AddItemInput input, string userName)
         {
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
             var user = await _userManager.FindByNameAsync(userName);
-            var item = new Item { Place = input.Place, AddDate = DateTime.Now, ExpirationDate = input.ExpirationDate, Product = product, AddUser = user};
+            var place = await _db.Places.FirstOrDefaultAsync(x => x.Name == input.Place);
+            var item = new Item { Place = place, AddDate = DateTime.Now, ExpirationDate = input.ExpirationDate, Product = product, AddUser = user};
             try
             {
                 _db.Items.Add(item);
