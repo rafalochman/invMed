@@ -179,6 +179,7 @@
         if (result is not null)
         {
             newItems = await warehousemanService.GetNewItems();
+            runOutProducts = await warehousemanService.GetRunOutProducts();
         }
     }
 
