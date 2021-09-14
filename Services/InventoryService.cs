@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using invMed.Data.Enums;
+using invMed.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,12 @@ namespace invMed.Services
         public async Task<bool> CreateInventory(CreateInventoryInput input, string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var inventory = new Inventory { Type = input.Type, State = InventoryState.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, CreateUser = user };
+            var places = new List<Place>();
+            foreach(var placeName in input.Places)
+            {
+                places.Add(await _db.Places.FirstOrDefaultAsync(x => x.Name == placeName));
+            }
+            var inventory = new Inventory { Type = input.Type, State = InventoryState.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, CreateUser = user, Places = places };
             try
             {
                 _db.Inventories.Add(inventory);
@@ -191,6 +197,11 @@ namespace invMed.Services
                 });
             }
             return scannedItemsView;
+        }
+
+        public async Task<string[]> GetPlacesNames()
+        {
+            return await _db.Places.Select(x => x.Name).ToArrayAsync();
         }
     }
 }

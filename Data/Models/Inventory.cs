@@ -1,4 +1,5 @@
 ﻿using invMed.Data.Enums;
+using invMed.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace invMed.Data
         public int InventoryItemsNumber { get; set; }
         public virtual AspNetUser CreateUser { get; set; }
         public virtual ICollection<InventoryItem> InventoryItems { get; set; }
+        public virtual ICollection<Place> Places { get; set; }
     }
 }

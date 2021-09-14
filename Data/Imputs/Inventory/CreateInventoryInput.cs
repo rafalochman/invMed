@@ -23,5 +23,8 @@ namespace invMed.Data
 
         [Display(Name = "Data planowanego zakończenia")]
         public DateTime? PlannedEndDate { get; set; }
+
+        [Display(Name = "Miejsca")]
+        public HashSet<string> Places { get; set; }
     }
 }
