@@ -123,6 +123,10 @@ namespace invMed.Services
             {
                 inventory.InventoryItemsNumber = await _db.Items.CountAsync();
             }
+            else if (inventory.Type == InventoryType.Partial)
+            {
+                inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place)).CountAsync();
+            }
             try
             {
                 await _db.SaveChangesAsync();
