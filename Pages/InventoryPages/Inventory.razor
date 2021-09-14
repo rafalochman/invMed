@@ -109,12 +109,15 @@
     private async void OnValidSubmit()
     {
         var userName = httpContextAccessor.HttpContext.User.Identity.Name;
-        var item = await inventoryService.GetScannedItemViewAndAddItemToInventory(input.BarCode, InventoryId, userName);
-        if (item.BarCode != null && !items.Any(x => x.BarCode == item.BarCode))
+        if(!items.Any(x => x.BarCode == input.BarCode))
         {
-            items.Insert(0, item);
-            input = new ScanItemInput();
-            StateHasChanged();
+            var item = await inventoryService.GetScannedItemViewAndAddItemToInventory(input.BarCode, InventoryId, userName);
+            if (item.BarCode != null)
+            {
+                items.Insert(0, item);
+                input = new ScanItemInput();
+                StateHasChanged();
+            }
         }
     }
 
