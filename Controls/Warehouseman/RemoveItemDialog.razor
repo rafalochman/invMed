@@ -11,7 +11,7 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Wydaj towar</MudText>
-                    <MudTextField Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" For="@(() => input.BarCode)" Clearable="true"/>
+                    <MudTextField AutoFocus="true" Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" For="@(() => input.BarCode)" Clearable="true"/>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Dodaj</MudButton>
                 </EditForm>
 
