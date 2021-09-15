@@ -27,9 +27,12 @@ namespace invMed.Services
         {
             var user = await _userManager.FindByNameAsync(userName);
             var places = new List<Place>();
-            foreach(var placeName in input.Places)
+            if(input.Places is not null)
             {
-                places.Add(await _db.Places.FirstOrDefaultAsync(x => x.Name == placeName));
+                foreach (var placeName in input.Places)
+                {
+                    places.Add(await _db.Places.FirstOrDefaultAsync(x => x.Name == placeName));
+                }
             }
             var inventory = new Inventory { Type = input.Type, State = InventoryState.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, CreateUser = user, Places = places };
             try
