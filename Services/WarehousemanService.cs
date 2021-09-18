@@ -5,8 +5,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BarcodeLib;
 using invMed.Data;
+using invMed.Data.Business;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,7 +56,8 @@ namespace invMed.Services
                 product.Amount += 1;
                 await _db.SaveChangesAsync();
                 item.BarCode = item.Id.ToString("D8");
-                var barcodeUrl = GenerateBarCode(item.BarCode);
+                var barcode = new Barcode(item.BarCode);
+                var barcodeUrl = barcode.UrlData;
                 item.BarcodeUrl = barcodeUrl;
                 await _db.SaveChangesAsync();
                 return (barcode: item.BarCode, barcodeUrl: barcodeUrl);
@@ -147,22 +148,6 @@ namespace invMed.Services
                 newItems.Add(newItem);
             }
             return newItems;
-        }
-
-        public string GenerateBarCode(string barcodevalue)
-        {
-            const int Width = 250;
-            const int Height = 100;
-            var barcode = new Barcode();
-            var barcodeImage = barcode.Encode(TYPE.CODE128, barcodevalue, Width, Height);
-
-            var thumbnail = barcodeImage.GetThumbnailImage(Width, Height, () => false, IntPtr.Zero);
-            var imageConverter = new ImageConverter();
-            var thumbnailBytes = (byte[])imageConverter.ConvertTo(thumbnail, typeof(byte[]));
-
-            var barcodeImageBase64 = Convert.ToBase64String(thumbnailBytes);
-            var urlData = string.Format("data:image/jpg;base64, {0}", barcodeImageBase64);
-            return urlData;
         }
     }
 }
