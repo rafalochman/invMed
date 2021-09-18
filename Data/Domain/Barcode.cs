@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BarcodeLib;
 
-namespace invMed.Data.Business
+namespace invMed.Data.Domain
 {
     public class Barcode
     {
