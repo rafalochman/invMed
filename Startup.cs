@@ -59,6 +59,7 @@ namespace invMed
             services.AddScoped<AccountService>();
             services.AddScoped<WarehousemanService>();
             services.AddScoped<InventoryService>();
+            services.AddScoped<SearchService>();
 
             services.AddHttpContextAccessor();
 
