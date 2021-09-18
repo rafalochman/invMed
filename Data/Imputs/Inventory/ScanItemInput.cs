@@ -8,7 +8,6 @@ namespace invMed.Data
 {
     public class ScanItemInput
     {
-        [Required(ErrorMessage = "Pole Bar kod jest wymagane.")]
         [Display(Name = "Bar kod")]
         public string? BarCode { get; set; }
     }

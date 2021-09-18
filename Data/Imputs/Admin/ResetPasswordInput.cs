@@ -15,6 +15,7 @@ namespace invMed.Data
         [Display(Name = "Hasło")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Pole Potwierdź hasło jest wymagane.")]
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Hasła nie są zgodne.")]

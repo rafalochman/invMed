@@ -11,8 +11,8 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Dodaj towar</MudText>
-                    <MudAutocomplete T="string" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@SearchProduct" Clearable="true" />
-                    <MudAutocomplete T="string" Label="Miejsce" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.Place)" @bind-Value="input.Place" SearchFunc="@SearchPlace" Clearable="true" Class="mt-2"/>
+                    <MudAutocomplete T="string" Required="true" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@SearchProduct" Clearable="true" />
+                    <MudAutocomplete T="string" Required="true" Label="Miejsce" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.Place)" @bind-Value="input.Place" SearchFunc="@SearchPlace" Clearable="true" Class="mt-2"/>
                     <MudDatePicker @ref="_picker" Label="Data ważności" @bind-Date="input.ExpirationDate" AutoClose="true" DateFormat="dd/MM/yyyy">
                         <PickerActions>
                             <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Wyczyść</MudButton>

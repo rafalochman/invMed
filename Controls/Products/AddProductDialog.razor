@@ -10,13 +10,13 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Utwórz produkt</MudText>
-                    <MudTextField Label="Nazwa" Immediate="true" Class="mt-2" @bind-Value="input.Name" For="@(() => input.Name)" />
-                    <MudTextField Label="Kategoria" Immediate="true" Class="mt-2" @bind-Value="input.Category" For="@(() => input.Category)" />
-                    <MudTextField Label="Producent" Immediate="true" Class="mt-2" @bind-Value="input.Producer" For="@(() => input.Producer)" />
-                    <MudTextField Label="Dostawca" Immediate="true" Class="mt-2" @bind-Value="input.Supplier" For="@(() => input.Supplier)" />
-                    <MudNumericField Label="Cena" Immediate="true" Class="mt-2" @bind-Value="input.Price" For="@(() => input.Price)" Adornment="Adornment.End" AdornmentText="zł" Min="0.01" Format="F2" Culture="@_pl" HideSpinButtons="true" />
-                    <MudNumericField Label="Ilość minimalna" Immediate="true" Class="mt-2" @bind-Value="input.MinAmount" For="@(() => input.MinAmount)" Min="0" HideSpinButtons="true" />
-                    <MudNumericField Label="Ilość maksymalna" Immediate="true" Class="mt-2" @bind-Value="input.MaxAmount" For="@(() => input.MaxAmount)" Min="0" HideSpinButtons="true" />
+                    <MudTextField Label="Nazwa" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.Name" For="@(() => input.Name)" />
+                    <MudTextField Label="Kategoria" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.Category" For="@(() => input.Category)" />
+                    <MudTextField Label="Producent" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.Producer" For="@(() => input.Producer)" />
+                    <MudTextField Label="Dostawca" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.Supplier" For="@(() => input.Supplier)" />
+                    <MudNumericField Label="Cena" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.Price" For="@(() => input.Price)" Adornment="Adornment.End" AdornmentText="zł" Min="0.01" Format="F2" Culture="@_pl" HideSpinButtons="true" />
+                    <MudNumericField Label="Ilość minimalna" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.MinAmount" For="@(() => input.MinAmount)" Min="0" HideSpinButtons="true" />
+                    <MudNumericField Label="Ilość maksymalna" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.MaxAmount" For="@(() => input.MaxAmount)" Min="0" HideSpinButtons="true" />
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Utwórz</MudButton>
                 </EditForm>
             </MudContainer>
