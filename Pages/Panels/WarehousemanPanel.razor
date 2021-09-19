@@ -5,6 +5,7 @@
 @using invMed.Controls.Products
 @inject WarehousemanService warehousemanService
 @inject SearchService searchService
+@inject ProductsService productsService
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -162,7 +163,7 @@
     protected override async Task OnInitializedAsync()
     {
         newItems = await warehousemanService.GetNewItems();
-        runOutProducts = await warehousemanService.GetRunOutProducts();
+        runOutProducts = await productsService.GetRunOutProducts();
     }
 
     private async Task<IEnumerable<SearchDto>> Search(string value)
@@ -180,7 +181,7 @@
         if (result is not null)
         {
             newItems = await warehousemanService.GetNewItems();
-            runOutProducts = await warehousemanService.GetRunOutProducts();
+            runOutProducts = await productsService.GetRunOutProducts();
         }
     }
 
@@ -190,7 +191,7 @@
         var result = await dialog.Result;
         if (result is not null)
         {
-            runOutProducts = await warehousemanService.GetRunOutProducts();
+            runOutProducts = await productsService.GetRunOutProducts();
         }
     }
 

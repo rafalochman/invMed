@@ -5,6 +5,7 @@
 @using invMed.Controls.Products
 @inject WarehousemanService warehousemanService
 @inject SearchService searchService
+@inject ProductsService productsService
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -53,7 +54,7 @@
 
     <MudItem xs="12" lg="6">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
-           
+
         </MudPaper>
     </MudItem>
 
@@ -114,7 +115,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        runOutProducts = await warehousemanService.GetRunOutProducts();
+        runOutProducts = await productsService.GetRunOutProducts();
     }
 
     private async Task<IEnumerable<SearchDto>> Search(string value)
