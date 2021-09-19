@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using invMed.Data.Enums;
 
 namespace invMed.Services
 {
@@ -26,7 +27,7 @@ namespace invMed.Services
                 searchDtos.Add(new SearchDto()
                 {
                     Id = product.Id,
-                    Type = "product",
+                    Type = SearchType.Product,
                     Name = product.Name,
                     Category = product.Category
                 });
@@ -36,7 +37,7 @@ namespace invMed.Services
                 searchDtos.Add(new SearchDto()
                 {
                     Id = item.Id,
-                    Type = "item",
+                    Type = SearchType.Item,
                     Name = item.Product.Name,
                     Category = item.Product.Category,
                     Barcode = item.BarCode

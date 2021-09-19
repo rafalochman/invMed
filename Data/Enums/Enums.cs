@@ -23,4 +23,13 @@ namespace invMed.Data.Enums
         [Display(Name = "Zakończona")]
         Finished
     }
+
+    public enum SearchType
+    {
+        [Display(Name = "Produkt")]
+        Product,
+
+        [Display(Name = "Egzęplarz")]
+        Item
+    }
 }
