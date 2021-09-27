@@ -97,13 +97,13 @@ namespace invMed.Services
             return itemDetailsView;
         }
 
-        public async Task<List<RunOutProductsView>> GetRunOutProducts()
+        public async Task<List<RunOutProductView>> GetRunOutProducts()
         {
             var products = await _db.Products.Where(x => (x.Amount <= (x.MinAmount * 1.1))).OrderBy(x => x.Category).ToListAsync();
-            var runOutProducts = new List<RunOutProductsView>();
+            var runOutProducts = new List<RunOutProductView>();
             foreach (var product in products)
             {
-                var runOutProduct = new RunOutProductsView
+                var runOutProduct = new RunOutProductView
                 {
                     Id = product.Id,
                     Name = product.Name,
