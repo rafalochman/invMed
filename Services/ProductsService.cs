@@ -121,5 +121,36 @@ namespace invMed.Services
             }
             return runOutProducts;
         }
+
+        public async Task<List<ExpiredItemView>> GetExpiredItems()
+        {
+            var items = await _db.Items.Include(x => x.Product).Where(x => x.ExpirationDate > DateTime.Now.AddDays(-30)).OrderBy(x => x.ExpirationDate).ToListAsync();
+            var expiredItems = new List<ExpiredItemView>();
+            foreach(var item in items)
+            {
+                var expiredItemView = new ExpiredItemView()
+                {
+                    Id = item.Id,
+                    ProductName = item.Product.Name,
+                    ProductCategory = item.Product.Category,
+                    BarCode = item.BarCode
+                };
+                if (item.ExpirationDate is not null)
+                {
+                    expiredItemView.ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
+                }
+
+                if (item.ExpirationDate > DateTime.Now)
+                {
+                    expiredItemView.ComunicateType = Data.Enums.ExpiredComunicateType.Expired;
+                }
+                else
+                {
+                    expiredItemView.ComunicateType = Data.Enums.ExpiredComunicateType.Close;
+                }
+                expiredItems.Add(expiredItemView);
+            }
+            return expiredItems;
+        }
     }
 }

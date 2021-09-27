@@ -32,4 +32,13 @@ namespace invMed.Data.Enums
         [Display(Name = "Egzęplarz")]
         Item
     }
+
+    public enum ExpiredComunicateType
+    {
+        [Display(Name = "Przeterminowany")]
+        Expired,
+
+        [Display(Name = "Bliski")]
+        Close
+    }
 }

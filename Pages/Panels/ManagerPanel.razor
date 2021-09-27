@@ -52,14 +52,13 @@
             </div>
         </MudPaper>
     </MudItem>
-
-    <MudItem xs="12" lg="6">
-        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
+    <MudItem xs="12" sm="6" md="6" lg="3">
+        <MudPaper Elevation="25" Class="pa-4" Style="height: 100px;">
 
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" lg="6">
+    <MudItem xs="12" lg="6" Style="float: left">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
             @if (runOutProducts is not null)
             {
@@ -86,17 +85,68 @@
                         <MudTd DataLabel="Ilość">@context.Amount</MudTd>
                         <MudTd DataLabel="Komunikat">
                             @if (context.CommunicateType == true)
-                                {
+                            {
                                 <MudChip Size="Size.Small" Color="Color.Error">Przekroczono stan minimalny</MudChip>
-                                }
-                                else
-                                {
+                            }
+                            else
+                            {
                                 <MudChip Size="Size.Small" Color="Color.Warning">Pozostała mała ilość</MudChip>
-                                }
+                            }
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
                         <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Produkty na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
+                    </PagerContent>
+                </MudTable>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" lg="6" Style="float: left">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
+            @if (expiredItems is not null)
+            {
+                <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@expiredItems" Hover="true">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Towary z bliską datą ważności</MudText>
+                        <MudToolBarSpacer />
+                    </ToolBarContent>
+                    <ColGroup>
+                        <col />
+                        <col />
+                        <col />
+                        <col />
+                        <col />
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>Nazwa</MudTh>
+                        <MudTh>Kategoria</MudTh>
+                        <MudTh>Barkod</MudTh>
+                        <MudTh>Data ważności</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nazwa">@context.ProductName</MudTd>
+                        <MudTd DataLabel="Kategoria">@context.ProductCategory</MudTd>
+                        <MudTd DataLabel="Barkod">@context.BarCode</MudTd>
+                        <MudTd DataLabel="Data ważności">@context.ExpirationDate</MudTd>
+                        <MudTd DataLabel="Komunikat">
+                            @if (context.ComunicateType == ExpiredComunicateType.Expired)
+                            {
+                                <MudChip Size="Size.Small" Color="Color.Error">Przekroczony termin</MudChip>
+                            }
+                            else if (context.ComunicateType == ExpiredComunicateType.Close)
+                            {
+                                <MudChip Size="Size.Small" Color="Color.Warning">Bliski termin</MudChip>
+                            }
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Towary na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
                     </PagerContent>
                 </MudTable>
             }
@@ -112,11 +162,13 @@
 @code {
     private SearchDto searchValue;
     private List<RunOutProductsView> runOutProducts;
+    private List<ExpiredItemView> expiredItems;
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
         runOutProducts = await productsService.GetRunOutProducts();
+        expiredItems = await productsService.GetExpiredItems();
     }
 
     private async Task<IEnumerable<SearchDto>> Search(string value)

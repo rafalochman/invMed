@@ -228,7 +228,7 @@ namespace invMed
                 Place = place2,
                 AddDate = DateTime.Now,
                 Product = product2,
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(-3)
             });
             product2.Amount++;
 
