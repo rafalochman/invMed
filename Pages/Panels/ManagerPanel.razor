@@ -84,11 +84,11 @@
                         <MudTd DataLabel="Kategoria">@context.Category</MudTd>
                         <MudTd DataLabel="Ilość">@context.Amount</MudTd>
                         <MudTd DataLabel="Komunikat">
-                            @if (context.CommunicateType == true)
+                            @if (context.ComunicateType == RunOutComunicateType.Empty)
                             {
                                 <MudChip Size="Size.Small" Color="Color.Error">Przekroczono stan minimalny</MudChip>
                             }
-                            else
+                            else if (context.ComunicateType == RunOutComunicateType.Small)
                             {
                                 <MudChip Size="Size.Small" Color="Color.Warning">Pozostała mała ilość</MudChip>
                             }

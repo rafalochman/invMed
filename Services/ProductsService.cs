@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
+using invMed.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
@@ -111,11 +112,11 @@ namespace invMed.Services
                 };
                 if (product.Amount < product.MinAmount)
                 {
-                    runOutProduct.CommunicateType = true;
+                    runOutProduct.ComunicateType = RunOutComunicateType.Empty;
                 }
                 else
                 {
-                    runOutProduct.CommunicateType = false;
+                    runOutProduct.ComunicateType = RunOutComunicateType.Small;
                 }
                 runOutProducts.Add(runOutProduct);
             }
@@ -142,11 +143,11 @@ namespace invMed.Services
 
                 if (item.ExpirationDate > DateTime.Now)
                 {
-                    expiredItemView.ComunicateType = Data.Enums.ExpiredComunicateType.Expired;
+                    expiredItemView.ComunicateType = ExpiredComunicateType.Expired;
                 }
                 else
                 {
-                    expiredItemView.ComunicateType = Data.Enums.ExpiredComunicateType.Close;
+                    expiredItemView.ComunicateType = ExpiredComunicateType.Close;
                 }
                 expiredItems.Add(expiredItemView);
             }

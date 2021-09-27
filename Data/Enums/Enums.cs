@@ -33,6 +33,15 @@ namespace invMed.Data.Enums
         Item
     }
 
+    public enum RunOutComunicateType
+    {
+        [Display(Name = "Brak")]
+        Empty,
+
+        [Display(Name = "Mała ilość")]
+        Small
+    }
+
     public enum ExpiredComunicateType
     {
         [Display(Name = "Przeterminowany")]
