@@ -42,7 +42,7 @@
                 <MudTable Dense="true" Breakpoint="Breakpoint.Sm" RowsPerPage="8" Elevation="0" Items="@products" Hover="true" Filter="new Func<Product, bool>(FilterFunc)" HorizontalScrollbar="true">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6">Produkty</MudText>
-                        <MudToolBarSpacer />
+                        <MudSpacer />
                         <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Szukaj" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <ColGroup>
@@ -127,13 +127,13 @@
         }
     }
 
-    private async Task OpenProductItemsDialog(Product product)
+    private void OpenProductItemsDialog(Product product)
     {
         var parameters = new DialogParameters { ["product"] = product };
         DialogService.Show<ProductItemsDialog>("Egzęplarze produktu", parameters, maxDialogWidth);
     }
 
-    private async Task OpenProductDetailsDialog(int productId)
+    private void OpenProductDetailsDialog(int productId)
     {
         var parameters = new DialogParameters { ["productId"] = productId };
         DialogService.Show<ProductDetailsDialog>("Szczegóły produktu", parameters, maxDialogWidth);

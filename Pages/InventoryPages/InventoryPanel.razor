@@ -91,7 +91,7 @@
         }
     }
 
-    private async Task OpenInventoryDetailsDialog(int id)
+    private void OpenInventoryDetailsDialog(int id)
     {
         var parameters = new DialogParameters { ["inventoryId"] = id };
         DialogService.Show<InventoryDetailsDialog>("Szczegóły inwentaryzacji", parameters, maxDialogWidth);

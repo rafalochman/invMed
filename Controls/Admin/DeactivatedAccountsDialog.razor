@@ -10,7 +10,7 @@
                 <MudTable Breakpoint="Breakpoint.None" RowsPerPage="5" Elevation="0" Items="@users" Hover="true" Filter="new Func<UserView, bool>(FilterFunc)">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6">Użytkownicy</MudText>
-                        <MudToolBarSpacer />
+                        <MudSpacer />
                         <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Szukaj" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                     </ToolBarContent>
                     <ColGroup>

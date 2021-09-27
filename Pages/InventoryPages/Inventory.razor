@@ -30,7 +30,7 @@
                     <MudTable Elevation="0" Items="@items" Hover="true" Height="540px" Filter="new Func<ScannedItemView, bool>(FilterFunc)" HorizontalScrollbar="true" FixedHeader="true">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Zeskanowane produkty</MudText>
-                            <MudToolBarSpacer />
+                            <MudSpacer />
                             <MudTextField Immediate="true" @bind-Value="searchString" Placeholder="Szukaj" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
                         </ToolBarContent>
                         <ColGroup>
