@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
 {
-    public class ProductsService
+    public class ProductsService : IProductsService
     {
         private readonly ApplicationDbContext _db;
 
@@ -43,7 +43,7 @@ namespace invMed.Services
         {
             var items = await _db.Items.Where(x => x.Product.Id == productId).ToListAsync();
             var itemsView = new List<ProductItemView>();
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 var itemView = new ProductItemView
                 {
@@ -51,7 +51,7 @@ namespace invMed.Services
                     BarCode = item.BarCode,
                     Place = item.Place.Name
                 };
-                if(item.ExpirationDate is not null)
+                if (item.ExpirationDate is not null)
                 {
                     itemView.ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
                 }
@@ -90,7 +90,7 @@ namespace invMed.Services
                 ProductCategory = item.Product.Category,
                 ProductName = item.Product.Name
             };
-            if(item.ExpirationDate is not null)
+            if (item.ExpirationDate is not null)
             {
                 itemDetailsView.ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
             }
@@ -127,7 +127,7 @@ namespace invMed.Services
         {
             var items = await _db.Items.Include(x => x.Product).Where(x => x.ExpirationDate > DateTime.Now.AddDays(-30)).OrderBy(x => x.ExpirationDate).ToListAsync();
             var expiredItems = new List<ExpiredItemView>();
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 var expiredItemView = new ExpiredItemView()
                 {

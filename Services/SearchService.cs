@@ -8,7 +8,7 @@ using invMed.Data.Enums;
 
 namespace invMed.Services
 {
-    public class SearchService
+    public class SearchService : ISearchService
     {
         private readonly ApplicationDbContext _db;
 

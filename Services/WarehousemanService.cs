@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
 {
-    public class WarehousemanService
+    public class WarehousemanService : IWarehousemanService
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;
@@ -49,7 +49,7 @@ namespace invMed.Services
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
             var user = await _userManager.FindByNameAsync(userName);
             var place = await _db.Places.FirstOrDefaultAsync(x => x.Name == input.Place);
-            var item = new Item { Place = place, AddDate = DateTime.Now, ExpirationDate = input.ExpirationDate, Product = product, AddUser = user};
+            var item = new Item { Place = place, AddDate = DateTime.Now, ExpirationDate = input.ExpirationDate, Product = product, AddUser = user };
             try
             {
                 _db.Items.Add(item);
@@ -71,7 +71,7 @@ namespace invMed.Services
         public async Task<RemoveItemView> GetRemoveItemViewByItemBarCode(string barCode, int number)
         {
             var item = await _db.Items.FirstOrDefaultAsync(x => x.BarCode == barCode);
-            if(item is not null)
+            if (item is not null)
             {
                 return new RemoveItemView()
                 {
@@ -89,7 +89,7 @@ namespace invMed.Services
         {
             try
             {
-                foreach(var itemView in items)
+                foreach (var itemView in items)
                 {
                     var item = await _db.Items.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
                     var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == itemView.ProductId);
@@ -109,7 +109,7 @@ namespace invMed.Services
         {
             var items = await _db.Items.Include(x => x.Product).OrderByDescending(x => x.AddDate).Take(20).ToListAsync();
             var newItems = new List<NewItemsView>();
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 var newItem = new NewItemsView
                 {

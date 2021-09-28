@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;

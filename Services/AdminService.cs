@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
 {
-    public class AdminService
+    public class AdminService : IAdminService
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;

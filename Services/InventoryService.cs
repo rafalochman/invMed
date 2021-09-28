@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace invMed.Services
 {
-    public class InventoryService
+    public class InventoryService : IInventoryService
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;
@@ -27,7 +27,7 @@ namespace invMed.Services
         {
             var user = await _userManager.FindByNameAsync(userName);
             var places = new List<Place>();
-            if(input.Places is not null)
+            if (input.Places is not null)
             {
                 foreach (var placeName in input.Places)
                 {
@@ -51,7 +51,7 @@ namespace invMed.Services
         {
             var inventories = await _db.Inventories.Where(x => x.State == InventoryState.Inactive || x.State == InventoryState.Active).ToListAsync();
             var inventoriesView = new List<InventoryView>();
-            foreach(var inventory in inventories)
+            foreach (var inventory in inventories)
             {
                 var inventoryView = new InventoryView()
                 {
@@ -60,15 +60,15 @@ namespace invMed.Services
                     Type = inventory.Type,
                     Description = inventory.Description,
                 };
-                if(inventory.PlannedStartDate is not null)
+                if (inventory.PlannedStartDate is not null)
                 {
                     inventoryView.PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
                 }
-                if(inventory.PlannedEndDate is not null)
+                if (inventory.PlannedEndDate is not null)
                 {
                     inventoryView.PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
                 }
-                if(inventory.Type == InventoryType.Full)
+                if (inventory.Type == InventoryType.Full)
                 {
                     inventory.InventoryItemsNumber = await _db.Items.CountAsync();
                 }
@@ -116,7 +116,7 @@ namespace invMed.Services
             }
             return inventoryView;
         }
-       
+
         public async Task<bool> StartInventory(int id)
         {
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
@@ -193,7 +193,7 @@ namespace invMed.Services
         {
             var scannedItems = await _db.InventoryItems.Include(x => x.Item.Product).Where(x => x.Inventory.Id == inventoryId).ToListAsync();
             var scannedItemsView = new List<ScannedItemView>();
-            foreach(var item in scannedItems)
+            foreach (var item in scannedItems)
             {
                 scannedItemsView.Add(new ScannedItemView()
                 {
