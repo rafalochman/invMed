@@ -4,9 +4,9 @@
 @using invMed.Controls.Warehouseman
 @using invMed.Controls.Products
 @using invMed.Data.Enums
-@inject WarehousemanService warehousemanService
-@inject SearchService searchService
-@inject ProductsService productsService
+@inject IWarehousemanService warehousemanService
+@inject ISearchService searchService
+@inject IProductsService productsService
 
 @attribute [Authorize(Roles = "Admin")]
 

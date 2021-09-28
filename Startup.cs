@@ -54,12 +54,12 @@ namespace invMed
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<AspNetUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddScoped<ProductsService>();
-            services.AddScoped<AdminService>();
-            services.AddScoped<AccountService>();
-            services.AddScoped<WarehousemanService>();
-            services.AddScoped<InventoryService>();
-            services.AddScoped<SearchService>();
+            services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IWarehousemanService, WarehousemanService>();
+            services.AddScoped<IInventoryService, InventoryService>();
+            services.AddScoped<ISearchService, SearchService>();
 
             services.AddHttpContextAccessor();
 

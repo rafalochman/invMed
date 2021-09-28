@@ -3,8 +3,8 @@
 @using invMed.Controls.Products
 @using invMed.Data.Enums
 @inject IDialogService DialogService
-@inject ProductsService productsService
-@inject SearchService searchService
+@inject IProductsService productsService
+@inject ISearchService searchService
 
 @attribute [Authorize(Roles = "Admin")]
 
