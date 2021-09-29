@@ -1,4 +1,5 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 @inject IAdminService adminService
 @inject ISnackbar Snackbar
 
@@ -16,9 +17,9 @@
                     <MudTextField Label="Potwierdź hasło" Required="true" Immediate="true" Class="mt-2" @bind-Value="input.ConfirmPassword" For="@(() => input.ConfirmPassword)" InputType="InputType.Password" />
                     <MudText Class="mt-6" Typo="Typo.h6">Wybierz rolę</MudText>
                     <MudSelect Label="Wybierz rolę" @bind-Value="input.Role" Required="true" For="@(() => input.Role)">
-                        <MudSelectItem Value="@("Magazynier")">Magazynier</MudSelectItem>
-                        <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
-                        <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
+                        <MudSelectItem Value="@(RoleName.Warehouseman)">Magazynier</MudSelectItem>
+                        <MudSelectItem Value="@(RoleName.Manager)">Manager</MudSelectItem>
+                        <MudSelectItem Value="@(RoleName.Admin)">Admin</MudSelectItem>
                     </MudSelect>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Zarejestruj</MudButton>
                 </EditForm>

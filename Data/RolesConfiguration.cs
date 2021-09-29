@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using invMed.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,18 +16,18 @@ namespace invMed.Data
             builder.HasData(
                 new IdentityRole
                 {
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
+                    Name = RoleName.Admin,
+                    NormalizedName = RoleNormalizedName.Admin
                 },
                 new IdentityRole
                 {
-                    Name = "Manager",
-                    NormalizedName = "MANAGER"
+                    Name = RoleName.Manager,
+                    NormalizedName = RoleNormalizedName.Manager
                 },
                 new IdentityRole
                 {
-                    Name = "Magazynier",
-                    NormalizedName = "MAGAZYNIER"
+                    Name = RoleName.Warehouseman,
+                    NormalizedName = RoleNormalizedName.Warehouseman
                 }
             );
         }

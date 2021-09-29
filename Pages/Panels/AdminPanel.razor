@@ -1,5 +1,6 @@
 ﻿@page "/adminPanel"
 @using invMed.Data
+@using invMed.Data.Enums
 @using invMed.Controls.Admin
 @inject IAdminService adminService
 @inject IDialogService DialogService
@@ -97,7 +98,7 @@
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
-                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Użytkownicy na stronę" InfoFormat="{first_item}-{last_item} z {all_items}"/>
+                        <MudTablePager PageSizeOptions="new int[] {5}" RowsPerPageString="Użytkownicy na stronę" InfoFormat="{first_item}-{last_item} z {all_items}" />
                     </PagerContent>
                 </MudTable>
             }
@@ -128,7 +129,7 @@
     private List<UserView> users;
     private string searchString = "";
     private double[] rolesNumbers;
-    private string[] rolesLabels = { "Admin", "Manager", "Magazynier" };
+    private string[] rolesLabels = { RoleName.Admin, RoleName.Manager, RoleName.Warehouseman };
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
@@ -207,7 +208,7 @@
 
     private double[] GetRolesArray()
     {
-        return new double[] { users.Count(u => u.Role == "Admin"), users.Count(u => u.Role == "Manager"), users.Count(u => u.Role == "Magazynier") };
+        return new double[] { users.Count(u => u.Role == RoleName.Admin), users.Count(u => u.Role == RoleName.Manager), users.Count(u => u.Role == RoleName.Warehouseman) };
     }
 
 }

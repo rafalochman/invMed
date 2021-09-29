@@ -23,7 +23,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(admin, "1qaz@WSX");
-            await userManager.AddToRoleAsync(admin, "ADMIN");
+            await userManager.AddToRoleAsync(admin, RoleNormalizedName.Admin);
 
             var warehouseman1 = new AspNetUser
             {
@@ -34,7 +34,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(warehouseman1, "1qaz@WSX");
-            await userManager.AddToRoleAsync(warehouseman1, "MAGAZYNIER");
+            await userManager.AddToRoleAsync(warehouseman1, RoleNormalizedName.Warehouseman);
 
             var warehouseman2 = new AspNetUser
             {
@@ -45,7 +45,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(warehouseman2, "1qaz@WSX");
-            await userManager.AddToRoleAsync(warehouseman2, "MAGAZYNIER");
+            await userManager.AddToRoleAsync(warehouseman2, RoleNormalizedName.Warehouseman);
 
             var warehouseman3 = new AspNetUser
             {
@@ -56,7 +56,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(warehouseman3, "1qaz@WSX");
-            await userManager.AddToRoleAsync(warehouseman3, "MAGAZYNIER");
+            await userManager.AddToRoleAsync(warehouseman3, RoleNormalizedName.Warehouseman);
 
             var manager = new AspNetUser
             {
@@ -67,7 +67,7 @@ namespace invMed
                 IsActive = true
             };
             await userManager.CreateAsync(manager, "1qaz@WSX");
-            await userManager.AddToRoleAsync(manager, "MANAGER");
+            await userManager.AddToRoleAsync(manager, RoleNormalizedName.Manager);
         }
 
         public static async Task FillWithProducts(ApplicationDbContext db)

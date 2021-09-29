@@ -1,4 +1,5 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 @inject IAdminService adminService
 @inject ISnackbar Snackbar
 
@@ -13,9 +14,9 @@
                     <MudText>@role</MudText>
                     <MudText Class="mt-8" Typo="Typo.h6">Zmień rolę</MudText>
                     <MudSelect Label="Wybierz rolę" @bind-Value="newRole">
-                        <MudSelectItem Value="@("Magazynier")">Magazynier</MudSelectItem>
-                        <MudSelectItem Value="@("Manager")">Manager</MudSelectItem>
-                        <MudSelectItem Value="@("Admin")">Admin</MudSelectItem>
+                        <MudSelectItem Value="@(RoleName.Warehouseman)">Magazynier</MudSelectItem>
+                        <MudSelectItem Value="@(RoleName.Manager)">Manager</MudSelectItem>
+                        <MudSelectItem Value="@(RoleName.Admin)">Admin</MudSelectItem>
                     </MudSelect>
                     <br />
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mt-2" @onclick="@UpdateRole">Zapisz</MudButton>
