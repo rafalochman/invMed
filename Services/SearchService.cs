@@ -27,7 +27,7 @@ namespace invMed.Services
                 searchDtos.Add(new SearchDto()
                 {
                     Id = product.Id,
-                    Type = SearchType.Product,
+                    Type = SearchTypeEnum.Product,
                     Name = product.Name,
                     Category = product.Category
                 });
@@ -37,7 +37,7 @@ namespace invMed.Services
                 searchDtos.Add(new SearchDto()
                 {
                     Id = item.Id,
-                    Type = SearchType.Item,
+                    Type = SearchTypeEnum.Item,
                     Name = item.Product.Name,
                     Category = item.Product.Category,
                     Barcode = item.BarCode

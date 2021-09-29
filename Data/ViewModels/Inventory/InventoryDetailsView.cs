@@ -9,8 +9,8 @@ namespace invMed.Data
     public class InventoryDetailsView
     {
         public int Id { get; set; }
-        public InventoryType? Type { get; set; }
-        public InventoryState State { get; set; }
+        public InventoryTypeEnum? Type { get; set; }
+        public InventoryStateEnum State { get; set; }
         public string Description { get; set; }
         public string StartDate { get; set; }
         public string PlannedEndDate { get; set; }

@@ -34,7 +34,7 @@ namespace invMed.Services
                     places.Add(await _db.Places.FirstOrDefaultAsync(x => x.Name == placeName));
                 }
             }
-            var inventory = new Inventory { Type = input.Type, State = InventoryState.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, CreateUser = user, Places = places };
+            var inventory = new Inventory { Type = input.Type, State = InventoryStateEnum.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, CreateUser = user, Places = places };
             try
             {
                 _db.Inventories.Add(inventory);
@@ -49,7 +49,7 @@ namespace invMed.Services
 
         public async Task<List<InventoryView>> GetInactiveAndActiveInventories()
         {
-            var inventories = await _db.Inventories.Where(x => x.State == InventoryState.Inactive || x.State == InventoryState.Active).ToListAsync();
+            var inventories = await _db.Inventories.Where(x => x.State == InventoryStateEnum.Inactive || x.State == InventoryStateEnum.Active).ToListAsync();
             var inventoriesView = new List<InventoryView>();
             foreach (var inventory in inventories)
             {
@@ -68,7 +68,7 @@ namespace invMed.Services
                 {
                     inventoryView.PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
                 }
-                if (inventory.Type == InventoryType.Full)
+                if (inventory.Type == InventoryTypeEnum.Full)
                 {
                     inventory.InventoryItemsNumber = await _db.Items.CountAsync();
                 }
@@ -120,13 +120,13 @@ namespace invMed.Services
         public async Task<bool> StartInventory(int id)
         {
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
-            inventory.State = InventoryState.Active;
+            inventory.State = InventoryStateEnum.Active;
             inventory.StartDate = DateTime.Now;
-            if (inventory.Type == InventoryType.Full)
+            if (inventory.Type == InventoryTypeEnum.Full)
             {
                 inventory.InventoryItemsNumber = await _db.Items.CountAsync();
             }
-            else if (inventory.Type == InventoryType.Partial)
+            else if (inventory.Type == InventoryTypeEnum.Partial)
             {
                 inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place)).CountAsync();
             }

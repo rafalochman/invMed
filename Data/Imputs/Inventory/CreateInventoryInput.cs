@@ -11,7 +11,7 @@ namespace invMed.Data
     {
         [Required(ErrorMessage = "Pole Typ jest wymagane.")]
         [Display(Name = "Typ")]
-        public InventoryType? Type { get; set; }
+        public InventoryTypeEnum? Type { get; set; }
 
         [Required(ErrorMessage = "Pole Opis jest wymagane.")]
         [Display(Name = "Opis")]

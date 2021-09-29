@@ -112,11 +112,11 @@ namespace invMed.Services
                 };
                 if (product.Amount < product.MinAmount)
                 {
-                    runOutProduct.ComunicateType = RunOutComunicateType.Empty;
+                    runOutProduct.ComunicateType = RunOutComunicateTypeEnum.Empty;
                 }
                 else
                 {
-                    runOutProduct.ComunicateType = RunOutComunicateType.Small;
+                    runOutProduct.ComunicateType = RunOutComunicateTypeEnum.Small;
                 }
                 runOutProducts.Add(runOutProduct);
             }
@@ -143,11 +143,11 @@ namespace invMed.Services
 
                 if (item.ExpirationDate > DateTime.Now)
                 {
-                    expiredItemView.ComunicateType = ExpiredComunicateType.Expired;
+                    expiredItemView.ComunicateType = ExpiredComunicateTypeEnum.Expired;
                 }
                 else
                 {
-                    expiredItemView.ComunicateType = ExpiredComunicateType.Close;
+                    expiredItemView.ComunicateType = ExpiredComunicateTypeEnum.Close;
                 }
                 expiredItems.Add(expiredItemView);
             }

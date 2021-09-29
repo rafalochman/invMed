@@ -24,7 +24,7 @@
                     {
                         <MudField Variant="Variant.Text" Class="mt-4" Label="Data zakończenia"> @inventory.EndDate</MudField>
                     }
-                    if (inventory.State != InventoryState.Inactive)
+                    if (inventory.State != InventoryStateEnum.Inactive)
                     {
                         <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość zeskanowanych produktów">@inventory.ScannedItemsNumber</MudField>
                         <MudField Variant="Variant.Text" Class="mt-4" Label="Ilość produktów inwentaryzacyjnych">@inventory.InventoryItemsNumber</MudField>

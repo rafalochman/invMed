@@ -259,8 +259,8 @@ namespace invMed
         {
             await db.Inventories.AddAsync(new Inventory
             {
-                State = InventoryState.Inactive,
-                Type = InventoryType.Full,
+                State = InventoryStateEnum.Inactive,
+                Type = InventoryTypeEnum.Full,
                 Description = "Pełna inwentaryzacja roczna 2021.",
                 PlannedStartDate = DateTime.Now.AddDays(3),
                 PlannedEndDate = DateTime.Now.AddDays(13),
@@ -269,16 +269,16 @@ namespace invMed
 
             await db.Inventories.AddAsync(new Inventory
             {
-                State = InventoryState.Inactive,
-                Type = InventoryType.Partial,
+                State = InventoryStateEnum.Inactive,
+                Type = InventoryTypeEnum.Partial,
                 Description = "Inwentaryzacja częściowa regały B1/2, A12, A2/18.",
                 PlannedStartDate = DateTime.Now.AddDays(13),
             });
 
             await db.Inventories.AddAsync(new Inventory
             {
-                State = InventoryState.Finished,
-                Type = InventoryType.Full,
+                State = InventoryStateEnum.Finished,
+                Type = InventoryTypeEnum.Full,
                 Description = "Pełna inwentaryzacja roczna 2020.",
                 PlannedStartDate = DateTime.Now.AddDays(-13),
                 PlannedEndDate = DateTime.Now.AddDays(-3),
@@ -287,8 +287,8 @@ namespace invMed
 
             await db.Inventories.AddAsync(new Inventory
             {
-                State = InventoryState.Active,
-                Type = InventoryType.Partial,
+                State = InventoryStateEnum.Active,
+                Type = InventoryTypeEnum.Partial,
                 Description = "Inwentaryzacja częściowa towarów z kategori opatrunki.",
                 PlannedStartDate = DateTime.Now.AddDays(30),
                 PlannedEndDate = DateTime.Now.AddDays(40),

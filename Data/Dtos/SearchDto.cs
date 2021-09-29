@@ -9,7 +9,7 @@ namespace invMed.Data
     public class SearchDto
     {
         public int Id { get; set; }
-        public SearchType Type { get; set; }
+        public SearchTypeEnum Type { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
         public string? Barcode { get; set; }

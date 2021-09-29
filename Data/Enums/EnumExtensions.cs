@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace invMed.Data.Enums
 {
-    public static class EnumsExtensions
+    public static class EnumExtensions
     {
         public static string GetDisplayName(this Enum enumValue)
         {

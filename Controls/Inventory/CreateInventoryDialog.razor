@@ -12,9 +12,9 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Utwórz inwentaryzację</MudText>
-                    <MudSelect Style="text-align: left" Class="mt-2" Required="true" T="InventoryType?" @bind-Value="input.Type" For="@(() => input.Type)" Immediate="true" Label="Typ">
-                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Full">@InventoryType.Full.GetDisplayName()</MudSelectItem>
-                        <MudSelectItem T="InventoryType?" Value="@InventoryType.Partial">@InventoryType.Partial.GetDisplayName()</MudSelectItem>
+                    <MudSelect Style="text-align: left" Class="mt-2" Required="true" T="InventoryTypeEnum?" @bind-Value="input.Type" For="@(() => input.Type)" Immediate="true" Label="Typ">
+                        <MudSelectItem T="InventoryTypeEnum?" Value="@InventoryTypeEnum.Full">@InventoryTypeEnum.Full.GetDisplayName()</MudSelectItem>
+                        <MudSelectItem T="InventoryTypeEnum?" Value="@InventoryTypeEnum.Partial">@InventoryTypeEnum.Partial.GetDisplayName()</MudSelectItem>
                     </MudSelect>
                     <MudTextField Label="Opis" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Description" For="@(() => input.Description)" />
                     <MudDatePicker @ref="_startPicker" Required="true" Class="mt-1" Label="Data planowanego rozpoczęcia" @bind-Date="input.PlannedStartDate" AutoClose="true" DateFormat="dd/MM/yyyy" For="@(() => input.PlannedStartDate)">
@@ -29,7 +29,7 @@
                             <MudButton OnClick="@(() => _endPicker.Close(false))">Anuluj</MudButton>
                         </PickerActions>
                     </MudDatePicker>
-                    @if(input.Type == InventoryType.Partial && places is not null)
+                    @if(input.Type == InventoryTypeEnum.Partial && places is not null)
                     {
                         <MudSelect T="string" Class="mt-2" Required="true" Label="Miejsca" HelperText="Wybierz miejsca dla których będzie przeprowadzana inwentaryzcja" MultiSelection="true" @bind-SelectedValues="input.Places">
                             @foreach (var place in places)

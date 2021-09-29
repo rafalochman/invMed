@@ -14,6 +14,6 @@ namespace invMed.Data
 
         public int Amount { get; set; }
            
-        public RunOutComunicateType ComunicateType { get; set; }
+        public RunOutComunicateTypeEnum ComunicateType { get; set; }
     }
 }

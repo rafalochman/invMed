@@ -39,11 +39,11 @@
                             </MudItem>
                             <MudItem md="12" lg="5" Style="text-align: right;">
                                 <MudButton Variant="Variant.Filled" Class="mr-4" OnClick="@((e) => OpenInventoryDetailsDialog(inventory.Id))" Color="Color.Default">Szczegóły</MudButton>
-                                @if (inventory.State == InventoryState.Inactive)
+                                @if (inventory.State == InventoryStateEnum.Inactive)
                                 {
                                     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@((e) => OpenStartInventoryMessageBox(inventory.Id, inventory.Description))">Rozpocznij</MudButton>
                                 }
-                                @if (inventory.State == InventoryState.Active)
+                                @if (inventory.State == InventoryStateEnum.Active)
                                 {
                                     <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => ContinueInventory(inventory.Id))">Kontynuuj</MudButton>
                                 }
