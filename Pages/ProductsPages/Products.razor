@@ -1,10 +1,9 @@
 ﻿@page "/products"
 @using invMed.Data
 @using invMed.Controls.Products
-@using invMed.Data.Enums
+@using invMed.Controls.Search
 @inject IDialogService DialogService
 @inject IProductsService productsService
-@inject ISearchService searchService
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -12,18 +11,7 @@
 <MudGrid>
     <MudItem xs="12" sm="12" md="6" lg="9">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-            <MudIcon Icon="@Icons.Material.Filled.Search" Color="Color.Primary" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
-            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Wyszukiwarka</MudText>
-            <MudAutocomplete T="SearchDto" Label="Szukaj" Class="ml-4 mr-4" Clearable="true" ResetValueOnEmptyText="true" ToStringFunc="@(e=> e==null ? null : e.Type == SearchTypeEnum.Product ? e.Name : e.Barcode)" Value="searchValue" ValueChanged="OpenSearchDialog" SearchFunc="@Search" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary">
-                <ItemTemplate Context="e">
-                    <MudText>
-                        @(e.Type == SearchTypeEnum.Item ? e.Barcode : e.Name)
-                    </MudText>
-                    <MudText Typo="Typo.caption">
-                        @(e.Type == SearchTypeEnum.Item ? e.Name : e.Category)
-                    </MudText>
-                </ItemTemplate>
-            </MudAutocomplete>
+            <SearchComponent></SearchComponent>
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="12" md="6" lg="3">
@@ -92,7 +80,6 @@
 @code {
     private List<Product> products;
     private string searchString = "";
-    private SearchDto searchValue;
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
@@ -107,14 +94,6 @@
         if ($"{product.Name} {product.Category} {product.Producer} {product.Supplier}".Contains(searchString, StringComparison.OrdinalIgnoreCase))
             return true;
         return false;
-    }
-
-    private async Task<IEnumerable<SearchDto>> Search(string value)
-    {
-        if (string.IsNullOrEmpty(value))
-            return new List<SearchDto>();
-
-        return await searchService.Search(value);
     }
 
     private async Task OpenAddProductDialog()
@@ -137,19 +116,5 @@
     {
         var parameters = new DialogParameters { ["productId"] = productId };
         DialogService.Show<ProductDetailsDialog>("Szczegóły produktu", parameters, maxDialogWidth);
-    }
-
-    private void OpenSearchDialog(SearchDto searchDto)
-    {
-        if (searchDto.Type == SearchTypeEnum.Product)
-        {
-            var parameters = new DialogParameters { ["productId"] = searchDto.Id };
-            DialogService.Show<ProductDetailsDialog>("Szczegóły produktu", parameters, maxDialogWidth);
-        }
-        else if (searchDto.Type == SearchTypeEnum.Item)
-        {
-            var parameters = new DialogParameters { ["itemId"] = searchDto.Id };
-            var dialog = DialogService.Show<ItemDetailsDialog>("Szczegóły", parameters, maxDialogWidth);
-        }
     }
 }
