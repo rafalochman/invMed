@@ -2,8 +2,6 @@
 @using invMed.Data.Enums
 @inject IInventoryService inventoryService
 @inject ISnackbar Snackbar
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor httpContextAccessor
 
 <MudDialog>
     <DialogContent>
@@ -29,9 +27,18 @@
                             <MudButton OnClick="@(() => _endPicker.Close(false))">Anuluj</MudButton>
                         </PickerActions>
                     </MudDatePicker>
-                    @if(input.Type == InventoryTypeEnum.Partial && places is not null)
+                    @if(warehousemen is not null)
                     {
-                        <MudSelect T="string" Class="mt-2" Required="true" Label="Miejsca" HelperText="Wybierz miejsca dla których będzie przeprowadzana inwentaryzcja" MultiSelection="true" @bind-SelectedValues="input.Places">
+                        <MudSelect T="string" Class="mt-2" Required="true" Label="Magazynierzy" HelperText="Wybierz magazynierów którzy będą przeprowadzać inwentaryzację" MultiSelection="true" @bind-SelectedValues="input.Warehousemen">
+                            @foreach (var warehouseman in warehousemen)
+                            {
+                                <MudSelectItem T="string" Value="@warehouseman">@warehouseman</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
+                    @if (input.Type == InventoryTypeEnum.Partial && places is not null)
+                    {
+                        <MudSelect T="string" Class="mt-1" Required="true" Label="Miejsca" HelperText="Wybierz miejsca dla których będzie przeprowadzana inwentaryzcja" MultiSelection="true" @bind-SelectedValues="input.Places">
                             @foreach (var place in places)
                             {
                                 <MudSelectItem T="string" Value="@place">@place</MudSelectItem>
@@ -57,18 +64,19 @@
     private MudDatePicker _endPicker;
     private bool success;
     private string[] places;
+    private string[] warehousemen;
 
     protected override async Task OnInitializedAsync()
     {
         places = await inventoryService.GetPlacesNames();
+        warehousemen = await inventoryService.GetWarehousemenLogins();
     }
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 
     private async void OnValidSubmit()
     {
-        var userName = httpContextAccessor.HttpContext.User.Identity.Name;
-        var result = await inventoryService.CreateInventory(input, userName);
+        var result = await inventoryService.CreateInventory(input);
         if (result)
         {
             Snackbar.Add("Sukces, inwentaryzacja została utworzona.", Severity.Success);

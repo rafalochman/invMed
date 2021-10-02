@@ -23,9 +23,8 @@ namespace invMed.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> CreateInventory(CreateInventoryInput input, string userName)
+        public async Task<bool> CreateInventory(CreateInventoryInput input)
         {
-            var user = await _userManager.FindByNameAsync(userName);
             var places = new List<Place>();
             if (input.Places is not null)
             {
@@ -34,7 +33,15 @@ namespace invMed.Services
                     places.Add(await _db.Places.FirstOrDefaultAsync(x => x.Name == placeName));
                 }
             }
-            var inventory = new Inventory { Type = input.Type, State = InventoryStateEnum.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, CreateUser = user, Places = places };
+            var warehousemen = new List<AspNetUser>();
+            if (input.Warehousemen is not null)
+            {
+                foreach (var warehouseman in input.Warehousemen)
+                {
+                    warehousemen.Add(await _userManager.FindByNameAsync(warehouseman));
+                }
+            }
+            var inventory = new Inventory { Type = input.Type, State = InventoryStateEnum.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, Places = places, Users = warehousemen };
             try
             {
                 _db.Inventories.Add(inventory);
@@ -72,6 +79,16 @@ namespace invMed.Services
                 {
                     inventory.InventoryItemsNumber = await _db.Items.CountAsync();
                 }
+                var userNames = new List<string>();
+                userNames.Add("admin@admin.com"); //only for development, to remove
+                if(inventory.Users is not null)
+                {
+                    foreach (var user in inventory.Users)
+                    {
+                        userNames.Add(user.UserName);
+                    }
+                }
+                inventoryView.UserNames = userNames;
                 inventoriesView.Add(inventoryView);
             }
             return inventoriesView;
@@ -209,6 +226,12 @@ namespace invMed.Services
         public async Task<string[]> GetPlacesNames()
         {
             return await _db.Places.Select(x => x.Name).ToArrayAsync();
+        }
+
+        public async Task<string[]> GetWarehousemenLogins()
+        {
+            var warehousemen = await _userManager.GetUsersInRoleAsync(RoleNormalizedName.Warehouseman);
+            return warehousemen.Select(x => x.UserName).ToArray();
         }
     }
 }

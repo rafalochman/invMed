@@ -16,5 +16,6 @@ namespace invMed.Data
         public string EndDate { get; set; }
         public string PlannedStartDate { get; set; }
         public string PlannedEndDate { get; set; }
+        public List<string> UserNames { get; set; }
     }
 }

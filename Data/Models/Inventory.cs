@@ -18,8 +18,8 @@ namespace invMed.Data
         public DateTime? PlannedStartDate { get; set; }
         public DateTime? PlannedEndDate { get; set; }
         public int InventoryItemsNumber { get; set; }
-        public virtual AspNetUser CreateUser { get; set; }
         public virtual ICollection<InventoryItem> InventoryItems { get; set; }
         public virtual ICollection<Place> Places { get; set; }
+        public virtual ICollection<AspNetUser> Users { get; set; }
     }
 }

@@ -26,5 +26,8 @@ namespace invMed.Data
 
         [Display(Name = "Miejsca")]
         public HashSet<string> Places { get; set; }
+
+        [Display(Name = "Magazynierzy")]
+        public HashSet<string> Warehousemen { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace invMed.Services
 {
     public interface IInventoryService
     {
-        Task<bool> CreateInventory(CreateInventoryInput input, string userName);
+        Task<bool> CreateInventory(CreateInventoryInput input);
         Task<List<InventoryView>> GetInactiveAndActiveInventories();
         Task<InventoryDetailsView> GetInventoryDetailsViewById(int id);
         Task<string[]> GetPlacesNames();
@@ -14,5 +14,6 @@ namespace invMed.Services
         Task<ScannedItemView> GetScannedItemViewAndAddItemToInventory(string barCode, int inventoryId, string userName);
         Task<bool> RemoveScannedItem(int itemId);
         Task<bool> StartInventory(int id);
+        Task<string[]> GetWarehousemenLogins();
     }
 }
