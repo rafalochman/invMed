@@ -2,6 +2,8 @@
 @using invMed.Data.Enums
 @inject IInventoryService inventoryService
 
+@attribute [Authorize(Roles = "Manager, Magazynier")]
+
 <MudDialog>
     <DialogContent>
         <MudPaper Style="height: 640px; overflow-y: scroll" Elevation="2">

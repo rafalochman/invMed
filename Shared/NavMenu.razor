@@ -1,14 +1,30 @@
-﻿
+﻿@using invMed.Data.Enums
+
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Strona główna</MudNavLink>
-    <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Produkty</MudNavLink>
-    <MudNavLink Href="/inventory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Radar">Inwentaryzacja</MudNavLink>
 
-    <AuthorizeView Roles="Admin">
+    <AuthorizeView Roles="@RoleName.Warehouseman">
+        <Authorized>
+            <MudNavLink Href="/warehousemanPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Magazyniera</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="@RoleName.Manager">
+        <Authorized>
+            <MudNavLink Href="/managerPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Alarm">Panel Managera</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="@RoleName.Admin">
         <Authorized>
             <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Panel Administratora</MudNavLink>
-            <MudNavLink Href="/warehousemanPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Magazyniera</MudNavLink>
-            <MudNavLink Href="/managerPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Alarm">Panel Managera</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="Magazynier, Manager">
+        <Authorized>
+            <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Produkty</MudNavLink>
+            <MudNavLink Href="/inventory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Radar">Inwentaryzacja</MudNavLink>
         </Authorized>
     </AuthorizeView>
 

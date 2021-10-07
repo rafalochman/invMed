@@ -8,8 +8,7 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor
 
-
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = "Magazynier")]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Inwentaryzacja</MudText>
 <MudGrid>
@@ -21,7 +20,7 @@
                 <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
                     <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                         <DataAnnotationsValidator />
-                        <MudTextField Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" Clearable="true" AutoFocus="true"/>
+                        <MudTextField Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" Clearable="true" AutoFocus="true" />
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Dodaj</MudButton>
                     </EditForm>
                 </MudContainer>
@@ -109,7 +108,7 @@
     private async void OnValidSubmit()
     {
         var userName = httpContextAccessor.HttpContext.User.Identity.Name;
-        if(!items.Any(x => x.BarCode == input.BarCode))
+        if (!items.Any(x => x.BarCode == input.BarCode))
         {
             var item = await inventoryService.GetScannedItemViewAndAddItemToInventory(input.BarCode, InventoryId, userName);
             if (item.BarCode != null)

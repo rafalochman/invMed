@@ -3,6 +3,8 @@
 @inject IInventoryService inventoryService
 @inject ISnackbar Snackbar
 
+@attribute [Authorize(Roles = "Manager")]
+
 <MudDialog>
     <DialogContent>
         <MudPaper Style="min-height: 640px" Elevation="2">
@@ -27,7 +29,7 @@
                             <MudButton OnClick="@(() => _endPicker.Close(false))">Anuluj</MudButton>
                         </PickerActions>
                     </MudDatePicker>
-                    @if(warehousemen is not null)
+                    @if (warehousemen is not null)
                     {
                         <MudSelect T="string" Class="mt-2" Required="true" Label="Magazynierzy" HelperText="Wybierz magazynierów którzy będą przeprowadzać inwentaryzację" MultiSelection="true" @bind-SelectedValues="input.Warehousemen">
                             @foreach (var warehouseman in warehousemen)

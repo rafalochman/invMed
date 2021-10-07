@@ -54,9 +54,9 @@ namespace invMed.Services
             }
         }
 
-        public async Task<List<InventoryView>> GetInactiveAndActiveInventories()
+        public async Task<List<InventoryView>> GetInventories()
         {
-            var inventories = await _db.Inventories.Where(x => x.State == InventoryStateEnum.Inactive || x.State == InventoryStateEnum.Active).ToListAsync();
+            var inventories = await _db.Inventories.Include(x => x.Users).ToListAsync();
             var inventoriesView = new List<InventoryView>();
             foreach (var inventory in inventories)
             {
@@ -80,7 +80,7 @@ namespace invMed.Services
                     inventory.InventoryItemsNumber = await _db.Items.CountAsync();
                 }
                 var userNames = new List<string>();
-                userNames.Add("admin@admin.com"); //only for development, to remove
+
                 if(inventory.Users is not null)
                 {
                     foreach (var user in inventory.Users)
@@ -259,6 +259,20 @@ namespace invMed.Services
                 return true;
             }
             catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> IsManager(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var isManager = await _userManager.IsInRoleAsync(user, RoleName.Manager);
+            if (isManager)
+            {
+                return true;
+            }
+            else
             {
                 return false;
             }
