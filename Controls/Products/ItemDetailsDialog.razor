@@ -1,5 +1,8 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 @inject IProductsService productsService
+
+@attribute [Authorize(Roles = AuthorizeRoleName.WarehousemanAndManager)]
 
 <MudDialog>
     <DialogContent>

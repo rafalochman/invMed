@@ -8,7 +8,7 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor
 
-@attribute [Authorize(Roles = "Manager, Magazynier")]
+@attribute [Authorize(Roles = AuthorizeRoleName.WarehousemanAndManager)]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Inwentaryzacja</MudText>
 <MudGrid>
@@ -45,7 +45,7 @@
 
                                     <MudButton Variant="Variant.Filled" Class="mr-4" OnClick="@((e) => OpenInventoryDetailsDialog(inventory.Id))" Color="Color.Default">Szczegóły</MudButton>
 
-                                    <AuthorizeView Roles="@RoleName.Warehouseman">
+                                    <AuthorizeView Roles="@AuthorizeRoleName.Warehouseman">
                                         <Authorized>
                                             @if (inventory.State == InventoryStateEnum.Inactive)
                                             {
@@ -58,7 +58,7 @@
                                         </Authorized>
                                     </AuthorizeView>
 
-                                    <AuthorizeView Roles="@RoleName.Manager">
+                                    <AuthorizeView Roles="@AuthorizeRoleName.Manager">
                                         <Authorized>
                                             @if (inventory.State == InventoryStateEnum.Active)
                                             {
@@ -80,7 +80,7 @@
         </MudPaper>
     </MudItem>
 
-    <AuthorizeView Roles="@RoleName.Manager">
+    <AuthorizeView Roles="@AuthorizeRoleName.Manager">
         <Authorized>
             <MudItem xs="12" sm="12" md="4" lg="3">
                 <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">

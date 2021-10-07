@@ -1,8 +1,11 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 @inject IWarehousemanService warehousemanService
 @inject ISnackbar Snackbar
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor httpContextAccessor
+
+@attribute [Authorize(Roles = AuthorizeRoleName.Warehouseman)]
 
 <MudDialog>
     <DialogContent>
@@ -11,7 +14,7 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Wydaj towar</MudText>
-                    <MudTextField AutoFocus="true" Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" Clearable="true"/>
+                    <MudTextField AutoFocus="true" Label="Bar kod" Immediate="true" @bind-Value="input.BarCode" Clearable="true" />
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-4">Dodaj</MudButton>
                 </EditForm>
 
@@ -52,7 +55,7 @@
     private async void OnValidSubmit()
     {
         var item = await warehousemanService.GetRemoveItemViewByItemBarCode(input.BarCode, number);
-        if(item.BarCode != null && !items.Any(x => x.BarCode == item.BarCode))
+        if (item.BarCode != null && !items.Any(x => x.BarCode == item.BarCode))
         {
             items.Add(item);
             number++;
@@ -63,7 +66,7 @@
 
     private async void RemoveItems()
     {
-        if(items.Count > 0)
+        if (items.Count > 0)
         {
             var result = await warehousemanService.RemoveItems(items);
             if (result)

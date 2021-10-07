@@ -1,6 +1,9 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 @inject IProductsService productsService
 @inject ISnackbar Snackbar
+
+@attribute [Authorize(Roles = AuthorizeRoleName.WarehousemanAndManager)]
 
 <MudDialog>
     <DialogContent>
@@ -30,7 +33,7 @@
                     <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
                 }
             </MudContainer>
-            
+
         </MudPaper>
     </DialogContent>
     <DialogActions>

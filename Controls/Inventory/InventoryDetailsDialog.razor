@@ -2,7 +2,7 @@
 @using invMed.Data.Enums
 @inject IInventoryService inventoryService
 
-@attribute [Authorize(Roles = "Manager, Magazynier")]
+@attribute [Authorize(Roles = AuthorizeRoleName.WarehousemanAndManager)]
 
 <MudDialog>
     <DialogContent>

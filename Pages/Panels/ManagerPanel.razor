@@ -5,7 +5,7 @@
 @using invMed.Data.Enums
 @inject IProductsService productsService
 
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = AuthorizeRoleName.Manager)]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Panel Managera</MudText>
 <MudGrid>

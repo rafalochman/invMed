@@ -1,11 +1,12 @@
 ﻿@page "/products"
 @using invMed.Data
+@using invMed.Data.Enums
 @using invMed.Controls.Products
 @using invMed.Controls.Search
 @inject IDialogService DialogService
 @inject IProductsService productsService
 
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = AuthorizeRoleName.WarehousemanAndManager)]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Produkty</MudText>
 <MudGrid>

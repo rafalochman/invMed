@@ -3,25 +3,25 @@
 <MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Strona główna</MudNavLink>
 
-    <AuthorizeView Roles="@RoleName.Warehouseman">
+    <AuthorizeView Roles="@AuthorizeRoleName.Warehouseman">
         <Authorized>
             <MudNavLink Href="/warehousemanPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Magazyniera</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
-    <AuthorizeView Roles="@RoleName.Manager">
+    <AuthorizeView Roles="@AuthorizeRoleName.Manager">
         <Authorized>
             <MudNavLink Href="/managerPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Alarm">Panel Managera</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
-    <AuthorizeView Roles="@RoleName.Admin">
+    <AuthorizeView Roles="@AuthorizeRoleName.Admin">
         <Authorized>
             <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Panel Administratora</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
-    <AuthorizeView Roles="Magazynier, Manager">
+    <AuthorizeView Roles="@AuthorizeRoleName.WarehousemanAndManager">
         <Authorized>
             <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Produkty</MudNavLink>
             <MudNavLink Href="/inventory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Radar">Inwentaryzacja</MudNavLink>

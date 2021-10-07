@@ -8,7 +8,7 @@
 @inject IProductsService productsService
 @inject IDialogService DialogService
 
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = AuthorizeRoleName.Warehouseman)]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Panel Magazyniera</MudText>
 <MudGrid>

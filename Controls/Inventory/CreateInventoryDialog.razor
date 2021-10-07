@@ -3,7 +3,7 @@
 @inject IInventoryService inventoryService
 @inject ISnackbar Snackbar
 
-@attribute [Authorize(Roles = "Manager")]
+@attribute [Authorize(Roles = AuthorizeRoleName.Warehouseman)]
 
 <MudDialog>
     <DialogContent>

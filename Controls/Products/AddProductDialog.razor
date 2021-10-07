@@ -1,7 +1,10 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 @inject IProductsService productsService
 @inject ISnackbar Snackbar
 @using System.Globalization
+
+@attribute [Authorize(Roles = AuthorizeRoleName.WarehousemanAndManager)]
 
 <MudDialog>
     <DialogContent>
