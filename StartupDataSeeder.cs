@@ -68,6 +68,19 @@ namespace invMed
             };
             await userManager.CreateAsync(manager, "1qaz@WSX");
             await userManager.AddToRoleAsync(manager, RoleNormalizedName.Manager);
+
+            var superAdmin = new AspNetUser
+            {
+                UserName = "sadmin@sadmin.com",
+                Email = "sadmin@sadmin.com",
+                Name = "sadmin",
+                Surname = "sadmin",
+                IsActive = true
+            };
+            await userManager.CreateAsync(superAdmin, "1qaz@WSX");
+            await userManager.AddToRoleAsync(superAdmin, RoleNormalizedName.Admin);
+            await userManager.AddToRoleAsync(superAdmin, RoleNormalizedName.Manager);
+            await userManager.AddToRoleAsync(superAdmin, RoleNormalizedName.Warehouseman);
         }
 
         public static async Task FillWithProducts(ApplicationDbContext db)
