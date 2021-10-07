@@ -15,5 +15,6 @@ namespace invMed.Services
         Task<bool> RemoveScannedItem(int itemId);
         Task<bool> StartInventory(int id);
         Task<string[]> GetWarehousemenLogins();
+        Task<bool> FinishInventory(int id);
     }
 }

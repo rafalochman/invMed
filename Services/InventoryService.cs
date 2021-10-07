@@ -137,15 +137,22 @@ namespace invMed.Services
         public async Task<bool> StartInventory(int id)
         {
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
-            inventory.State = InventoryStateEnum.Active;
-            inventory.StartDate = DateTime.Now;
-            if (inventory.Type == InventoryTypeEnum.Full)
+            if(inventory.State == InventoryStateEnum.Inactive)
             {
-                inventory.InventoryItemsNumber = await _db.Items.CountAsync();
+                inventory.State = InventoryStateEnum.Active;
+                inventory.StartDate = DateTime.Now;
+                if (inventory.Type == InventoryTypeEnum.Full)
+                {
+                    inventory.InventoryItemsNumber = await _db.Items.CountAsync();
+                }
+                else if (inventory.Type == InventoryTypeEnum.Partial)
+                {
+                    inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place)).CountAsync();
+                }
             }
-            else if (inventory.Type == InventoryTypeEnum.Partial)
+            else
             {
-                inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place)).CountAsync();
+                return false;
             }
             try
             {
@@ -232,6 +239,29 @@ namespace invMed.Services
         {
             var warehousemen = await _userManager.GetUsersInRoleAsync(RoleNormalizedName.Warehouseman);
             return warehousemen.Select(x => x.UserName).ToArray();
+        }
+
+        public async Task<bool> FinishInventory(int id)
+        {
+            var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
+            if(inventory.State == InventoryStateEnum.Active)
+            {
+                inventory.State = InventoryStateEnum.Finished;
+                inventory.EndDate = DateTime.Now;
+            }
+            else
+            {
+                return false;
+            }
+            try
+            {
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

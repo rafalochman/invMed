@@ -51,6 +51,10 @@
                                     {
                                         <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => ContinueInventory(inventory.Id))">Kontynuuj</MudButton>
                                     }
+                                    @if (inventory.State == InventoryStateEnum.Active)
+                                    {
+                                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@((e) => OpenFinishInventoryMessageBox(inventory.Id, inventory.Description))">Zakończ</MudButton>
+                                    }
                                 </MudItem>
                             </MudGrid>
                         </MudPaper>
@@ -121,5 +125,19 @@
     private void ContinueInventory(int inventoryId)
     {
         NavManager.NavigateTo("/inventory/" + inventoryId);
+    }
+
+    private async Task OpenFinishInventoryMessageBox(int inventoryId, string description)
+    {
+        bool? result = await DialogService.ShowMessageBox(
+            "Zakończ inventaryzację",
+            "Czy na pewno chcesz zakończyć tą inwentaryzację? " + description,
+            yesText: "Zakończ", cancelText: "Anuluj");
+
+        if (result == true)
+        {
+            await inventoryService.FinishInventory(inventoryId);
+            inventories = await inventoryService.GetInactiveAndActiveInventories();
+        }
     }
 }
