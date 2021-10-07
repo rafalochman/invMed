@@ -3,7 +3,7 @@
 @inject IAdminService adminService
 @inject ISnackbar Snackbar
 
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = AuthorizeRoleName.Admin)]
 
 <MudDialog>
     <DialogContent>

@@ -1,6 +1,7 @@
 ﻿@using invMed.Data
+@using invMed.Data.Enums
 
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = AuthorizeRoleName.Admin)]
 
 <MudDialog>
     <DialogContent>

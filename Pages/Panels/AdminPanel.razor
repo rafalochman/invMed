@@ -5,7 +5,7 @@
 @inject IAdminService adminService
 @inject IDialogService DialogService
 
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize(Roles = AuthorizeRoleName.Admin)]
 
 <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Panel Administratora</MudText>
 <MudGrid>
