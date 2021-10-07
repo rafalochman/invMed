@@ -1,5 +1,7 @@
 ﻿@using invMed.Data
 
+@attribute [Authorize(Roles = "Admin")]
+
 <MudDialog>
     <DialogContent>
         <MudPaper Style="min-height: 640px" Elevation="2">

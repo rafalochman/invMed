@@ -2,6 +2,8 @@
 @inject IAdminService adminService
 @inject ISnackbar Snackbar
 
+@attribute [Authorize(Roles = "Admin")]
+
 <MudDialog>
     <DialogContent>
         <MudPaper Style="min-height: 640px" Elevation="2">
@@ -9,10 +11,10 @@
                 @if (input is not null)
                 {
                     <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">
-                    @if (!String.IsNullOrEmpty(input.Name) && !String.IsNullOrEmpty(input.Surname))
-                    {
-                        @input.Name[0]@input.Surname[0]
-                    }
+                        @if (!String.IsNullOrEmpty(input.Name) && !String.IsNullOrEmpty(input.Surname))
+                        {
+                            @input.Name[0]@input.Surname[0]
+                        }
                     </MudAvatar>
                     <MudText Class="mt-4">@input.Name @input.Surname</MudText>
                     <MudText>@role</MudText>
