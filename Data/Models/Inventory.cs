@@ -12,6 +12,7 @@ namespace invMed.Data
         public int Id { get; set; }
         public InventoryTypeEnum? Type { get; set; }
         public InventoryStateEnum State { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }

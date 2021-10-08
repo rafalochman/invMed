@@ -274,6 +274,7 @@ namespace invMed
             {
                 State = InventoryStateEnum.Inactive,
                 Type = InventoryTypeEnum.Full,
+                Name = "test",
                 Description = "Pełna inwentaryzacja roczna 2021.",
                 PlannedStartDate = DateTime.Now.AddDays(3),
                 PlannedEndDate = DateTime.Now.AddDays(13),
@@ -284,6 +285,7 @@ namespace invMed
             {
                 State = InventoryStateEnum.Inactive,
                 Type = InventoryTypeEnum.Partial,
+                Name = "test",
                 Description = "Inwentaryzacja częściowa regały B1/2, A12, A2/18.",
                 PlannedStartDate = DateTime.Now.AddDays(13),
             });
@@ -292,6 +294,7 @@ namespace invMed
             {
                 State = InventoryStateEnum.Finished,
                 Type = InventoryTypeEnum.Full,
+                Name = "test",
                 Description = "Pełna inwentaryzacja roczna 2020.",
                 PlannedStartDate = DateTime.Now.AddDays(-13),
                 PlannedEndDate = DateTime.Now.AddDays(-3),
@@ -302,6 +305,7 @@ namespace invMed
             {
                 State = InventoryStateEnum.Active,
                 Type = InventoryTypeEnum.Partial,
+                Name = "test",
                 Description = "Inwentaryzacja częściowa towarów z kategori opatrunki.",
                 PlannedStartDate = DateTime.Now.AddDays(30),
                 PlannedEndDate = DateTime.Now.AddDays(40),

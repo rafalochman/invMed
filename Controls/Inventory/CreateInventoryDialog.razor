@@ -12,6 +12,7 @@
                 <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
                     <MudText Class="pt-8" Typo="Typo.h6">Utwórz inwentaryzację</MudText>
+                    <MudTextField Label="Nazwa" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Name" For="@(() => input.Name)" />
                     <MudSelect Style="text-align: left" Class="mt-2" Required="true" T="InventoryTypeEnum?" @bind-Value="input.Type" For="@(() => input.Type)" Immediate="true" Label="Typ">
                         <MudSelectItem T="InventoryTypeEnum?" Value="@InventoryTypeEnum.Full">@InventoryTypeEnum.Full.GetDisplayName()</MudSelectItem>
                         <MudSelectItem T="InventoryTypeEnum?" Value="@InventoryTypeEnum.Partial">@InventoryTypeEnum.Partial.GetDisplayName()</MudSelectItem>

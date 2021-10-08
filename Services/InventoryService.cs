@@ -41,7 +41,7 @@ namespace invMed.Services
                     warehousemen.Add(await _userManager.FindByNameAsync(warehouseman));
                 }
             }
-            var inventory = new Inventory { Type = input.Type, State = InventoryStateEnum.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, Places = places, Users = warehousemen };
+            var inventory = new Inventory {Name = input.Name, Type = input.Type, State = InventoryStateEnum.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, Places = places, Users = warehousemen };
             try
             {
                 _db.Inventories.Add(inventory);
@@ -63,6 +63,7 @@ namespace invMed.Services
                 var inventoryView = new InventoryView()
                 {
                     Id = inventory.Id,
+                    Name = inventory.Name,
                     State = inventory.State,
                     Type = inventory.Type,
                     Description = inventory.Description,
@@ -100,6 +101,7 @@ namespace invMed.Services
             var inventoryView = new InventoryDetailsView()
             {
                 Id = inventory.Id,
+                Name = inventory.Name,
                 State = inventory.State,
                 Type = inventory.Type,
                 Description = inventory.Description,

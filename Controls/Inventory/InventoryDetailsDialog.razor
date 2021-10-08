@@ -10,7 +10,8 @@
             <MudContainer MaxWidth="MaxWidth.ExtraSmall">
                 @if (inventory is not null)
                 {
-                    <MudField Variant="Variant.Text" Class="pt-8" Label="Typ"> @inventory.Type.GetDisplayName()</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-8" Label="Nazwa"> @inventory.Name</MudField>
+                    <MudField Variant="Variant.Text" Class="pt-4" Label="Typ"> @inventory.Type.GetDisplayName()</MudField>
                     <MudField Variant="Variant.Text" Class="mt-4" Label="Stan"> @inventory.State.GetDisplayName()</MudField>
                     <MudField Variant="Variant.Text" Class="mt-4" Label="Opis"> @inventory.Description</MudField>
                     <MudField Variant="Variant.Text" Class="mt-4" Label="Data planowanego rozpoczęcia"> @inventory.PlannedStartDate</MudField>

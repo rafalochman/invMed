@@ -13,6 +13,10 @@ namespace invMed.Data
         [Display(Name = "Typ")]
         public InventoryTypeEnum? Type { get; set; }
 
+        [Required(ErrorMessage = "Pole Nazwa jest wymagane.")]
+        [Display(Name = "Nazwa")]
+        public string Name { get; set; }
+
         [Required(ErrorMessage = "Pole Opis jest wymagane.")]
         [Display(Name = "Opis")]
         public string Description { get; set; }
