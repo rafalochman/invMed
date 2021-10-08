@@ -280,26 +280,13 @@ namespace invMed.Services
             }
         }
 
-        public async Task<IEnumerable<InventoryDto>> GetAllFinishedInventories()
+        public async Task<IEnumerable<InventoryDto>> SearchFinishedInventories(string searchValue = "")
         {
             var inventories = await _db.Inventories.Where(x => x.State == InventoryStateEnum.Finished).ToListAsync();
-            var inventoriesDto = new List<InventoryDto>();
-            foreach (var inventory in inventories)
+            if (searchValue != "")
             {
-                var inventoryDto = new InventoryDto()
-                {
-                    InventoryName = inventory.Name,
-                    InventoryId = inventory.Id,
-                    InventoryType = inventory.Type.Value
-                };
-                inventoriesDto.Add(inventoryDto);
+                inventories = inventories.Where(x => x.Name.Contains(searchValue)).ToList();
             }
-            return inventoriesDto;
-        }
-
-        public async Task<IEnumerable<InventoryDto>> SearchFinishedInventories(string searchValue)
-        {
-            var inventories = await _db.Inventories.Where(x => x.State == InventoryStateEnum.Finished).Where(x => x.Name.Contains(searchValue)).ToListAsync();
             var inventoriesDto = new List<InventoryDto>();
             foreach (var inventory in inventories)
             {
