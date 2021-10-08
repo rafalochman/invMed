@@ -200,9 +200,9 @@ namespace invMed.Services
             return new ScannedItemView();
         }
 
-        public async Task<bool> RemoveScannedItem(int itemId)
+        public async Task<bool> RemoveScannedItem(int inventoryItemId)
         {
-            var inventoryItem = await _db.InventoryItems.FirstOrDefaultAsync(x => x.Id == itemId);
+            var inventoryItem = await _db.InventoryItems.FirstOrDefaultAsync(x => x.Id == inventoryItemId);
             try
             {
                 _db.Remove(inventoryItem);
