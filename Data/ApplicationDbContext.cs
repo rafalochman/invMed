@@ -23,7 +23,7 @@ namespace invMed.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<InventoryItem> InventoryItems { get; set; }
-
         public DbSet<Place> Places { get; set; }
+        public DbSet<Report> Reports { get; set; }
     }
 }

@@ -1,0 +1,57 @@
+﻿@using invMed.Data
+@using invMed.Data.Enums
+@inject IManagerService managerService
+@inject IInventoryService inventoryService
+@inject ISnackbar Snackbar
+
+@attribute [Authorize(Roles = AuthorizeRoleName.Manager)]
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudText Class="pt-8" Typo="Typo.h6">Wygeneruj raport</MudText>
+                    <MudTextField Label="Nazwa" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Name" For="@(() => input.Name)" />
+                    <MudTextField Label="Opis" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Description" For="@(() => input.Description)" />
+                    <MudTextField Label="Id Inwentaryzacji" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Inventory" For="@(() => input.Inventory)" />
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-8">Wygeneruj</MudButton>
+                </EditForm>
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    private CreateReportInput input = new CreateReportInput();
+    private bool success;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async void OnValidSubmit()
+    {
+        var result = await managerService.GenerateReport(input);
+        if (result)
+        {
+            Snackbar.Add("Sukces, raport został utworzony.", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Błąd, raport nie został utworzony.", Severity.Error);
+        }
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+}

@@ -1,0 +1,80 @@
+﻿@page "/report"
+@using invMed.Data
+@using invMed.Controls.Manager
+@using invMed.Data.Enums
+@inject IManagerService managerService
+@inject IDialogService DialogService
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = AuthorizeRoleName.Manager)]
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Raporty</MudText>
+<MudGrid>
+    <MudItem xs="12" sm="12" md="8" lg="9">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 680px;">
+            <MudText Typo="Typo.h6">Wygenerowane raporty</MudText>
+            @if (reports is not null)
+            {
+                foreach (var report in reports)
+                {
+                    <MudPaper Elevation="25" Class="pa-4 mt-4">
+                        <MudGrid>
+                            <MudItem md="12" lg="7">
+                                <MudText><b>Nazwa:</b> @report.Name</MudText>
+                                <MudText><b>Opis:</b> @report.Description</MudText>
+                                <MudText><b>Data wygenerowania:</b> @report.GenerationDate</MudText>
+                            </MudItem>
+                            <MudItem md="12" lg="5" Style="text-align: right;">
+
+                                <MudButton Variant="Variant.Filled" Class="mr-4" Color="Color.Default">Szczegóły</MudButton>
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary">Pobierz</MudButton>
+
+                            </MudItem>
+                        </MudGrid>
+                    </MudPaper>
+                }
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" sm="12" md="4" lg="3">
+        <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <div>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenCreateReportDialog">Wygeneruj raport</MudButton>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+    private List<ReportDataView> reports;
+
+    protected override async Task OnInitializedAsync()
+    {
+        reports = await managerService.GetReports();
+    }
+
+    private async Task OpenCreateReportDialog()
+    {
+        var dialog = DialogService.Show<CreateReportDialog>("Wygeneruj raport", maxDialogWidth);
+        var result = await dialog.Result;
+
+        if (result is not null)
+        {
+            reports = await managerService.GetReports();
+        }
+    }
+
+    private void OpenReport(int reportId)
+    {
+        NavManager.NavigateTo("/report/" + reportId);
+    }
+}

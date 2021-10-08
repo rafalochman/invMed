@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controls\Manager\" />
     <Folder Include="wwwroot\css\bootstrap\" />
   </ItemGroup>
 
