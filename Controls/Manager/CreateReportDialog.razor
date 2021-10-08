@@ -15,7 +15,16 @@
                     <MudText Class="pt-8" Typo="Typo.h6">Wygeneruj raport</MudText>
                     <MudTextField Label="Nazwa" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Name" For="@(() => input.Name)" />
                     <MudTextField Label="Opis" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Description" For="@(() => input.Description)" />
-                    <MudTextField Label="Id Inwentaryzacji" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Inventory" For="@(() => input.Inventory)" />
+                    <MudAutocomplete T="InventoryDto" Label="Inwentaryzacja" Class="mt-2" Clearable="true" ResetValueOnEmptyText="true" ToStringFunc="@(e=> e==null ? null : e.InventoryName)" For="@(() => input.InventoryDto)" @bind-Value="input.InventoryDto" SearchFunc="@SearchInventory" >
+                        <ItemTemplate Context="e">
+                            <MudText>
+                                @(e.InventoryName)
+                            </MudText>
+                            <MudText Typo="Typo.caption">
+                                @(e.InventoryType.GetDisplayName())
+                            </MudText>
+                        </ItemTemplate>
+                    </MudAutocomplete>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto mt-8">Wygeneruj</MudButton>
                 </EditForm>
             </MudContainer>
@@ -52,6 +61,14 @@
             Snackbar.Add("Błąd, raport nie został utworzony.", Severity.Error);
         }
         MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private async Task<IEnumerable<InventoryDto>> SearchInventory(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return await inventoryService.GetAllFinishedInventories();
+
+        return await inventoryService.SearchFinishedInventories(value);
     }
 
 }

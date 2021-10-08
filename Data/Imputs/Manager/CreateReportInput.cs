@@ -19,6 +19,6 @@ namespace invMed.Data
 
         [Required(ErrorMessage = "Pole Inwentaryzacja jest wymagane.")]
         [Display(Name = "Inwentaryzacja")]
-        public int Inventory { get; set; }
+        public InventoryDto InventoryDto { get; set; }
     }
 }

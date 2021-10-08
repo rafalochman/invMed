@@ -17,5 +17,8 @@ namespace invMed.Services
         Task<string[]> GetWarehousemenLogins();
         Task<bool> FinishInventory(int id);
         Task<bool> IsManager(string userName);
+        Task<IEnumerable<InventoryDto>> GetAllFinishedInventories();
+        Task<IEnumerable<InventoryDto>> SearchFinishedInventories(string searchValue);
+
     }
 }

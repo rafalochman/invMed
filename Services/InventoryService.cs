@@ -41,7 +41,7 @@ namespace invMed.Services
                     warehousemen.Add(await _userManager.FindByNameAsync(warehouseman));
                 }
             }
-            var inventory = new Inventory {Name = input.Name, Type = input.Type, State = InventoryStateEnum.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, Places = places, Users = warehousemen };
+            var inventory = new Inventory { Name = input.Name, Type = input.Type, State = InventoryStateEnum.Inactive, Description = input.Description, PlannedStartDate = input.PlannedStartDate, PlannedEndDate = input.PlannedEndDate, Places = places, Users = warehousemen };
             try
             {
                 _db.Inventories.Add(inventory);
@@ -82,7 +82,7 @@ namespace invMed.Services
                 }
                 var userNames = new List<string>();
 
-                if(inventory.Users is not null)
+                if (inventory.Users is not null)
                 {
                     foreach (var user in inventory.Users)
                     {
@@ -139,7 +139,7 @@ namespace invMed.Services
         public async Task<bool> StartInventory(int id)
         {
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
-            if(inventory.State == InventoryStateEnum.Inactive)
+            if (inventory.State == InventoryStateEnum.Inactive)
             {
                 inventory.State = InventoryStateEnum.Active;
                 inventory.StartDate = DateTime.Now;
@@ -246,7 +246,7 @@ namespace invMed.Services
         public async Task<bool> FinishInventory(int id)
         {
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
-            if(inventory.State == InventoryStateEnum.Active)
+            if (inventory.State == InventoryStateEnum.Active)
             {
                 inventory.State = InventoryStateEnum.Finished;
                 inventory.EndDate = DateTime.Now;
@@ -278,6 +278,40 @@ namespace invMed.Services
             {
                 return false;
             }
+        }
+
+        public async Task<IEnumerable<InventoryDto>> GetAllFinishedInventories()
+        {
+            var inventories = await _db.Inventories.Where(x => x.State == InventoryStateEnum.Finished).ToListAsync();
+            var inventoriesDto = new List<InventoryDto>();
+            foreach (var inventory in inventories)
+            {
+                var inventoryDto = new InventoryDto()
+                {
+                    InventoryName = inventory.Name,
+                    InventoryId = inventory.Id,
+                    InventoryType = inventory.Type.Value
+                };
+                inventoriesDto.Add(inventoryDto);
+            }
+            return inventoriesDto;
+        }
+
+        public async Task<IEnumerable<InventoryDto>> SearchFinishedInventories(string searchValue)
+        {
+            var inventories = await _db.Inventories.Where(x => x.State == InventoryStateEnum.Finished).Where(x => x.Name.Contains(searchValue)).ToListAsync();
+            var inventoriesDto = new List<InventoryDto>();
+            foreach (var inventory in inventories)
+            {
+                var inventoryDto = new InventoryDto()
+                {
+                    InventoryName = inventory.Name,
+                    InventoryId = inventory.Id,
+                    InventoryType = inventory.Type.Value
+                };
+                inventoriesDto.Add(inventoryDto);
+            }
+            return inventoriesDto;
         }
     }
 }
