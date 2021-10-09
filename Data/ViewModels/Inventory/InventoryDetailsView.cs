@@ -19,6 +19,6 @@ namespace invMed.Data
         public string EndDate { get; set; }
         public int InventoryItemsNumber { get; set; }
         public int ScannedItemsNumber { get; set; }
-        public int Progress { get; set; }
+        public int Progres { get; set; }
     }
 }

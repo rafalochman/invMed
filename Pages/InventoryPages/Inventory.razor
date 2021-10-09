@@ -77,7 +77,7 @@
                     }
                     <MudText><b>Ilość zeskanowanych produktów:</b> @inventoryDetails.ScannedItemsNumber</MudText>
                     <MudText><b>Ilość produktów inwentaryzacyjnych:</b> @inventoryDetails.InventoryItemsNumber</MudText>
-                    <MudText><b>Postęp:</b> @inventoryDetails.Progress %</MudText>
+                    <MudText><b>Postęp:</b> @inventoryDetails.Progres %</MudText>
                 </MudContainer>
             }
             else
@@ -116,6 +116,7 @@
             {
                 items.Insert(0, item);
                 input = new ScanItemInput();
+                inventoryDetails = await inventoryService.GetInventoryDetailsViewById(InventoryId);
                 StateHasChanged();
             }
         }

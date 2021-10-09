@@ -127,11 +127,11 @@ namespace invMed.Services
             inventoryView.ScannedItemsNumber = scannedItemsNumber;
             if (inventory.InventoryItemsNumber != 0)
             {
-                inventoryView.Progress = scannedItemsNumber / inventory.InventoryItemsNumber * 100;
+                inventoryView.Progres = (int)((double)scannedItemsNumber / (double)inventory.InventoryItemsNumber * 100);
             }
             else
             {
-                inventoryView.Progress = 0;
+                inventoryView.Progres = 0;
             }
             return inventoryView;
         }
