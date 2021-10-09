@@ -71,7 +71,7 @@
             <MudText Typo="Typo.h6">Szczegóły inwentaryzacji</MudText>
             @if (inventoryDetails is not null)
             {
-                <MudContainer Class="pa-0" Style="height: 240px; overflow-y: scroll">
+                <MudContainer Class="pa-0" Style="max-height: 540px; overflow-y: scroll">
                     <MudText Class="mt-4"><b>Nazwa:</b> @inventoryDetails.Name</MudText>
                     <MudText><b>Typ:</b> @inventoryDetails.Type.GetDisplayName()</MudText>
                     <MudText><b>Opis:</b> @inventoryDetails.Description</MudText>
