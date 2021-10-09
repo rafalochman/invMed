@@ -1,0 +1,66 @@
+﻿@using invMed.Data
+@using invMed.Data.Enums
+@inject IWarehousemanService warehousemanService
+@inject IInventoryService inventoryService
+@inject ISnackbar Snackbar
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@attribute [Authorize(Roles = AuthorizeRoleName.Warehouseman)]
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="min-height: 640px" Elevation="2">
+            <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
+                <EditForm Model="@input" @bind-IsValid="@success" OnValidSubmit="OnValidSubmit">
+                    <DataAnnotationsValidator />
+                    <MudText Class="pt-8" Typo="Typo.h6">Dodaj nowy towar</MudText>
+                    <MudAutocomplete T="string" Required="true" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@SearchProduct" Clearable="true" />
+                    <MudTextField Label="Barkod" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Barcode" For="@(() => input.Barcode)" />
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-8">Dodaj</MudButton>
+                </EditForm>
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    private AddNewItemInput input = new AddNewItemInput();
+    private bool success;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private async void OnValidSubmit()
+    {
+        var userName = httpContextAccessor.HttpContext.User.Identity.Name;
+        var result = await inventoryService.AddNewItem(input, userName);
+        var barcode = "";
+        if (result)
+        {
+            Snackbar.Add("Sukces, towar został dodany.", Severity.Success);
+            barcode = input.Barcode;
+            MudDialog.Close(DialogResult.Ok(barcode));
+        }
+        else
+        {
+            Snackbar.Add("Błąd, towar nie został dodany.", Severity.Error);
+        }
+    }
+
+    private async Task<IEnumerable<string>> SearchProduct(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return await warehousemanService.GetAllProductsNames();
+
+        return await warehousemanService.SearchProductsNames(value);
+    }
+
+}

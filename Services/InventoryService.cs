@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
+using invMed.Data.Domain;
 using invMed.Data.Enums;
 using invMed.Data.Models;
 using Microsoft.AspNetCore.Identity;
@@ -299,6 +300,30 @@ namespace invMed.Services
                 inventoriesDto.Add(inventoryDto);
             }
             return inventoriesDto;
+        }
+
+        public async Task<bool> AddNewItem(AddNewItemInput input, string userName)
+        {
+            var isBarcode = _db.Items.Any(x => x.BarCode == input.Barcode);
+            if (isBarcode)
+            {
+                return false;
+            }
+            var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
+            var user = await _userManager.FindByNameAsync(userName);
+            var item = new Item { AddDate = DateTime.Now, Product = product, AddUser = user, Type = ItemTypeEnum.Over, BarCode = input.Barcode };
+            var barcode = new Barcode(item.BarCode);
+            item.BarcodeUrl = barcode.UrlData;
+            try
+            {
+                _db.Items.Add(item);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

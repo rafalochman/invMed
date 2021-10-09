@@ -18,6 +18,6 @@ namespace invMed.Services
         Task<bool> FinishInventory(int id);
         Task<bool> IsManager(string userName);
         Task<IEnumerable<InventoryDto>> SearchFinishedInventories(string searchValue = "");
-
+        Task<bool> AddNewItem(AddNewItemInput input, string userName);
     }
 }

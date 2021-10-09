@@ -64,7 +64,7 @@
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4 mb-6" Style="height: 100px;">
             <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" >Skanuj nowy</MudButton>
+                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" @onclick="OpenAddNewItemDialog">Skanuj nowy</MudButton>
             </div>
         </MudPaper>
         <MudPaper Elevation="25" Class="pa-4">
@@ -103,6 +103,7 @@
     private InventoryDetailsView inventoryDetails;
     private ScanItemInput input = new ScanItemInput();
     private List<ScannedItemView> items;
+    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
     private bool success;
     private string searchString = "";
 
@@ -114,18 +115,7 @@
 
     private async void OnValidSubmit()
     {
-        var userName = httpContextAccessor.HttpContext.User.Identity.Name;
-        if (!items.Any(x => x.BarCode == input.BarCode))
-        {
-            var item = await inventoryService.GetScannedItemViewAndAddItemToInventory(input.BarCode, InventoryId, userName);
-            if (item.BarCode != null)
-            {
-                items.Insert(0, item);
-                input = new ScanItemInput();
-                inventoryDetails = await inventoryService.GetInventoryDetailsViewById(InventoryId);
-                StateHasChanged();
-            }
-        }
+        await InsertScannedItem(input.BarCode);
     }
 
     private bool FilterFunc(ScannedItemView item)
@@ -148,6 +138,32 @@
         else
         {
             Snackbar.Add("Błąd, produkt nie został usunięty.", Severity.Error);
+        }
+    }
+
+    private async Task OpenAddNewItemDialog()
+    {
+        var dialog = DialogService.Show<AddNewItemDialog>("Dodaj nowy towar", maxDialogWidth);
+        var result = await dialog.Result;
+        if (result is not null && result.Data.ToString() != "")
+        {
+            await InsertScannedItem(result.Data.ToString());
+        }
+    }
+
+    private async Task InsertScannedItem(string barcode)
+    {
+        var userName = httpContextAccessor.HttpContext.User.Identity.Name;
+        if (!items.Any(x => x.BarCode == barcode))
+        {
+            var item = await inventoryService.GetScannedItemViewAndAddItemToInventory(barcode, InventoryId, userName);
+            if (item.BarCode != null)
+            {
+                items.Insert(0, item);
+                input = new ScanItemInput();
+                inventoryDetails = await inventoryService.GetInventoryDetailsViewById(InventoryId);
+                StateHasChanged();
+            }
         }
     }
 }
