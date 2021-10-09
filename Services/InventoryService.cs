@@ -78,7 +78,7 @@ namespace invMed.Services
                 }
                 if (inventory.Type == InventoryTypeEnum.Full)
                 {
-                    inventory.InventoryItemsNumber = await _db.Items.CountAsync();
+                    inventory.InventoryItemsNumber = await _db.Items.Where(x => x.Type != ItemTypeEnum.Over).CountAsync();
                 }
                 var userNames = new List<string>();
 
@@ -145,11 +145,11 @@ namespace invMed.Services
                 inventory.StartDate = DateTime.Now;
                 if (inventory.Type == InventoryTypeEnum.Full)
                 {
-                    inventory.InventoryItemsNumber = await _db.Items.CountAsync();
+                    inventory.InventoryItemsNumber = await _db.Items.Where(x => x.Type != ItemTypeEnum.Over).CountAsync();
                 }
                 else if (inventory.Type == InventoryTypeEnum.Partial)
                 {
-                    inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place)).CountAsync();
+                    inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place)).Where(x => x.Type != ItemTypeEnum.Over).CountAsync();
                 }
             }
             else

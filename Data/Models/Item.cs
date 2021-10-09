@@ -1,4 +1,5 @@
-﻿using invMed.Data.Models;
+﻿using invMed.Data.Enums;
+using invMed.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace invMed.Data
         public string BarcodeUrl { get; set; }
         public DateTime AddDate { get; set; }
         public DateTime? ExpirationDate { get; set; }
+        public ItemTypeEnum Type { get; set; }
         public virtual Place Place { get; set; }
         public virtual Product Product { get; set; }
         public virtual AspNetUser AddUser { get; set; }

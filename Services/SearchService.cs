@@ -20,7 +20,7 @@ namespace invMed.Services
         public async Task<IEnumerable<SearchDto>> Search(string searchValue)
         {
             var products = await _db.Products.Where(x => x.Name.Contains(searchValue)).ToListAsync();
-            var items = await _db.Items.Where(x => x.BarCode.Contains(searchValue)).ToListAsync();
+            var items = await _db.Items.Where(x => x.BarCode.Contains(searchValue)).Where(x => x.Type != ItemTypeEnum.Over).ToListAsync();
             var searchDtos = new List<SearchDto>();
             foreach (var product in products)
             {

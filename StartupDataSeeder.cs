@@ -191,7 +191,8 @@ namespace invMed
                 Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Type = ItemTypeEnum.Regular
             });
             product1.Amount++;
 
@@ -201,7 +202,8 @@ namespace invMed
                 Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
-                ExpirationDate = DateTime.Now.AddDays(4)
+                ExpirationDate = DateTime.Now.AddDays(4),
+                Type = ItemTypeEnum.Regular
             });
             product1.Amount++;
 
@@ -211,7 +213,8 @@ namespace invMed
                 Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
-                ExpirationDate = DateTime.Now.AddDays(5)
+                ExpirationDate = DateTime.Now.AddDays(5),
+                Type = ItemTypeEnum.Regular
             });
             product1.Amount++;
 
@@ -221,7 +224,8 @@ namespace invMed
                 Place = place1,
                 AddDate = DateTime.Now,
                 Product = product1,
-                ExpirationDate = DateTime.Now.AddDays(6)
+                ExpirationDate = DateTime.Now.AddDays(6),
+                Type = ItemTypeEnum.Regular
             });
             product1.Amount++;
 
@@ -231,7 +235,8 @@ namespace invMed
                 Place = place2,
                 AddDate = DateTime.Now,
                 Product = product2,
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Type = ItemTypeEnum.Regular
             });
             product2.Amount++;
 
@@ -241,7 +246,8 @@ namespace invMed
                 Place = place2,
                 AddDate = DateTime.Now,
                 Product = product2,
-                ExpirationDate = DateTime.Now.AddDays(-3)
+                ExpirationDate = DateTime.Now.AddDays(-3),
+                Type = ItemTypeEnum.Regular
             });
             product2.Amount++;
 
@@ -251,7 +257,8 @@ namespace invMed
                 Place = place2,
                 AddDate = DateTime.Now,
                 Product = product2,
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Type = ItemTypeEnum.Regular
             });
             product2.Amount++;
 
@@ -261,7 +268,8 @@ namespace invMed
                 Place = place3,
                 AddDate = DateTime.Now,
                 Product = product3,
-                ExpirationDate = DateTime.Now.AddDays(3)
+                ExpirationDate = DateTime.Now.AddDays(3),
+                Type = ItemTypeEnum.Regular
             });
             product3.Amount++;
 

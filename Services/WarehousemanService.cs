@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using invMed.Data.Domain;
+using invMed.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,7 +50,7 @@ namespace invMed.Services
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
             var user = await _userManager.FindByNameAsync(userName);
             var place = await _db.Places.FirstOrDefaultAsync(x => x.Name == input.Place);
-            var item = new Item { Place = place, AddDate = DateTime.Now, ExpirationDate = input.ExpirationDate, Product = product, AddUser = user };
+            var item = new Item { Place = place, AddDate = DateTime.Now, ExpirationDate = input.ExpirationDate, Product = product, AddUser = user, Type = ItemTypeEnum.Regular };
             try
             {
                 _db.Items.Add(item);
@@ -107,7 +108,7 @@ namespace invMed.Services
 
         public async Task<List<NewItemsView>> GetNewItems()
         {
-            var items = await _db.Items.Include(x => x.Product).OrderByDescending(x => x.AddDate).Take(20).ToListAsync();
+            var items = await _db.Items.Include(x => x.Product).Where(x => x.Type != ItemTypeEnum.Over).OrderByDescending(x => x.AddDate).Take(20).ToListAsync();
             var newItems = new List<NewItemsView>();
             foreach (var item in items)
             {
