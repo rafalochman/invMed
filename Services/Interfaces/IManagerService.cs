@@ -9,5 +9,6 @@ namespace invMed.Services
         Task<List<ReportDataView>> GetReports();
         Task<bool> GenerateReport(CreateReportInput reportInput);
         Task<ReportDetailsView> GetReportDetailsViewById(int reportId);
+        Task<ReportView> GetReportView(int reportId);
     }
 }

@@ -104,5 +104,62 @@ namespace invMed.Services
             };
             return reportdetailsView;
         }
+
+        public async Task<ReportView> GetReportView(int reportId)
+        {
+            var report = await _db.Reports
+                .Include(x => x.Inventory)
+                .Include(x => x.ReportItems).ThenInclude(x => x.InventoryItem.Item.Product)
+                .Include(x => x.ReportItems).ThenInclude(x => x.Item.Product)
+                .Include(x => x.ReportItems).ThenInclude(x => x.Item.Place)
+                .FirstOrDefaultAsync(x => x.Id == reportId);
+
+            var reportView = new ReportView()
+            {
+                Name = report.Name,
+                Description = report.Description,
+                GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy"),
+                InventoryName = report.Inventory.Name,
+                InventoryDescription = report.Inventory.Description,
+                InventoryStartDate = report.Inventory.StartDate.Value.ToString("dd/MM/yyyy"),
+                InventoryFinishDate = report.Inventory.EndDate.Value.ToString("dd/MM/yyyy")
+            };
+
+            var shortageItems = new List<ReportItemView>();
+            var overItems = new List<ReportItemView>();
+
+            foreach(var reportItem in report.ReportItems)
+            {
+                if(reportItem.ReportItemType == ReportItemTypeEnum.Shortage)
+                {
+                    var shortageItemView = new ReportItemView();
+
+                    shortageItemView.BarCode = reportItem.Item.BarCode;
+                    shortageItemView.Place = reportItem.Item.Place.Name;
+                    shortageItemView.ProductCategory = reportItem.Item.Product.Category;
+                    shortageItemView.ProductName = reportItem.Item.Product.Name;
+                    shortageItemView.AddDate = reportItem.Item.AddDate.ToString("dd/MM/yyyy");
+                    shortageItemView.Type = ReportItemTypeEnum.Shortage;
+                    
+                    shortageItems.Add(shortageItemView);
+                }
+                else if (reportItem.ReportItemType == ReportItemTypeEnum.Over)
+                {
+                    var overItemView = new ReportItemView()
+                    {
+                        BarCode = reportItem.InventoryItem.Item.BarCode,
+                        ProductCategory = reportItem.InventoryItem.Item.Product.Category,
+                        ProductName = reportItem.InventoryItem.Item.Product.Name,
+                        Type = ReportItemTypeEnum.Over
+                    };
+                    overItems.Add(overItemView);
+                }
+            }
+
+            reportView.OverItems = overItems;
+            reportView.ShortageItems = shortageItems;
+
+            return reportView;
+        }
     }
 }

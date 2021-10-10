@@ -1,0 +1,90 @@
+﻿@page "/report/{ReportId:int}"
+@using invMed.Data
+@using invMed.Data.Enums
+@inject IManagerService managerService
+
+@attribute [Authorize(Roles = AuthorizeRoleName.Manager)]
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4 mt-4">Raport</MudText>
+<MudGrid>
+    <MudItem xs="12">
+        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 820px;">
+            <MudText Typo="Typo.h6">Raport</MudText>
+            @if (report is not null)
+            {
+                <MudContainer Class="pa-0" Style="max-height: 540px; overflow-y: scroll">
+                    <MudText Class="mt-4"><b>Nazwa:</b> @report.Name</MudText>
+                    <MudText><b>Opis:</b> @report.Description</MudText>
+                    <MudText><b>Data wygenerowania:</b> @report.GenerationDate</MudText>
+                    <MudText><b>Nazwa inwentaryzacji:</b> @report.InventoryName</MudText>
+                    <MudText><b>Opis inwetaryzacji:</b> @report.InventoryDescription</MudText>
+                    <MudText><b>Data rozpoczęcia inwetaryzacji:</b> @report.InventoryStartDate</MudText>
+                    <MudText><b>Data zakończenia inwetaryzacji:</b> @report.InventoryFinishDate</MudText>
+                    <MudText><b>Magazynierzy przeprowadzający inwentaryzację:</b> </MudText>
+                    <MudText><b>Liczba niedoborów:</b> </MudText>
+                    <MudText><b>Liczba nadwyżek:</b> </MudText>
+                </MudContainer>
+
+                <MudPaper Elevation="25" Class="pb-4 pl-4 pr-4 mt-8">
+                    <MudTable Elevation="0" Items="@report.ShortageItems" Hover="true" Height="440px" HorizontalScrollbar="true" FixedHeader="true">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Niedobory</MudText>
+                            <MudSpacer />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Bar kod</MudTh>
+                            <MudTh>Produkt</MudTh>
+                            <MudTh>Kategoria</MudTh>
+                            <MudTh>Data dodania</MudTh>
+                            <MudTh>Miesce</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Bar kod">@context.BarCode</MudTd>
+                            <MudTd DataLabel="Produkt">@context.ProductName</MudTd>
+                            <MudTd DataLabel="Kategoria">@context.ProductCategory</MudTd>
+                            <MudTd DataLabel="Data dodania">@context.AddDate</MudTd>
+                            <MudTd DataLabel="Miesce">@context.Place</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudPaper>
+
+                <MudPaper Elevation="25" Class="pb-4 pl-4 pr-4 mt-8">
+                    <MudTable Elevation="0" Items="@report.OverItems" Hover="true" Height="440px" HorizontalScrollbar="true" FixedHeader="true">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Nadwyżki</MudText>
+                            <MudSpacer />
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Bar kod</MudTh>
+                            <MudTh>Produkt</MudTh>
+                            <MudTh>Kategoria</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Bar kod">@context.BarCode</MudTd>
+                            <MudTd DataLabel="Produkt">@context.ProductName</MudTd>
+                            <MudTd DataLabel="Kategoria">@context.ProductCategory</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudPaper>
+            }
+            else
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+        </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+
+@code {
+    [Parameter]
+    public int ReportId { get; set; }
+
+    private ReportView report;
+
+    protected override async Task OnInitializedAsync()
+    {
+        report = await managerService.GetReportView(ReportId);
+    }
+}
