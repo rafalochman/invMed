@@ -90,5 +90,19 @@ namespace invMed.Services
                 return false;
             }
         }
+
+        public async Task<ReportDetailsView> GetReportDetailsViewById(int reportId)
+        {
+            var report = await _db.Reports.Include(x => x.Inventory).FirstOrDefaultAsync(x => x.Id == reportId);
+            var reportdetailsView = new ReportDetailsView()
+            {
+                Name = report.Name,
+                Description = report.Description,
+                GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy"),
+                InventoryName = report.Inventory.Name,
+                InventoryDescription = report.Inventory.Description
+            };
+            return reportdetailsView;
+        }
     }
 }

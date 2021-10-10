@@ -1,0 +1,42 @@
+﻿@using invMed.Data
+@using invMed.Data.Enums
+@inject IManagerService managerService
+
+@attribute [Authorize(Roles = AuthorizeRoleName.Manager)]
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Style="height: 640px; overflow-y: scroll" Elevation="2">
+            <MudContainer MaxWidth="MaxWidth.ExtraSmall">
+                @if (report is not null)
+                {
+                    <MudField Variant="Variant.Text" Class="mt-8" Label="Nazwa"> @report.Name</MudField>
+                    <MudField Variant="Variant.Text" Class="pt-4" Label="Opis"> @report.Description</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Data wygenerowania"> @report.GenerationDate</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Nazwa inwentaryzacji" HelperText="Nazwa inwentaryzacji na podstawie której został wygenerowany raport"> @report.InventoryName</MudField>
+                    <MudField Variant="Variant.Text" Class="mt-4" Label="Opis inwantaryzacji" HelperText="Opis inwentaryzacji na podstawie której został wygenerowany raport"> @report.InventoryDescription</MudField>
+                }
+                else
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                }
+            </MudContainer>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public int reportId { get; set; }
+    private ReportDetailsView report;
+
+    protected override async Task OnInitializedAsync()
+    {
+        report = await managerService.GetReportDetailsViewById(reportId);
+    }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+}
