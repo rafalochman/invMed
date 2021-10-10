@@ -19,5 +19,6 @@ namespace invMed.Data
         public virtual Product Product { get; set; }
         public virtual AspNetUser AddUser { get; set; }
         public virtual ICollection<InventoryItem> InventoryItems { get; set; }
+        public virtual ICollection<ReportItem> ReportItems { get; set; }
     }
 }

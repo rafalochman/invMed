@@ -42,11 +42,6 @@
     private CreateReportInput input = new CreateReportInput();
     private bool success;
 
-    protected override async Task OnInitializedAsync()
-    {
-
-    }
-
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
 
     private async void OnValidSubmit()
