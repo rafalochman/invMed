@@ -77,9 +77,9 @@
                         <MudTd DataLabel="Kategoria">@context.Category</MudTd>
                         <MudTd DataLabel="Bar kod">@context.BarCode</MudTd>
                         <MudTd DataLabel="Szczegóły">
-                            <MudTooltip Text="Szczegóły">
-                                <MudIconButton OnClick="@((e) => OpenItemDetailsDialog(context.Id))" Icon="@Icons.Material.Filled.MoreVert"></MudIconButton>
-                            </MudTooltip>
+                            <MudMenu Icon="@Icons.Material.Filled.MoreVert">
+                                <MudMenuItem OnClick="@((e) => OpenItemDetailsDialog(context.Id))">Szczegóły</MudMenuItem>
+                            </MudMenu>
                         </MudTd>
                     </RowTemplate>
                     <PagerContent>
