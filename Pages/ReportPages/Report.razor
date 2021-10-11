@@ -16,13 +16,19 @@
                     <MudText Class="mt-4"><b>Nazwa:</b> @report.Name</MudText>
                     <MudText><b>Opis:</b> @report.Description</MudText>
                     <MudText><b>Data wygenerowania:</b> @report.GenerationDate</MudText>
+                    <MudText><b>Liczba niedoborów:</b> @report.ShortageNumber</MudText>
+                    <MudText><b>Liczba nadwyżek:</b> @report.OverNumber</MudText>
                     <MudText><b>Nazwa inwentaryzacji:</b> @report.InventoryName</MudText>
                     <MudText><b>Opis inwetaryzacji:</b> @report.InventoryDescription</MudText>
+                    <MudText><b>Typ inwetaryzacji:</b> @report.InventoryType</MudText>
+                    @if(report.PlacesNames is not null)
+                    {
+                        <MudText><b>Miejsca inwetaryzacji:</b> @report.PlacesNames</MudText>
+                    }
                     <MudText><b>Data rozpoczęcia inwetaryzacji:</b> @report.InventoryStartDate</MudText>
                     <MudText><b>Data zakończenia inwetaryzacji:</b> @report.InventoryFinishDate</MudText>
-                    <MudText><b>Magazynierzy przeprowadzający inwentaryzację:</b> </MudText>
-                    <MudText><b>Liczba niedoborów:</b> </MudText>
-                    <MudText><b>Liczba nadwyżek:</b> </MudText>
+                    <MudText><b>Magazynierzy przeprowadzający inwentaryzację:</b> @report.WarehousemenNames</MudText>
+                    
                 </MudContainer>
 
                 <MudPaper Elevation="25" Class="pb-4 pl-4 pr-4 mt-8">

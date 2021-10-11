@@ -108,7 +108,8 @@ namespace invMed.Services
         public async Task<ReportView> GetReportView(int reportId)
         {
             var report = await _db.Reports
-                .Include(x => x.Inventory)
+                .Include(x => x.Inventory).ThenInclude(x => x.Users)
+                .Include(x => x.Inventory).ThenInclude(x => x.Places)
                 .Include(x => x.ReportItems).ThenInclude(x => x.InventoryItem.Item.Product)
                 .Include(x => x.ReportItems).ThenInclude(x => x.Item.Product)
                 .Include(x => x.ReportItems).ThenInclude(x => x.Item.Place)
@@ -121,9 +122,28 @@ namespace invMed.Services
                 GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy"),
                 InventoryName = report.Inventory.Name,
                 InventoryDescription = report.Inventory.Description,
+                InventoryType = report.Inventory.Type.GetDisplayName(),
                 InventoryStartDate = report.Inventory.StartDate.Value.ToString("dd/MM/yyyy"),
                 InventoryFinishDate = report.Inventory.EndDate.Value.ToString("dd/MM/yyyy")
             };
+
+            var warehousemenNames = String.Empty;
+            foreach(var userName in report.Inventory.Users.Select(x => x.UserName))
+            {
+                warehousemenNames += userName + " ";
+            }
+
+            reportView.WarehousemenNames = warehousemenNames;
+
+            if(report.Inventory.Type == InventoryTypeEnum.Partial)
+            {
+                var placesNames = String.Empty;
+                foreach (var place in report.Inventory.Places.Select(x => x.Name))
+                {
+                    placesNames += place + " ";
+                }
+                reportView.PlacesNames = placesNames;
+            }
 
             var shortageItems = new List<ReportItemView>();
             var overItems = new List<ReportItemView>();
@@ -132,15 +152,16 @@ namespace invMed.Services
             {
                 if(reportItem.ReportItemType == ReportItemTypeEnum.Shortage)
                 {
-                    var shortageItemView = new ReportItemView();
+                    var shortageItemView = new ReportItemView
+                    {
+                        BarCode = reportItem.Item.BarCode,
+                        Place = reportItem.Item.Place.Name,
+                        ProductCategory = reportItem.Item.Product.Category,
+                        ProductName = reportItem.Item.Product.Name,
+                        AddDate = reportItem.Item.AddDate.ToString("dd/MM/yyyy"),
+                        Type = ReportItemTypeEnum.Shortage
+                    };
 
-                    shortageItemView.BarCode = reportItem.Item.BarCode;
-                    shortageItemView.Place = reportItem.Item.Place.Name;
-                    shortageItemView.ProductCategory = reportItem.Item.Product.Category;
-                    shortageItemView.ProductName = reportItem.Item.Product.Name;
-                    shortageItemView.AddDate = reportItem.Item.AddDate.ToString("dd/MM/yyyy");
-                    shortageItemView.Type = ReportItemTypeEnum.Shortage;
-                    
                     shortageItems.Add(shortageItemView);
                 }
                 else if (reportItem.ReportItemType == ReportItemTypeEnum.Over)
@@ -158,6 +179,8 @@ namespace invMed.Services
 
             reportView.OverItems = overItems;
             reportView.ShortageItems = shortageItems;
+            reportView.OverNumber = overItems.Count;
+            reportView.ShortageNumber = shortageItems.Count;
 
             return reportView;
         }
