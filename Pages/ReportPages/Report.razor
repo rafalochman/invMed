@@ -12,24 +12,33 @@
             <MudText Typo="Typo.h6">Raport</MudText>
             @if (report is not null)
             {
-                <MudContainer Class="pa-0" Style="max-height: 540px; overflow-y: scroll">
-                    <MudText Class="mt-4"><b>Nazwa:</b> @report.Name</MudText>
-                    <MudText><b>Opis:</b> @report.Description</MudText>
-                    <MudText><b>Data wygenerowania:</b> @report.GenerationDate</MudText>
-                    <MudText><b>Liczba niedoborów:</b> @report.ShortageNumber</MudText>
-                    <MudText><b>Liczba nadwyżek:</b> @report.OverNumber</MudText>
-                    <MudText><b>Nazwa inwentaryzacji:</b> @report.InventoryName</MudText>
-                    <MudText><b>Opis inwetaryzacji:</b> @report.InventoryDescription</MudText>
-                    <MudText><b>Typ inwetaryzacji:</b> @report.InventoryType</MudText>
-                    @if(report.PlacesNames is not null)
-                    {
-                        <MudText><b>Miejsca inwetaryzacji:</b> @report.PlacesNames</MudText>
-                    }
-                    <MudText><b>Data rozpoczęcia inwetaryzacji:</b> @report.InventoryStartDate</MudText>
-                    <MudText><b>Data zakończenia inwetaryzacji:</b> @report.InventoryFinishDate</MudText>
-                    <MudText><b>Magazynierzy przeprowadzający inwentaryzację:</b> @report.WarehousemenNames</MudText>
-                    
-                </MudContainer>
+                <MudGrid>
+                    <MudItem md="12" lg="6">
+                        <MudContainer Class="pa-0 ml-16" Style="max-height: 300px; min-height: 150px; overflow-y: scroll ">
+                            <MudText Class="mt-4"><b>Nazwa:</b> @report.Name</MudText>
+                            <MudText><b>Opis:</b> @report.Description</MudText>
+                            <MudText><b>Data wygenerowania:</b> @report.GenerationDate</MudText>
+                            <MudText><b>Liczba niedoborów:</b> @report.ShortageNumber</MudText>
+                            <MudText><b>Liczba nadwyżek:</b> @report.OverNumber</MudText>
+                        </MudContainer>
+                    </MudItem>
+
+                    <MudItem md="12" lg="6">
+                        <MudContainer Class="pa-0 mr-16" Style="max-height: 300px; min-height: 150px; overflow-y: scroll ">
+                            <MudText Class="mt-4"><b>Nazwa inwentaryzacji:</b> @report.InventoryName</MudText>
+                            <MudText><b>Opis inwetaryzacji:</b> @report.InventoryDescription</MudText>
+                            <MudText><b>Typ inwetaryzacji:</b> @report.InventoryType</MudText>
+                            @if (report.PlacesNames is not null)
+                            {
+                                <MudText><b>Miejsca inwetaryzacji:</b> @report.PlacesNames</MudText>
+                            }
+                            <MudText><b>Data rozpoczęcia inwetaryzacji:</b> @report.InventoryStartDate</MudText>
+                            <MudText><b>Data zakończenia inwetaryzacji:</b> @report.InventoryFinishDate</MudText>
+                            <MudText><b>Magazynierzy przeprowadzający inwentaryzację:</b> @report.WarehousemenNames</MudText>
+
+                        </MudContainer>
+                    </MudItem>
+                </MudGrid>
 
                 <MudPaper Elevation="25" Class="pb-4 pl-4 pr-4 mt-8">
                     <MudTable Elevation="0" Items="@report.ShortageItems" Hover="true" Height="440px" HorizontalScrollbar="true" FixedHeader="true">
@@ -55,7 +64,7 @@
                 </MudPaper>
 
                 <MudPaper Elevation="25" Class="pb-4 pl-4 pr-4 mt-8">
-                    <MudTable Elevation="0" Items="@report.OverItems" Hover="true" Height="440px" HorizontalScrollbar="true" FixedHeader="true">
+                    <MudTable Elevation="0" Items="@report.OverItems" Hover="true" Height="340px" HorizontalScrollbar="true" FixedHeader="true">
                         <ToolBarContent>
                             <MudText Typo="Typo.h6">Nadwyżki</MudText>
                             <MudSpacer />
@@ -72,12 +81,12 @@
                         </RowTemplate>
                     </MudTable>
                 </MudPaper>
-            }
-            else
-            {
+                }
+                else
+                {
                 <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-            }
-        </MudPaper>
+                }
+</MudPaper>
     </MudItem>
 
 </MudGrid>
