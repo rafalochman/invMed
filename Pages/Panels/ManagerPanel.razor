@@ -24,7 +24,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.BarChart" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
             <div>
                 <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="report">Raporty</MudButton>
             </div>
@@ -38,12 +38,40 @@
             </div>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" sm="6" md="6" lg="3">
+    <MudItem xs="12" sm="6" md="6" lg="3" Style="z-index: 2">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-            <MudIcon Icon="@Icons.Material.Filled.BarChart" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
-            <div>
-                <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="#">Statystyki</MudButton>
-            </div>
+            <MudExpansionPanels Style="width: 100%" DisableBorders="true" Elevation="0" DisableGutters="true">
+                <MudExpansionPanel HideIcon="true">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudBadge Visible="@isVisible" Content="@newNotificationsNumber" Color="Color.Primary" Overlap="true" Class="d-flex mt-n2">
+                                <MudIcon Style="width: 42px; height: 42px;" Icon="@Icons.Material.Filled.Email" />
+                            </MudBadge>
+                            <MudText Typo="Typo.h6" Class="mr-10 ml-6 mt-n1">Powiadomienia</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudContainer Style="max-height: 400px; overflow-y: scroll">
+                            <MudCard Class="mb-2 mt-2">
+                                <MudCardContent>
+                                    <MudText><b>Bliski termin ważności</b></MudText>
+                                    <MudText>Igły injekcyjne fwefwef wefwefw weffwefwe wefwefwe wefwefw wefwefwef weffwefw 00000003</MudText>
+                                    <MudText Typo="Typo.body2">Termin: 21.03.2021</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                            <MudCard Class="mb-2 mt-2" Style="z-index: 2">
+                                <MudCardContent>
+                                    <MudText><b>Mała ilość</b></MudText>
+                                    <MudText>Igły injekcyjne</MudText>
+                                    <MudText Typo="Typo.body2">Ilość: 1</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudContainer>
+                            
+                    </ChildContent>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+           
         </MudPaper>
     </MudItem>
 
@@ -95,7 +123,7 @@
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" lg="6" Style="float: left">
+    <MudItem xs="12" lg="6" Style="float: left;">
         <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
             @if (expiredItems is not null)
             {
@@ -152,6 +180,9 @@
     private List<RunOutProductView> runOutProducts;
     private List<ExpiredItemView> expiredItems;
     private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
+
+    private int newNotificationsNumber = 3;
+    private bool isVisible = true;
 
     protected override async Task OnInitializedAsync()
     {
