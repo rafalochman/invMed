@@ -145,7 +145,7 @@
     {
         var dialog = DialogService.Show<AddNewItemDialog>("Dodaj nowy towar", maxDialogWidth);
         var result = await dialog.Result;
-        if (result is not null && result.Data.ToString() != "")
+        if (result.Data is not null && result.Data.ToString() != "")
         {
             await InsertScannedItem(result.Data.ToString());
         }
