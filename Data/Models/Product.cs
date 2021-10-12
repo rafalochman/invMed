@@ -12,11 +12,11 @@ namespace invMed.Data
         public string Category { get; set; }
         public string Producer { get; set; }
         public string Supplier { get; set; }
-
         public int Amount { get; set; }
         public double Price { get; set; }
         public int MinAmount { get; set; }
         public int MaxAmount { get; set; }
         public virtual ICollection<Item> Items { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

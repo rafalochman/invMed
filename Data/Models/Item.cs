@@ -20,5 +20,6 @@ namespace invMed.Data
         public virtual AspNetUser AddUser { get; set; }
         public virtual ICollection<InventoryItem> InventoryItems { get; set; }
         public virtual ICollection<ReportItem> ReportItems { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }
