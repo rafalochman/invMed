@@ -377,5 +377,49 @@ namespace invMed
             await db.SaveChangesAsync();
         }
 
+        public static async Task FillWithNotifications(ApplicationDbContext db)
+        {
+            var product1 = await db.Products.FirstOrDefaultAsync(x => x.Id == 1);
+            var product2 = await db.Products.FirstOrDefaultAsync(x => x.Id == 2);
+
+            var item1 = await db.Items.FirstOrDefaultAsync(x => x.Id == 1);
+            var item2 = await db.Items.FirstOrDefaultAsync(x => x.Id == 2);
+
+            await db.Notifications.AddAsync(new Notification()
+            {
+                Type = NotificationTypeEnum.ExpirationDate,
+                Product = item1.Product,
+                IsNew = false,
+                CreationDate = DateTime.Now.AddDays(-5),
+                Item = item1
+            });
+
+            await db.Notifications.AddAsync(new Notification()
+            {
+                Type = NotificationTypeEnum.ExpirationDate,
+                Product = item2.Product,
+                IsNew = false,
+                CreationDate = DateTime.Now.AddDays(-15),
+                Item = item2
+            });
+
+            await db.Notifications.AddAsync(new Notification()
+            {
+                Type = NotificationTypeEnum.SmallAmount,
+                Product = product1,
+                IsNew = true,
+                CreationDate = DateTime.Now.AddDays(-1),
+            });
+
+            await db.Notifications.AddAsync(new Notification()
+            {
+                Type = NotificationTypeEnum.SmallAmount,
+                Product = product2,
+                IsNew = true,
+                CreationDate = DateTime.Now,
+            });
+
+            await db.SaveChangesAsync();
+        }
     }
 }

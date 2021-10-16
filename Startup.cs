@@ -101,7 +101,8 @@ namespace invMed
                         StartupDataSeeder.FillWithPlaces(applicationDbContext).Wait();
                         StartupDataSeeder.FillWithProducts(applicationDbContext).Wait();
                         StartupDataSeeder.FillWithItems(applicationDbContext).Wait();
-                        StartupDataSeeder.FillWithInventories(applicationDbContext).Wait();  
+                        StartupDataSeeder.FillWithInventories(applicationDbContext).Wait();
+                        StartupDataSeeder.FillWithNotifications(applicationDbContext).Wait();
                 }
                 else
                     applicationDbContext.Database.EnsureCreated();

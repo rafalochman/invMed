@@ -184,5 +184,52 @@ namespace invMed.Services
 
             return reportView;
         }
+
+        public async Task<List<NotificationView>> GetNotifications()
+        {
+            var notifications = await _db.Notifications.Where(x => x.CreationDate > DateTime.Now.AddDays(-30)).OrderBy(x => x.IsNew).OrderByDescending(x => x.CreationDate).ToListAsync();
+            var notificationsView = new List<NotificationView>();
+            foreach(var notification in notifications)
+            {
+                var notificationView = new NotificationView()
+                {
+                    Id = notification.Id,
+                    Type = notification.Type,
+                    ProductName = notification.Product.Name,
+                    IsNew = notification.IsNew
+                };
+                if(notification.Type == NotificationTypeEnum.ExpirationDate)
+                {
+                    notificationView.Barcode = notification.Item.BarCode;
+                    notificationView.ExpirationDate = notification.Item.ExpirationDate.Value.ToString("dd/MM/yyyy");
+                }
+                else if(notification.Type == NotificationTypeEnum.SmallAmount)
+                {
+                    notificationView.Amount = notification.Product.Amount;
+                }
+                notificationsView.Add(notificationView);
+            }
+
+            return notificationsView;
+        }
+
+        public async Task<bool> ReadNotifications()
+        {
+            var notifications = await _db.Notifications.Where(x => x.IsNew == true).ToListAsync();
+            
+            foreach (var notification in notifications)
+            {
+                notification.IsNew = false;
+            }
+            try
+            {
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
