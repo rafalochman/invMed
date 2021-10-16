@@ -81,7 +81,6 @@
 @code {
     private List<Product> products;
     private string searchString = "";
-    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
@@ -99,7 +98,7 @@
 
     private async Task OpenAddProductDialog()
     {
-        var dialog = DialogService.Show<AddProductDialog>("Utwórz produkt", maxDialogWidth);
+        var dialog = DialogService.Show<AddProductDialog>("Utwórz produkt");
         var result = await dialog.Result;
         if (result is not null)
         {
@@ -110,12 +109,12 @@
     private void OpenProductItemsDialog(Product product)
     {
         var parameters = new DialogParameters { ["product"] = product };
-        DialogService.Show<ProductItemsDialog>("Egzęplarze produktu", parameters, maxDialogWidth);
+        DialogService.Show<ProductItemsDialog>("Egzęplarze produktu", parameters);
     }
 
     private void OpenProductDetailsDialog(int productId)
     {
         var parameters = new DialogParameters { ["productId"] = productId };
-        DialogService.Show<ProductDetailsDialog>("Szczegóły produktu", parameters, maxDialogWidth);
+        DialogService.Show<ProductDetailsDialog>("Szczegóły produktu", parameters);
     }
 }

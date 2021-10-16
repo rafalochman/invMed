@@ -147,7 +147,6 @@
 @code {
     private List<NewItemsView> newItems;
     private List<RunOutProductView> runOutProducts;
-    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
@@ -157,7 +156,7 @@
 
     private async Task OpenAddItemDialog()
     {
-        var dialog = DialogService.Show<AddItemDialog>("Przyjmij towar", maxDialogWidth);
+        var dialog = DialogService.Show<AddItemDialog>("Przyjmij towar");
         var result = await dialog.Result;
         if (result is not null)
         {
@@ -168,7 +167,7 @@
 
     private async Task OpenRemoveItemDialog()
     {
-        var dialog = DialogService.Show<RemoveItemDialog>("Wydaj towar", maxDialogWidth);
+        var dialog = DialogService.Show<RemoveItemDialog>("Wydaj towar");
         var result = await dialog.Result;
         if (result is not null)
         {
@@ -179,6 +178,6 @@
     private void OpenItemDetailsDialog(int itemId)
     {
         var parameters = new DialogParameters { ["itemId"] = itemId };
-        DialogService.Show<ItemDetailsDialog>("Szczegóły", parameters, maxDialogWidth);
+        DialogService.Show<ItemDetailsDialog>("Szczegóły", parameters);
     }
 }

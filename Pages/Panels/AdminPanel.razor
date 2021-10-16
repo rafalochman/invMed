@@ -129,7 +129,6 @@
     private string searchString = "";
     private double[] rolesNumbers;
     private string[] rolesLabels = { RoleName.Admin, RoleName.Manager, RoleName.Warehouseman };
-    private DialogOptions maxDialogWidth = new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true };
 
     protected override async Task OnInitializedAsync()
     {
@@ -149,13 +148,13 @@
     private void OpenDetailsDialog(UserView user)
     {
         var parameters = new DialogParameters { ["user"] = user };
-        DialogService.Show<UserDetailsDialog>("Szczegóły użytkownika", parameters, maxDialogWidth);
+        DialogService.Show<UserDetailsDialog>("Szczegóły użytkownika", parameters);
     }
 
     private async Task OpenEditDialog(UserView user)
     {
         var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
-        var dialog = DialogService.Show<UserEditDialog>("Edytuj użytkownika", parameters, maxDialogWidth);
+        var dialog = DialogService.Show<UserEditDialog>("Edytuj użytkownika", parameters);
         var result = await dialog.Result;
 
         if (result is not null)
@@ -167,7 +166,7 @@
     private async Task OpenManageDialog(UserView user)
     {
         var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
-        var dialog = DialogService.Show<UserManageDialog>("Zarządzaj użytkownikiem", parameters, maxDialogWidth);
+        var dialog = DialogService.Show<UserManageDialog>("Zarządzaj użytkownikiem", parameters);
         var result = await dialog.Result;
 
         if (result is not null)
@@ -179,7 +178,7 @@
 
     private async Task OpenCreateAccountDialog()
     {
-        var dialog = DialogService.Show<CreateAccountDialog>("Utwórz konto", maxDialogWidth);
+        var dialog = DialogService.Show<CreateAccountDialog>("Utwórz konto");
         var result = await dialog.Result;
         if (result is not null)
         {
@@ -190,7 +189,7 @@
 
     private async Task OpenDeactivatedAccountsDialog()
     {
-        var dialog = DialogService.Show<DeactivatedAccountsDialog>("Nieaktywne konta", maxDialogWidth);
+        var dialog = DialogService.Show<DeactivatedAccountsDialog>("Nieaktywne konta");
         var result = await dialog.Result;
         if (result is not null)
         {
@@ -202,7 +201,7 @@
     private void OpenResetPasswordDialog(UserView user)
     {
         var parameters = new DialogParameters { ["userId"] = user.Id, ["role"] = user.Role };
-        DialogService.Show<UserPasswordResetDialog>("Resetuj hasło", parameters, maxDialogWidth);
+        DialogService.Show<UserPasswordResetDialog>("Resetuj hasło", parameters);
     }
 
     private double[] GetRolesArray()
