@@ -98,7 +98,7 @@ namespace invMed.Services
 
         public async Task<InventoryDetailsView> GetInventoryDetailsViewById(int id)
         {
-            var inventory = await _db.Inventories.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.Id == id);
+            var inventory = await _db.Inventories.Include(x => x.InventoryItems).ThenInclude(x => x.Item).FirstOrDefaultAsync(x => x.Id == id);
             var inventoryView = new InventoryDetailsView()
             {
                 Id = inventory.Id,
@@ -124,8 +124,9 @@ namespace invMed.Services
             {
                 inventoryView.EndDate = inventory.EndDate.Value.ToString("dd/MM/yyyy");
             }
-            var scannedItemsNumber = inventory.InventoryItems.Count;
+            var scannedItemsNumber = inventory.InventoryItems.Where(x => x.Item.Type != ItemTypeEnum.Over).Count();
             inventoryView.ScannedItemsNumber = scannedItemsNumber;
+            inventoryView.OverItemsNumber = inventory.InventoryItems.Where(x => x.Item.Type == ItemTypeEnum.Over).Count();
             if (inventory.InventoryItemsNumber != 0)
             {
                 inventoryView.Progres = (int)((double)scannedItemsNumber / (double)inventory.InventoryItemsNumber * 100);

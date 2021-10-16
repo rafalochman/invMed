@@ -88,9 +88,15 @@
                     <MudText><b>Data rozpoczęcia:</b> @inventoryDetails.StartDate</MudText>
                     @if (inventoryDetails.PlannedEndDate is not null)
                     {
-                        <MudText><b>Data planowanego zakończenia:</b> @inventoryDetails.PlannedEndDate</MudText>
+                        <MudText><b>Data planowanego zakończenia:</b> @inventoryDetails.PlannedEndDate </MudText>
                     }
-                    <MudText><b>Ilość zeskanowanych produktów:</b> @inventoryDetails.ScannedItemsNumber</MudText>
+                    <MudText>
+                        <b>Ilość zeskanowanych produktów:</b> @inventoryDetails.ScannedItemsNumber
+                        @if(inventoryDetails.OverItemsNumber > 0)
+                        {
+                             @(" + ") @inventoryDetails.OverItemsNumber
+                        }
+                    </MudText>
                     <MudText><b>Ilość produktów inwentaryzacyjnych:</b> @inventoryDetails.InventoryItemsNumber</MudText>
                     <MudText><b>Postęp:</b> @inventoryDetails.Progres %</MudText>
                 </MudContainer>
