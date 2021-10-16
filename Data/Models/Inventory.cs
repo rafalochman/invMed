@@ -22,5 +22,6 @@ namespace invMed.Data
         public virtual ICollection<InventoryItem> InventoryItems { get; set; }
         public virtual ICollection<Place> Places { get; set; }
         public virtual ICollection<AspNetUser> Users { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
     }
 }
