@@ -172,9 +172,18 @@ namespace invMed.Services
         public async Task<ScannedItemView> GetScannedItemViewAndAddItemToInventory(string barCode, int inventoryId, string userName)
         {
             var item = await _db.Items.Include(x => x.Product).FirstOrDefaultAsync(x => x.BarCode == barCode);
+            var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == inventoryId);
+
+            if(inventory.Type == InventoryTypeEnum.Partial)
+            {
+                if (!inventory.Places.Contains(item.Place))
+                {
+                    return new ScannedItemView();
+                }
+            }
+
             if (item is not null)
             {
-                var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == inventoryId);
                 var user = await _userManager.FindByNameAsync(userName);
                 var inventoryItem = new InventoryItem()
                 {
