@@ -135,6 +135,15 @@ namespace invMed.Services
             {
                 inventoryView.Progres = 0;
             }
+            if (inventory.Type == InventoryTypeEnum.Partial)
+            {
+                var placesNames = String.Empty;
+                foreach (var place in inventory.Places.Select(x => x.Name))
+                {
+                    placesNames += place + " ";
+                }
+                inventoryView.PlacesNames = placesNames;
+            }
             return inventoryView;
         }
 

@@ -83,6 +83,10 @@
                 <MudContainer Class="pa-0" Style="max-height: 540px; overflow-y: scroll">
                     <MudText Class="mt-4"><b>Nazwa:</b> @inventoryDetails.Name</MudText>
                     <MudText><b>Typ:</b> @inventoryDetails.Type.GetDisplayName()</MudText>
+                    @if(inventoryDetails.Type == InventoryTypeEnum.Partial)
+                    {
+                        <MudText><b>Miejsca:</b> @inventoryDetails.PlacesNames</MudText>
+                    }
                     <MudText><b>Opis:</b> @inventoryDetails.Description</MudText>
                     <MudText><b>Stan:</b> @inventoryDetails.State.GetDisplayName()</MudText>
                     <MudText><b>Data rozpoczęcia:</b> @inventoryDetails.StartDate</MudText>

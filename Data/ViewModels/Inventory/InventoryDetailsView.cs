@@ -21,5 +21,6 @@ namespace invMed.Data
         public int OverItemsNumber { get; set; }
         public int ScannedItemsNumber { get; set; }
         public int Progres { get; set; }
+        public string PlacesNames { get; set; }
     }
 }
