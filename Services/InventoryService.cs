@@ -57,7 +57,7 @@ namespace invMed.Services
 
         public async Task<List<InventoryView>> GetInventories()
         {
-            var inventories = await _db.Inventories.Include(x => x.Users).ToListAsync();
+            var inventories = await _db.Inventories.Include(x => x.Users).OrderByDescending(x => x.PlannedStartDate).ToListAsync();
             var inventoriesView = new List<InventoryView>();
             foreach (var inventory in inventories)
             {
