@@ -7,8 +7,8 @@ namespace invMed.Data.Enums
 {
     public static class RoleName
     {
-        public static readonly string Admin = "Admin";
-        public static readonly string Manager = "Manager";
-        public static readonly string Warehouseman = "Magazynier";
+        public const string Admin = "Admin";
+        public const string Manager = "Manager";
+        public const string Warehouseman = "Magazynier";
     }
 }
