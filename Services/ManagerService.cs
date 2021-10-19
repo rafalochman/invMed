@@ -195,21 +195,21 @@ namespace invMed.Services
                 {
                     Id = notification.Id,
                     Type = notification.Type,
-                    ProductName = notification.Product.Name,
                     IsNew = notification.IsNew
                 };
                 if(notification.Type == NotificationTypeEnum.ExpirationDate)
                 {
+                    notificationView.ProductName = notification.Item.Product.Name;
                     notificationView.Barcode = notification.Item.BarCode;
                     notificationView.ExpirationDate = notification.Item.ExpirationDate.Value.ToString("dd/MM/yyyy");
                 }
                 else if(notification.Type == NotificationTypeEnum.SmallAmount)
                 {
+                    notificationView.ProductName = notification.Product.Name;
                     notificationView.Amount = notification.Product.Amount;
                 }
                 notificationsView.Add(notificationView);
             }
-
             return notificationsView;
         }
 

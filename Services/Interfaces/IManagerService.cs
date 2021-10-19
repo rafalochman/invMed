@@ -12,5 +12,6 @@ namespace invMed.Services
         Task<ReportView> GetReportView(int reportId);
         Task<List<NotificationView>> GetNotifications();
         Task<bool> ReadNotifications();
+        Task<bool> TryCreateSmallAmountNotifications();
     }
 }

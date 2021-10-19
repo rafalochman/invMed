@@ -62,6 +62,8 @@ namespace invMed
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IManagerService, ManagerService>();
 
+            services.AddHostedService<NotificationsService>();
+
             services.AddHttpContextAccessor();
 
             services.AddAuthorization(options =>
