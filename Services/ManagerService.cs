@@ -4,18 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using invMed.Data.Enums;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
     public class ManagerService : IManagerService
     {
         private readonly ApplicationDbContext _db;
+        private readonly ILogger<IManagerService> _logger;
 
-        public ManagerService(ApplicationDbContext db)
+        public ManagerService(ApplicationDbContext db, ILogger<IManagerService> logger)
         {
             _db = db;
+            _logger = logger;
         }
 
         public async Task<List<ReportDataView>> GetReports()

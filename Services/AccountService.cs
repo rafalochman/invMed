@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using invMed.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
@@ -12,12 +11,14 @@ namespace invMed.Services
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;
         private readonly SignInManager<AspNetUser> _signInManager;
+        private readonly ILogger<IAccountService> _logger;
 
-        public AccountService(ApplicationDbContext db, UserManager<AspNetUser> userManager, SignInManager<AspNetUser> signInManager)
+        public AccountService(ApplicationDbContext db, UserManager<AspNetUser> userManager, SignInManager<AspNetUser> signInManager, ILogger<IAccountService> logger)
         {
             _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         public async Task<UserView> GetUserByName(string userName)

@@ -27,5 +27,6 @@ namespace invMed.Data
         public DbSet<Report> Reports { get; set; }
         public DbSet<ReportItem> ReportItems { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Log> Log { get; set; }
     }
 }

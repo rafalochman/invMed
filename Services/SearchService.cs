@@ -1,20 +1,22 @@
 ﻿using invMed.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
     public class SearchService : ISearchService
     {
         private readonly ApplicationDbContext _db;
+        private readonly ILogger<ISearchService> _logger;
 
-        public SearchService(ApplicationDbContext db)
+        public SearchService(ApplicationDbContext db, ILogger<ISearchService> logger)
         {
             _db = db;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<SearchDto>> Search(string searchValue)

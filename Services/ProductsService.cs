@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using invMed.Data.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
     public class ProductsService : IProductsService
     {
         private readonly ApplicationDbContext _db;
+        private readonly ILogger<IProductsService> _logger;
 
-        public ProductsService(ApplicationDbContext db)
+        public ProductsService(ApplicationDbContext db, ILogger<IProductsService> logger)
         {
             _db = db;
+            _logger = logger;
         }
 
         public async Task<List<Product>> GetProducts()

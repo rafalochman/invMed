@@ -7,18 +7,20 @@ using System.Threading.Tasks;
 using invMed.Data.Enums;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
-using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
     public class NotificationsService : BackgroundService
     {
         private readonly IServiceScopeFactory scopeFactory;
+        private readonly ILogger<NotificationsService> _logger;
 
-        public NotificationsService(IServiceScopeFactory scopeFactory)
+        public NotificationsService(IServiceScopeFactory scopeFactory, ILogger<NotificationsService> logger)
         {
             this.scopeFactory = scopeFactory;
+            _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)

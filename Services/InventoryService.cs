@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
@@ -10,6 +8,7 @@ using invMed.Data.Enums;
 using invMed.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
@@ -17,11 +16,13 @@ namespace invMed.Services
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;
+        private readonly ILogger<IInventoryService> _logger;
 
-        public InventoryService(ApplicationDbContext db, UserManager<AspNetUser> userManager)
+        public InventoryService(ApplicationDbContext db, UserManager<AspNetUser> userManager, ILogger<IInventoryService> logger)
         {
             _db = db;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<bool> CreateInventory(CreateInventoryInput input)

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
@@ -13,11 +12,13 @@ namespace invMed.Services
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;
+        private readonly ILogger<IAdminService> _logger;
 
-        public AdminService(ApplicationDbContext db, UserManager<AspNetUser> userManager)
+        public AdminService(ApplicationDbContext db, UserManager<AspNetUser> userManager, ILogger<IAdminService> logger)
         {
             _db = db;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<List<UserView>> GetUsers()

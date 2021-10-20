@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
@@ -10,7 +7,7 @@ using invMed.Data.Domain;
 using invMed.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Logging;
 
 namespace invMed.Services
 {
@@ -18,11 +15,13 @@ namespace invMed.Services
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<AspNetUser> _userManager;
+        private readonly ILogger<IWarehousemanService> _logger;
 
-        public WarehousemanService(ApplicationDbContext db, UserManager<AspNetUser> userManager)
+        public WarehousemanService(ApplicationDbContext db, UserManager<AspNetUser> userManager, ILogger<IWarehousemanService> logger)
         {
             _db = db;
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<string>> GetAllProductsNames()
