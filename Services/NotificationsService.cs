@@ -14,18 +14,18 @@ namespace invMed.Services
 {
     public class NotificationsService : BackgroundService
     {
-        private readonly IServiceScopeFactory scopeFactory;
+        private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<NotificationsService> _logger;
 
         public NotificationsService(IServiceScopeFactory scopeFactory, ILogger<NotificationsService> logger)
         {
-            this.scopeFactory = scopeFactory;
+            _scopeFactory = scopeFactory;
             _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            using (var scope = scopeFactory.CreateScope())
+            using (var scope = _scopeFactory.CreateScope())
             {
                 var now = DateTime.Now;
                 var timeToMidnight = (23 - now.Hour) * 3600 + (59 - now.Minute) * 60 + (59 - now.Second);
