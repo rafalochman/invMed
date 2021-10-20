@@ -63,6 +63,7 @@ namespace invMed
             services.AddScoped<IManagerService, ManagerService>();
 
             services.AddHostedService<NotificationsService>();
+            services.AddScoped<RefreshService>();
 
             services.AddHttpContextAccessor();
 

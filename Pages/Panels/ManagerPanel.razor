@@ -5,6 +5,7 @@
 @using invMed.Data.Enums
 @inject IProductsService productsService
 @inject IManagerService managerService
+@inject NavigationManager NavManager
 
 @attribute [Authorize(Roles = AuthorizeRoleName.Manager)]
 
@@ -213,24 +214,35 @@
     {
         runOutProducts = await productsService.GetRunOutProducts();
         expiredItems = await productsService.GetExpiredItems();
-        notifications = await managerService.GetNotifications();
 
-        UpdateNotificationsBadge();
+        await UpdateNotificationsBadge();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        RefreshService.RefreshRequested += Refresh;
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void Refresh()
+    {
+        NavManager.NavigateTo("/managerPanel", true);
     }
 
     private async Task UpdatePanels()
     {
         await managerService.ReadNotifications();
-        if(click == true)
+        if (click == true)
         {
-            notifications = await managerService.GetNotifications();
-            UpdateNotificationsBadge();
+            await UpdateNotificationsBadge();
         }
         click = true;
     }
 
-    private void UpdateNotificationsBadge()
+    private async Task UpdateNotificationsBadge()
     {
+        notifications = await managerService.GetNotifications();
+
         if (notifications is not null)
         {
             newNotificationsNumber = notifications.Where(x => x.IsNew).Count();

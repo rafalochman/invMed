@@ -88,16 +88,23 @@ namespace invMed.Services
 
         public async Task<bool> RemoveItems(List<RemoveItemView> items)
         {
+            var products = new List<Product>();
             try
             {
                 foreach (var itemView in items)
                 {
                     var item = await _db.Items.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
                     var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == itemView.ProductId);
+                    var notifications = await _db.Notifications.Where(x => x.Item.Id == item.Id).ToListAsync();
                     product.Amount -= 1;
                     _db.Remove(item);
+                    _db.RemoveRange(notifications);
+                    products.Add(product);
                 }
                 await _db.SaveChangesAsync();
+
+                await TryCreateSmallAmountNotifications(products);
+
                 return true;
             }
             catch
@@ -123,6 +130,35 @@ namespace invMed.Services
                 newItems.Add(newItem);
             }
             return newItems;
+        }
+
+        private async Task TryCreateSmallAmountNotifications(List<Product> products)
+        {
+            products = products.Where(x => x.Amount <= (x.MinAmount * 1.1)).ToList();
+
+            foreach (var product in products)
+            {
+                var notification = new Notification()
+                {
+                    CreationDate = DateTime.Now,
+                    IsNew = true,
+                    Product = product,
+                    Type = NotificationTypeEnum.SmallAmount
+                };
+                _db.Notifications.Add(notification);
+            }
+            try
+            {
+                await _db.SaveChangesAsync();
+                if(products.Count > 0)
+                {
+                    RefreshService.CallRequestRefresh();
+                }
+            }
+            catch
+            {
+
+            }
         }
     }
 }
