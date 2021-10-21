@@ -49,6 +49,12 @@ namespace invMed.Services
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
             var user = await _userManager.FindByNameAsync(userName);
             var place = await _db.Places.FirstOrDefaultAsync(x => x.Name == input.Place);
+            if (product is null || user is null || place is null)
+            {
+                _logger.LogError("Add item error - product or item or place not found.");
+                return ("", "");
+            }
+
             var item = new Item { Place = place, AddDate = DateTime.Now, ExpirationDate = input.ExpirationDate, Product = product, AddUser = user, Type = ItemTypeEnum.Regular };
             try
             {
@@ -62,8 +68,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return (barcode: item.BarCode, barcodeUrl: barcodeUrl);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Add item error.");
                 return ("", "");
             }
         }
@@ -71,18 +78,20 @@ namespace invMed.Services
         public async Task<RemoveItemView> GetRemoveItemViewByItemBarCode(string barCode, int number)
         {
             var item = await _db.Items.FirstOrDefaultAsync(x => x.BarCode == barCode);
-            if (item is not null)
+            if (item is null)
             {
-                return new RemoveItemView()
-                {
-                    Id = item.Id,
-                    Number = number,
-                    BarCode = item.BarCode,
-                    ProductName = item.Product.Name,
-                    ProductId = item.Product.Id
-                };
+                _logger.LogError("Get remove view error - item not found.");
+                return new RemoveItemView();
             }
-            return new RemoveItemView();
+           
+            return new RemoveItemView()
+            {
+                Id = item.Id,
+                Number = number,
+                BarCode = item.BarCode,
+                ProductName = item.Product.Name,
+                ProductId = item.Product.Id
+            };
         }
 
         public async Task<bool> RemoveItems(List<RemoveItemView> items)
@@ -106,8 +115,9 @@ namespace invMed.Services
 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Remove items error.");
                 return false;
             }
         }
@@ -154,9 +164,9 @@ namespace invMed.Services
                     RefreshService.CallRequestRefresh();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Create small amount notifications error.");
             }
         }
     }
