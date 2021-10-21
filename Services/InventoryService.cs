@@ -50,9 +50,10 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return (true);
             }
-            catch
+            catch (Exception ex)
             {
-                return (false);
+                _logger.LogError(ex, "Create inventory error.");
+                return false;
             }
         }
 
@@ -100,6 +101,12 @@ namespace invMed.Services
         public async Task<InventoryDetailsView> GetInventoryDetailsViewById(int id)
         {
             var inventory = await _db.Inventories.Include(x => x.InventoryItems).ThenInclude(x => x.Item).FirstOrDefaultAsync(x => x.Id == id);
+            if(inventory is null)
+            {
+                _logger.LogError("Get inventory details error - inventory not found.");
+                return new InventoryDetailsView();
+            }
+
             var inventoryView = new InventoryDetailsView()
             {
                 Id = inventory.Id,
@@ -151,6 +158,12 @@ namespace invMed.Services
         public async Task<bool> StartInventory(int id)
         {
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
+            if (inventory is null)
+            {
+                _logger.LogError("Start inventory error - inventory not found.");
+                return false;
+            }
+
             if (inventory.State == InventoryStateEnum.Inactive)
             {
                 inventory.State = InventoryStateEnum.Active;
@@ -166,6 +179,7 @@ namespace invMed.Services
             }
             else
             {
+                _logger.LogError("Start inventory error - inventory is active or finished.");
                 return false;
             }
             try
@@ -173,8 +187,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Start inventory error.");
                 return false;
             }
         }
@@ -183,6 +198,12 @@ namespace invMed.Services
         {
             var item = await _db.Items.Include(x => x.Product).FirstOrDefaultAsync(x => x.BarCode == barCode);
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == inventoryId);
+
+            if(item is null || inventory is null)
+            {
+                _logger.LogError("Add item to inventory error - item or inventory not found.");
+                return new ScannedItemView();
+            }
 
             if(inventory.Type == InventoryTypeEnum.Partial)
             {
@@ -213,8 +234,9 @@ namespace invMed.Services
                         ProductId = inventoryItem.Item.Product.Id
                     };
                 }
-                catch
+                catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Add item to inventory error.");
                     return new ScannedItemView();
                 }
             }
@@ -230,8 +252,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Remove scanned item error.");
                 return false;
             }
         }
@@ -267,6 +290,12 @@ namespace invMed.Services
         public async Task<bool> FinishInventory(int id)
         {
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
+            if (inventory is null)
+            {
+                _logger.LogError("Finish inventory error - inventory not found.");
+                return false;
+            }
+
             if (inventory.State == InventoryStateEnum.Active)
             {
                 inventory.State = InventoryStateEnum.Finished;
@@ -274,6 +303,7 @@ namespace invMed.Services
             }
             else
             {
+                _logger.LogError("Finish inventory error - inventory is inactive or finished.");
                 return false;
             }
             try
@@ -281,8 +311,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Finish inventory error.");
                 return false;
             }
         }
@@ -290,6 +321,12 @@ namespace invMed.Services
         public async Task<bool> IsManager(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
+            if (user is null)
+            {
+                _logger.LogError("Check if user has role manager error - user not found.");
+                return false;
+            }
+
             var isManager = await _userManager.IsInRoleAsync(user, RoleName.Manager);
             if (isManager)
             {
@@ -308,6 +345,7 @@ namespace invMed.Services
             {
                 inventories = inventories.Where(x => x.Name.Contains(searchValue)).ToList();
             }
+
             var inventoriesDto = new List<InventoryDto>();
             foreach (var inventory in inventories)
             {
@@ -327,6 +365,7 @@ namespace invMed.Services
             var isBarcode = _db.Items.Any(x => x.BarCode == input.Barcode);
             if (isBarcode)
             {
+                _logger.LogWarning("Add new item warning - item alredy exists.");
                 return false;
             }
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
@@ -340,8 +379,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Add new item error.");
                 return false;
             }
         }
