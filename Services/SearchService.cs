@@ -11,12 +11,10 @@ namespace invMed.Services
     public class SearchService : ISearchService
     {
         private readonly ApplicationDbContext _db;
-        private readonly ILogger<ISearchService> _logger;
 
-        public SearchService(ApplicationDbContext db, ILogger<ISearchService> logger)
+        public SearchService(ApplicationDbContext db)
         {
             _db = db;
-            _logger = logger;
         }
 
         public async Task<IEnumerable<SearchDto>> Search(string searchValue)
