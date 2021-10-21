@@ -41,6 +41,12 @@ namespace invMed.Services
         public async Task<bool> GenerateReport(CreateReportInput reportInput)
         {
             var inventory = await _db.Inventories.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.Id == reportInput.InventoryDto.InventoryId);
+            if (inventory is null)
+            {
+                _logger.LogError("Create report error - invenory not found.");
+                return false;
+            }
+
             var reportItems = new List<ReportItem>();
             var regularItems = await _db.Items.Where(x => x.Type == ItemTypeEnum.Regular).ToListAsync();
             if (inventory.Type == InventoryTypeEnum.Partial)
@@ -87,8 +93,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Create report error.");
                 return false;
             }
         }
@@ -96,6 +103,12 @@ namespace invMed.Services
         public async Task<ReportDetailsView> GetReportDetailsViewById(int reportId)
         {
             var report = await _db.Reports.Include(x => x.Inventory).FirstOrDefaultAsync(x => x.Id == reportId);
+            if (report is null)
+            {
+                _logger.LogError("Get report details view error - report not found.");
+                return new ReportDetailsView();
+            }
+
             var reportdetailsView = new ReportDetailsView()
             {
                 Name = report.Name,
@@ -116,6 +129,12 @@ namespace invMed.Services
                 .Include(x => x.ReportItems).ThenInclude(x => x.Item.Product)
                 .Include(x => x.ReportItems).ThenInclude(x => x.Item.Place)
                 .FirstOrDefaultAsync(x => x.Id == reportId);
+
+            if (report is null)
+            {
+                _logger.LogError("Get report view error - report not found.");
+                return new ReportView();
+            }
 
             var reportView = new ReportView()
             {
@@ -228,8 +247,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError("Read notifications error.");
                 return false;
             }
         }
