@@ -34,8 +34,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Add product error.");
                 return false;
             }
         }
@@ -64,6 +65,12 @@ namespace invMed.Services
         public async Task<ProductDetailsView> GetProductDetailsViewById(int id)
         {
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
+            if (product is null)
+            {
+                _logger.LogError("Get product details error - product not found.");
+                return new ProductDetailsView();
+            }
+
             return new ProductDetailsView
             {
                 Id = product.Id,
@@ -81,6 +88,12 @@ namespace invMed.Services
         public async Task<ItemDetailsView> GetItemDetailsViewById(int id)
         {
             var item = await _db.Items.Include(x => x.Place).FirstOrDefaultAsync(x => x.Id == id);
+            if (item is null)
+            {
+                _logger.LogError("Get item details error - item not found.");
+                return new ItemDetailsView();
+            }
+
             var itemDetailsView = new ItemDetailsView
             {
                 Id = item.Id,
