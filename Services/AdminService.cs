@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data;
@@ -53,8 +54,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Update user data error.");
                 return false;
             }
         }
@@ -68,8 +70,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Dectivate account error.");
                 return false;
             }
         }
@@ -77,18 +80,30 @@ namespace invMed.Services
         public async Task<bool> AddUser(AspNetUser user, string password)
         {
             var result = await _userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Create user error.");
+            }
             return result.Succeeded;
         }
 
         public async Task<bool> AddToRole(AspNetUser user, string role)
         {
             var result = await _userManager.AddToRoleAsync(user, role);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Add user to role error.");
+            }
             return result.Succeeded;
         }
 
         public async Task<bool> RemoveFromRole(AspNetUser user, string role)
         {
             var result = await _userManager.RemoveFromRoleAsync(user, role);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Remove user from role error.");
+            }
             return result.Succeeded;
         }
 
@@ -121,8 +136,9 @@ namespace invMed.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError(ex, "Activate account error.");
                 return false;
             }
         }
@@ -131,29 +147,39 @@ namespace invMed.Services
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Reset password error.");
+            }
             return result.Succeeded;
         }
 
         public async Task<EditAccountInput> GetEditUserInputById(string id)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if(user is null)
+            {
+                _logger.LogError("Get edit user data error.");
+                return new EditAccountInput();
+            }
             return new EditAccountInput() { Id = user.Id, Name = user.Name, Surname = user.Surname, Email = user.Email, UserName = user.UserName };
         }
 
         public async Task<bool> UpdateUserInput(EditAccountInput input)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == input.Id);
-            user.Name = input.Name;
-            user.Surname = input.Surname;
-            user.Email = input.Email;
-            user.UserName = input.UserName;
             try
             {
+                user.Name = input.Name;
+                user.Surname = input.Surname;
+                user.Email = input.Email;
+                user.UserName = input.UserName;
                 var result = await _userManager.UpdateAsync(user);
                 return result.Succeeded;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Update user data error.");
                 return false;
             }
         }
