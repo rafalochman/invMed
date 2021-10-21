@@ -1,7 +1,6 @@
 ﻿using invMed.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using invMed.Data.Enums;
@@ -38,9 +37,9 @@ namespace invMed.Services
                     {
                         await TryCreateExpiredItemNotifications(db);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-
+                        _logger.LogError(ex, "Create expired item notifications error.");
                     }
                     await Task.Delay(TimeSpan.FromHours(24), cancellationToken);
                 }
