@@ -10,21 +10,21 @@
 
     <AuthorizeView Roles="@AuthorizeRoleName.Manager">
         <Authorized>
-            <MudNavLink Href="/managerPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Alarm">Panel Managera</MudNavLink>
-            <MudNavLink Href="/report" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Raporty</MudNavLink>
+            <MudNavLink Href="/managerPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Managera</MudNavLink>
+            <MudNavLink Href="/report" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.BarChart">Raporty</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
     <AuthorizeView Roles="@AuthorizeRoleName.Admin">
         <Authorized>
-            <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Panel Administratora</MudNavLink>
+            <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Administratora</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
     <AuthorizeView Roles="@AuthorizeRoleName.WarehousemanAndManager">
         <Authorized>
-            <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Produkty</MudNavLink>
-            <MudNavLink Href="/inventory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Radar">Inwentaryzacja</MudNavLink>
+            <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.HorizontalSplit">Produkty</MudNavLink>
+            <MudNavLink Href="/inventory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Inventory">Inwentaryzacja</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
