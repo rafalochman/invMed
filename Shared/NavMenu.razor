@@ -2,6 +2,12 @@
 
 <MudNavMenu>
 
+    <AuthorizeView Roles="@AuthorizeRoleName.Admin">
+        <Authorized>
+            <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Administratora</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+
     <AuthorizeView Roles="@AuthorizeRoleName.Warehouseman">
         <Authorized>
             <MudNavLink Href="/warehousemanPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Magazyniera</MudNavLink>
@@ -15,16 +21,10 @@
         </Authorized>
     </AuthorizeView>
 
-    <AuthorizeView Roles="@AuthorizeRoleName.Admin">
-        <Authorized>
-            <MudNavLink Href="/adminPanel" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Dashboard">Panel Administratora</MudNavLink>
-        </Authorized>
-    </AuthorizeView>
-
     <AuthorizeView Roles="@AuthorizeRoleName.WarehousemanAndManager">
         <Authorized>
-            <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.HorizontalSplit">Produkty</MudNavLink>
             <MudNavLink Href="/inventory" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Inventory">Inwentaryzacja</MudNavLink>
+            <MudNavLink Href="/products" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.HorizontalSplit">Produkty</MudNavLink>
         </Authorized>
     </AuthorizeView>
 
