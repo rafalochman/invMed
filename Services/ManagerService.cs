@@ -249,7 +249,7 @@ namespace invMed.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Read notifications error.");
+                _logger.LogError(ex, "Read notifications error.");
                 return false;
             }
         }
