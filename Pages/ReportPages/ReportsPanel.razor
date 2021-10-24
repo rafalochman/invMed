@@ -2,9 +2,11 @@
 @using invMed.Data
 @using invMed.Controls.Manager
 @using invMed.Data.Enums
+@using invMed.Data.Domain
 @inject IManagerService managerService
 @inject IDialogService DialogService
 @inject NavigationManager NavManager
+@inject IJSRuntime JSRuntime
 
 @attribute [Authorize(Roles = AuthorizeRoleName.Manager)]
 
@@ -30,7 +32,7 @@
 
                                 <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Primary" OnClick="@((e) => OpenReport(report.Id))">Otwórz</MudButton>
 
-                                <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Primary">Pobierz</MudButton>
+                                <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Primary" OnClick="@((e) => DownloadFile(report.Id))">Pobierz</MudButton>
 
                             </MudItem>
                         </MudGrid>
@@ -83,5 +85,13 @@
     {
         var parameters = new DialogParameters { ["reportId"] = id };
         DialogService.Show<ReportDetailsDialog>("Szczegóły raportu", parameters);
+    }
+
+    private async void DownloadFile(int id)
+    {
+        var reportView = await managerService.GetReportView(id);
+        var fileName = "raport" + id + ".pdf";
+        var pdfGenerator = new PdfGenerator();
+        pdfGenerator.DownloadPdf(JSRuntime, reportView, fileName);
     }
 }
