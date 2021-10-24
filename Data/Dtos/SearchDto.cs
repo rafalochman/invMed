@@ -13,5 +13,22 @@ namespace invMed.Data
         public string Name { get; set; }
         public string Category { get; set; }
         public string? Barcode { get; set; }
+
+        public SearchDto(Product product)
+        {
+            Id = product.Id;
+            Type = SearchTypeEnum.Product;
+            Name = product.Name;
+            Category = product.Category;
+        }
+
+        public SearchDto(Item item)
+        {
+            Id = item.Id;
+            Type = SearchTypeEnum.Item;
+            Name = item.Product.Name;
+            Category = item.Product.Category;
+            Barcode = item.BarCode;
+        }
     }
 }

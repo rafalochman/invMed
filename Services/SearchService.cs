@@ -24,24 +24,13 @@ namespace invMed.Services
             var searchDtos = new List<SearchDto>();
             foreach (var product in products)
             {
-                searchDtos.Add(new SearchDto()
-                {
-                    Id = product.Id,
-                    Type = SearchTypeEnum.Product,
-                    Name = product.Name,
-                    Category = product.Category
-                });
+                var searchDto = new SearchDto(product);
+                searchDtos.Add(searchDto);
             }
             foreach (var item in items)
             {
-                searchDtos.Add(new SearchDto()
-                {
-                    Id = item.Id,
-                    Type = SearchTypeEnum.Item,
-                    Name = item.Product.Name,
-                    Category = item.Product.Category,
-                    Barcode = item.BarCode
-                });
+                var searchDto = new SearchDto(item);
+                searchDtos.Add(searchDto);
             }
             return searchDtos;
         }
