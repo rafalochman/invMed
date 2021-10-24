@@ -9,10 +9,10 @@
     <DialogContent>
         <MudPaper Style="min-height: 640px" Elevation="2">
             <MudContainer Style="text-align: center" MaxWidth="MaxWidth.ExtraSmall">
-                @if (user is not null)
+                @if (userView is not null)
                 {
-                    <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@user.Name[0]@user.Surname[0]</MudAvatar>
-                    <MudText Class="mt-4">@user.Name @user.Surname</MudText>
+                    <MudAvatar Class="mt-12" Size="Size.Large" Color="Color.Secondary">@userView.Name[0]@userView.Surname[0]</MudAvatar>
+                    <MudText Class="mt-4">@userView.Name @userView.Surname</MudText>
                     <MudText>@role</MudText>
                     <MudText Class="mt-8" Typo="Typo.h6">Zmień rolę</MudText>
                     <MudSelect Label="Wybierz rolę" @bind-Value="newRole">
@@ -48,7 +48,7 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     [Parameter] public string userId { get; set; }
     [Parameter] public string role { get; set; }
-    private AspNetUser user;
+    private UserView userView;
     private bool tryDeactivate = false;
     private string newRole;
 
@@ -56,13 +56,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        user = await Task.Run(() => adminService.GetUserById(userId));
+        userView = await Task.Run(() => adminService.GetUserById(userId));
         newRole = role;
     }
 
     private async void DeactivateAccount()
     {
-        var result = await adminService.DeactivateAccount(user);
+        var result = await adminService.DeactivateAccount(userView.Id);
         if (result)
         {
             Snackbar.Add("Sukces, konto zostało dezaktywowane.", Severity.Success);
@@ -76,10 +76,10 @@
 
     private async void UpdateRole()
     {
-        var result = await adminService.RemoveFromRole(user, role);
+        var result = await adminService.RemoveFromRole(userView.Id, role);
         if (result)
         {
-            var res = await adminService.AddToRole(user, newRole);
+            var res = await adminService.AddToRole(userView.Id, newRole);
             if (res)
             {
                 role = newRole;

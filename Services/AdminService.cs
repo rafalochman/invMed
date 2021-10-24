@@ -24,48 +24,34 @@ namespace invMed.Services
 
         public async Task<List<UserView>> GetUsers()
         {
-            return await (from u in _db.Users
-                          where u.IsActive == true
-                          join ur in _db.UserRoles on u.Id equals ur.UserId
-                          join r in _db.Roles on ur.RoleId equals r.Id
-                          orderby u.Name
-                          select new UserView
-                          {
-                              Id = u.Id,
-                              Name = u.Name,
-                              Surname = u.Surname,
-                              UserName = u.UserName,
-                              Email = u.Email,
-                              Role = r.Name
-                          })
+            var users = await (from user in _db.Users
+                          where user.IsActive == true
+                          join userRole in _db.UserRoles on user.Id equals userRole.UserId
+                          join role in _db.Roles on userRole.RoleId equals role.Id
+                          orderby user.Name
+                          select new UserView(user, role.Name))
             .ToListAsync();
+            return users;
         }
 
-        public async Task<AspNetUser> GetUserById(string id)
+        public async Task<UserView> GetUserById(string id)
         {
-            return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user is null)
+            {
+                _logger.LogError("Get user error - user not found.");
+                return new UserView();
+            }
+            var userView = new UserView(user);
+            return userView;
         }
 
-        public async Task<bool> UpdateUser(AspNetUser user)
+        public async Task<bool> DeactivateAccount(string id)
         {
+            var user = await _userManager.FindByIdAsync(id);
             try
             {
-                _db.Users.Update(user);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Update user data error.");
-                return false;
-            }
-        }
-
-        public async Task<bool> DeactivateAccount(AspNetUser user)
-        {
-            user.IsActive = false;
-            try
-            {
+                user.IsActive = false;
                 _db.Users.Update(user);
                 await _db.SaveChangesAsync();
                 return true;
@@ -77,9 +63,10 @@ namespace invMed.Services
             }
         }
 
-        public async Task<bool> AddUser(AspNetUser user, string password)
+        public async Task<bool> AddUser(CreateAccountInput input)
         {
-            var result = await _userManager.CreateAsync(user, password);
+            var user = new AspNetUser { Name = input.Name, Surname = input.Surname, UserName = input.Email, Email = input.Email, IsActive = true };
+            var result = await _userManager.CreateAsync(user, input.Password);
             if (!result.Succeeded)
             {
                 _logger.LogError("Create user error.");
@@ -87,8 +74,14 @@ namespace invMed.Services
             return result.Succeeded;
         }
 
-        public async Task<bool> AddToRole(AspNetUser user, string role)
+        public async Task<bool> AddToRole(string id, string role)
         {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user is null)
+            {
+                _logger.LogError("Add user to role error - user not found.");
+                return false;
+            }
             var result = await _userManager.AddToRoleAsync(user, role);
             if (!result.Succeeded)
             {
@@ -97,8 +90,30 @@ namespace invMed.Services
             return result.Succeeded;
         }
 
-        public async Task<bool> RemoveFromRole(AspNetUser user, string role)
+        public async Task<bool> AddToRole(CreateAccountInput input)
         {
+            var user = await _userManager.FindByEmailAsync(input.Email);
+            if (user is null)
+            {
+                _logger.LogError("Add user to role error - user not found.");
+                return false;
+            }
+            var result = await _userManager.AddToRoleAsync(user, input.Role);
+            if (!result.Succeeded)
+            {
+                _logger.LogError("Add user to role error.");
+            }
+            return result.Succeeded;
+        }
+
+        public async Task<bool> RemoveFromRole(string id, string role)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user is null)
+            {
+                _logger.LogError("Remove user from role error - user not found.");
+                return false;
+            }
             var result = await _userManager.RemoveFromRoleAsync(user, role);
             if (!result.Succeeded)
             {
@@ -109,21 +124,14 @@ namespace invMed.Services
 
         public async Task<List<UserView>> GetDeactivatedUsers()
         {
-            return await (from u in _db.Users
-                          where u.IsActive == false
-                          join ur in _db.UserRoles on u.Id equals ur.UserId
-                          join r in _db.Roles on ur.RoleId equals r.Id
-                          orderby u.Name
-                          select new UserView
-                          {
-                              Id = u.Id,
-                              Name = u.Name,
-                              Surname = u.Surname,
-                              UserName = u.UserName,
-                              Email = u.Email,
-                              Role = r.Name
-                          })
+            var users = await (from user in _db.Users
+                          where user.IsActive == false
+                          join userRole in _db.UserRoles on user.Id equals userRole.UserId
+                          join role in _db.Roles on userRole.RoleId equals role.Id
+                          orderby user.Name
+                          select new UserView(user, role.Name))
             .ToListAsync();
+            return users;
         }
 
         public async Task<bool> ActivateAccount(string userId)
@@ -143,8 +151,14 @@ namespace invMed.Services
             }
         }
 
-        public async Task<bool> ResetPassword(AspNetUser user, string newPassword)
+        public async Task<bool> ResetPassword(string id, string newPassword)
         {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user is null)
+            {
+                _logger.LogError("Reset password error - user not found.");
+                return false;
+            }
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
             if (!result.Succeeded)
@@ -183,6 +197,5 @@ namespace invMed.Services
                 return false;
             }
         }
-
     }
 }

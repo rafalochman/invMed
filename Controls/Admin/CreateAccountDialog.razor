@@ -46,11 +46,10 @@
 
     private async void OnValidSubmit()
     {
-        var user = new AspNetUser { Name = input.Name, Surname = input.Surname, UserName = input.Email, Email = input.Email, IsActive = true };
-        var result = await adminService.AddUser(user, input.Password);
+        var result = await adminService.AddUser(input);
         if (result)
         {
-            var res = await adminService.AddToRole(user, input.Role);
+            var res = await adminService.AddToRole(input);
             if (res)
             {
                 Snackbar.Add("Sukces, konto zostało utworzone.", Severity.Success);

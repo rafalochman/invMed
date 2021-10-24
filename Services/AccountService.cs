@@ -28,14 +28,13 @@ namespace invMed.Services
             try
             {
                 var role = await _userManager.GetRolesAsync(user);
-                return new UserView() { Id = user.Id, Name = user.Name, Surname = user.Surname, UserName = user.UserName, Email = user.Email, Role = role[0] };
+                return new UserView(user, role[0]);
             }
             catch(Exception ex)
             {
                 _logger.LogError(ex, "Get user by name error.");
                 return new UserView();
             }
-            
         }
 
         public async Task<bool> ChangeUserPassword(string userName, string currentPassword, string newPassword)
