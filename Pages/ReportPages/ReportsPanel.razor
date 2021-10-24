@@ -28,11 +28,11 @@
                             </MudItem>
                             <MudItem md="12" lg="5" Style="text-align: right;">
 
-                                <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenReportDetailsDialog(report.Id))" Color="Color.Default">Szczegóły</MudButton>
+                                <MudButton Variant="Variant.Filled" Class="mb-4" OnClick="@((e) => OpenReportDetailsDialog(report.Id))" Color="Color.Default">Szczegóły</MudButton>
 
-                                <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Primary" OnClick="@((e) => OpenReport(report.Id))">Otwórz</MudButton>
+                                <MudButton Variant="Variant.Filled" Class="ml-4 mb-4" Color="Color.Primary" OnClick="@((e) => OpenReport(report.Id))">Otwórz</MudButton>
 
-                                <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Primary" OnClick="@((e) => DownloadFile(report.Id))">Pobierz</MudButton>
+                                <MudButton Variant="Variant.Filled" Class="ml-4 mb-4" Color="Color.Primary" OnClick="@((e) => DownloadFile(report.Id))">Pobierz</MudButton>
 
                             </MudItem>
                         </MudGrid>

@@ -45,17 +45,17 @@
                                     </MudItem>
                                     <MudItem md="12" lg="5" Style="text-align: right;">
 
-                                        <MudButton Variant="Variant.Filled" OnClick="@((e) => OpenInventoryDetailsDialog(inventory.Id))" Color="Color.Default">Szczegóły</MudButton>
+                                        <MudButton Variant="Variant.Filled" Class="mb-4" OnClick="@((e) => OpenInventoryDetailsDialog(inventory.Id))" Color="Color.Default">Szczegóły</MudButton>
 
                                         <AuthorizeView Roles="@AuthorizeRoleName.Warehouseman">
                                             <Authorized>
                                                 @if (inventory.State == InventoryStateEnum.Inactive)
                                                 {
-                                                    <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Primary" OnClick="@((e) => OpenStartInventoryMessageBox(inventory.Id, inventory.Name, inventory.Description))">Rozpocznij</MudButton>
+                                                    <MudButton Variant="Variant.Filled" Class="ml-4 mb-4" Color="Color.Primary" OnClick="@((e) => OpenStartInventoryMessageBox(inventory.Id, inventory.Name, inventory.Description))">Rozpocznij</MudButton>
                                                 }
                                                 @if (inventory.State == InventoryStateEnum.Active)
                                                 {
-                                                    <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Secondary" OnClick="@((e) => OpenInventory(inventory.Id))">Kontynuuj</MudButton>
+                                                    <MudButton Variant="Variant.Filled" Class="ml-4 mb-4" Color="Color.Secondary" OnClick="@((e) => OpenInventory(inventory.Id))">Kontynuuj</MudButton>
                                                 }
                                             </Authorized>
                                         </AuthorizeView>
@@ -64,11 +64,11 @@
                                             <Authorized>
                                                 @if (inventory.State == InventoryStateEnum.Active)
                                                 {
-                                                    <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Secondary" OnClick="@((e) => OpenFinishInventoryMessageBox(inventory.Id, inventory.Description))">Zakończ</MudButton>
+                                                    <MudButton Variant="Variant.Filled" Class="ml-4 mb-4" Color="Color.Secondary" OnClick="@((e) => OpenFinishInventoryMessageBox(inventory.Id, inventory.Description))">Zakończ</MudButton>
                                                 }
                                                 @if (inventory.State != InventoryStateEnum.Inactive)
                                                 {
-                                                    <MudButton Variant="Variant.Filled" Class="ml-4" Color="Color.Primary" OnClick="@((e) => OpenInventory(inventory.Id))">Podgląd</MudButton>
+                                                    <MudButton Variant="Variant.Filled" Class="ml-4 mb-4" Color="Color.Primary" OnClick="@((e) => OpenInventory(inventory.Id))">Podgląd</MudButton>
                                                 }
                                             </Authorized>
                                         </AuthorizeView>
