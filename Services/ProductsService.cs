@@ -47,17 +47,7 @@ namespace invMed.Services
             var itemsView = new List<ProductItemView>();
             foreach (var item in items)
             {
-                var itemView = new ProductItemView
-                {
-                    Id = item.Id,
-                    BarCode = item.BarCode,
-                    Place = item.Place.Name
-                };
-                if (item.ExpirationDate is not null)
-                {
-                    itemView.ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
-                }
-                itemsView.Add(itemView);
+                itemsView.Add(new ProductItemView(item));
             }
             return itemsView;
         }
@@ -71,18 +61,7 @@ namespace invMed.Services
                 return new ProductDetailsView();
             }
 
-            return new ProductDetailsView
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Category = product.Category,
-                Producer = product.Producer,
-                Supplier = product.Supplier,
-                Amount = product.Amount,
-                Price = product.Price,
-                MinAmount = product.MinAmount,
-                MaxAmount = product.MaxAmount
-            };
+            return new ProductDetailsView(product);
         }
 
         public async Task<ItemDetailsView> GetItemDetailsViewById(int id)
@@ -93,22 +72,8 @@ namespace invMed.Services
                 _logger.LogError("Get item details error - item not found.");
                 return new ItemDetailsView();
             }
-
-            var itemDetailsView = new ItemDetailsView
-            {
-                Id = item.Id,
-                BarCode = item.BarCode,
-                BarcodeUrl = item.BarcodeUrl,
-                Place = item.Place.Name,
-                AddDate = item.AddDate.ToString("dd/MM/yyyy"),
-                ProductCategory = item.Product.Category,
-                ProductName = item.Product.Name
-            };
-            if (item.ExpirationDate is not null)
-            {
-                itemDetailsView.ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
-            }
-            return itemDetailsView;
+            
+            return new ItemDetailsView(item);
         }
 
         public async Task<List<RunOutProductView>> GetRunOutProducts()
@@ -117,22 +82,7 @@ namespace invMed.Services
             var runOutProducts = new List<RunOutProductView>();
             foreach (var product in products)
             {
-                var runOutProduct = new RunOutProductView
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Category = product.Category,
-                    Amount = product.Amount
-                };
-                if (product.Amount < product.MinAmount)
-                {
-                    runOutProduct.ComunicateType = RunOutComunicateTypeEnum.Empty;
-                }
-                else
-                {
-                    runOutProduct.ComunicateType = RunOutComunicateTypeEnum.Small;
-                }
-                runOutProducts.Add(runOutProduct);
+                runOutProducts.Add(new RunOutProductView(product));
             }
             return runOutProducts;
         }
@@ -143,27 +93,7 @@ namespace invMed.Services
             var expiredItems = new List<ExpiredItemView>();
             foreach (var item in items)
             {
-                var expiredItemView = new ExpiredItemView()
-                {
-                    Id = item.Id,
-                    ProductName = item.Product.Name,
-                    ProductCategory = item.Product.Category,
-                    BarCode = item.BarCode
-                };
-                if (item.ExpirationDate is not null)
-                {
-                    expiredItemView.ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
-                }
-
-                if (item.ExpirationDate > DateTime.Now)
-                {
-                    expiredItemView.ComunicateType = ExpiredComunicateTypeEnum.Expired;
-                }
-                else
-                {
-                    expiredItemView.ComunicateType = ExpiredComunicateTypeEnum.Close;
-                }
-                expiredItems.Add(expiredItemView);
+                expiredItems.Add(new ExpiredItemView(item));
             }
             return expiredItems;
         }

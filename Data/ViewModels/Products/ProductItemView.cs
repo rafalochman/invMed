@@ -11,5 +11,16 @@ namespace invMed.Data
         public string BarCode { get; set; }
         public string Place { get; set; }
         public string? ExpirationDate { get; set; }
+
+        public ProductItemView(Item item)
+        {
+            Id = item.Id;
+            BarCode = item.BarCode;
+            Place = item.Place.Name;
+            if (item.ExpirationDate is not null)
+            {
+                ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
+            }
+        }
     }
 }

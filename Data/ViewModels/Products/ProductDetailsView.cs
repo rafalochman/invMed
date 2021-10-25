@@ -17,5 +17,20 @@ namespace invMed.Data
         public double Price { get; set; }
         public int MinAmount { get; set; }
         public int MaxAmount { get; set; }
+
+        public ProductDetailsView() { }
+
+        public ProductDetailsView(Product product)
+        {
+            Id = product.Id;
+            Name = product.Name;
+            Category = product.Category;
+            Producer = product.Producer;
+            Supplier = product.Supplier;
+            Amount = product.Amount;
+            Price = product.Price;
+            MinAmount = product.MinAmount;
+            MaxAmount = product.MaxAmount;
+        }
     }
 }

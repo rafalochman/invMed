@@ -14,5 +14,27 @@ namespace invMed.Data
         public string ProductName { get; set; }
         public string ProductCategory { get; set; }
         public ExpiredComunicateTypeEnum ComunicateType { get; set; }
+
+        public ExpiredItemView(Item item)
+        {
+            Id = item.Id;
+            ProductName = item.Product.Name;
+            ProductCategory = item.Product.Category;
+            BarCode = item.BarCode;
+
+            if (item.ExpirationDate is not null)
+            {
+                ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
+            }
+
+            if (item.ExpirationDate > DateTime.Now)
+            {
+                ComunicateType = ExpiredComunicateTypeEnum.Expired;
+            }
+            else
+            {
+                ComunicateType = ExpiredComunicateTypeEnum.Close;
+            }
+        }
     }
 }
