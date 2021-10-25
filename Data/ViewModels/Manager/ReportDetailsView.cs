@@ -14,5 +14,16 @@ namespace invMed.Data
         public string GenerationDate { get; set; }
         public string InventoryName { get; set; }
         public string InventoryDescription { get; set; }
+
+        public ReportDetailsView() { }
+
+        public ReportDetailsView(Report report)
+        {
+            Name = report.Name;
+            Description = report.Description;
+            GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy");
+            InventoryName = report.Inventory.Name;
+            InventoryDescription = report.Inventory.Description;
+        }
     }
 }

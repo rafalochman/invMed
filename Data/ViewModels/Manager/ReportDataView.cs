@@ -12,5 +12,13 @@ namespace invMed.Data
         public string Name { get; set; }
         public string Description { get; set; }
         public string GenerationDate { get; set; }
+
+        public ReportDataView(Report report)
+        {
+            Id = report.Id;
+            Name = report.Name;
+            Description = report.Description;
+            GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy");
+        }
     }
 }

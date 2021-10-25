@@ -15,5 +15,25 @@ namespace invMed.Data
         public string ProductName { get; set; }
         public string ProductCategory { get; set; }
         public ReportItemTypeEnum Type { get; set; }
+
+        public ReportItemView(ReportItem reportItem, ReportItemTypeEnum type)
+        {
+            if (type == ReportItemTypeEnum.Shortage)
+            {
+                BarCode = reportItem.Item.BarCode;
+                Place = reportItem.Item.Place.Name;
+                ProductCategory = reportItem.Item.Product.Category;
+                ProductName = reportItem.Item.Product.Name;
+                AddDate = reportItem.Item.AddDate.ToString("dd/MM/yyyy");
+                Type = ReportItemTypeEnum.Shortage;
+            }
+            else if (type == ReportItemTypeEnum.Over)
+            {
+                BarCode = reportItem.InventoryItem.Item.BarCode;
+                ProductCategory = reportItem.InventoryItem.Item.Product.Category;
+                ProductName = reportItem.InventoryItem.Item.Product.Name;
+                Type = ReportItemTypeEnum.Over;
+            }
+        }
     }
 }

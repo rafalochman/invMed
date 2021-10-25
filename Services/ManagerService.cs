@@ -26,14 +26,7 @@ namespace invMed.Services
             var reportsDataView = new List<ReportDataView>();
             foreach(var report in reports)
             {
-                var reportDataView = new ReportDataView
-                {
-                    Id = report.Id,
-                    Name = report.Name,
-                    Description = report.Description,
-                    GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy")
-                };
-                reportsDataView.Add(reportDataView); 
+                reportsDataView.Add(new ReportDataView(report)); 
             }
             return reportsDataView;
         }
@@ -109,14 +102,8 @@ namespace invMed.Services
                 return new ReportDetailsView();
             }
 
-            var reportdetailsView = new ReportDetailsView()
-            {
-                Name = report.Name,
-                Description = report.Description,
-                GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy"),
-                InventoryName = report.Inventory.Name,
-                InventoryDescription = report.Inventory.Description
-            };
+            var reportdetailsView = new ReportDetailsView(report);
+
             return reportdetailsView;
         }
 
@@ -136,72 +123,7 @@ namespace invMed.Services
                 return new ReportView();
             }
 
-            var reportView = new ReportView()
-            {
-                Name = report.Name,
-                Description = report.Description,
-                GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy"),
-                InventoryName = report.Inventory.Name,
-                InventoryDescription = report.Inventory.Description,
-                InventoryType = report.Inventory.Type.GetDisplayName(),
-                InventoryStartDate = report.Inventory.StartDate.Value.ToString("dd/MM/yyyy"),
-                InventoryFinishDate = report.Inventory.EndDate.Value.ToString("dd/MM/yyyy")
-            };
-
-            var warehousemenNames = String.Empty;
-            foreach(var userName in report.Inventory.Users.Select(x => x.UserName))
-            {
-                warehousemenNames += userName + " ";
-            }
-
-            reportView.WarehousemenNames = warehousemenNames;
-
-            if(report.Inventory.Type == InventoryTypeEnum.Partial)
-            {
-                var placesNames = String.Empty;
-                foreach (var place in report.Inventory.Places.Select(x => x.Name))
-                {
-                    placesNames += place + " ";
-                }
-                reportView.PlacesNames = placesNames;
-            }
-
-            var shortageItems = new List<ReportItemView>();
-            var overItems = new List<ReportItemView>();
-
-            foreach(var reportItem in report.ReportItems)
-            {
-                if(reportItem.ReportItemType == ReportItemTypeEnum.Shortage)
-                {
-                    var shortageItemView = new ReportItemView
-                    {
-                        BarCode = reportItem.Item.BarCode,
-                        Place = reportItem.Item.Place.Name,
-                        ProductCategory = reportItem.Item.Product.Category,
-                        ProductName = reportItem.Item.Product.Name,
-                        AddDate = reportItem.Item.AddDate.ToString("dd/MM/yyyy"),
-                        Type = ReportItemTypeEnum.Shortage
-                    };
-
-                    shortageItems.Add(shortageItemView);
-                }
-                else if (reportItem.ReportItemType == ReportItemTypeEnum.Over)
-                {
-                    var overItemView = new ReportItemView()
-                    {
-                        BarCode = reportItem.InventoryItem.Item.BarCode,
-                        ProductCategory = reportItem.InventoryItem.Item.Product.Category,
-                        ProductName = reportItem.InventoryItem.Item.Product.Name,
-                        Type = ReportItemTypeEnum.Over
-                    };
-                    overItems.Add(overItemView);
-                }
-            }
-
-            reportView.OverItems = overItems;
-            reportView.ShortageItems = shortageItems;
-            reportView.OverNumber = overItems.Count;
-            reportView.ShortageNumber = shortageItems.Count;
+            var reportView = new ReportView(report);
 
             return reportView;
         }
@@ -212,24 +134,7 @@ namespace invMed.Services
             var notificationsView = new List<NotificationView>();
             foreach(var notification in notifications)
             {
-                var notificationView = new NotificationView()
-                {
-                    Id = notification.Id,
-                    Type = notification.Type,
-                    IsNew = notification.IsNew
-                };
-                if(notification.Type == NotificationTypeEnum.ExpirationDate)
-                {
-                    notificationView.ProductName = notification.Item.Product.Name;
-                    notificationView.Barcode = notification.Item.BarCode;
-                    notificationView.ExpirationDate = notification.Item.ExpirationDate.Value.ToString("dd/MM/yyyy");
-                }
-                else if(notification.Type == NotificationTypeEnum.SmallAmount)
-                {
-                    notificationView.ProductName = notification.Product.Name;
-                    notificationView.Amount = notification.Product.Amount;
-                }
-                notificationsView.Add(notificationView);
+                notificationsView.Add(new NotificationView(notification));
             }
             return notificationsView;
         }

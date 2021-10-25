@@ -15,5 +15,24 @@ namespace invMed.Data
         public string ProductName { get; set; }
         public int Amount { get; set; }
         public string ExpirationDate { get; set; }
+
+        public NotificationView(Notification notification)
+        {
+            Id = notification.Id;
+            Type = notification.Type;
+            IsNew = notification.IsNew;
+
+            if (notification.Type == NotificationTypeEnum.ExpirationDate)
+            {
+                ProductName = notification.Item.Product.Name;
+                Barcode = notification.Item.BarCode;
+                ExpirationDate = notification.Item.ExpirationDate.Value.ToString("dd/MM/yyyy");
+            }
+            else if (notification.Type == NotificationTypeEnum.SmallAmount)
+            {
+                ProductName = notification.Product.Name;
+                Amount = notification.Product.Amount;
+            }
+        }
     }
 }
