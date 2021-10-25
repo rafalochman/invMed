@@ -27,10 +27,7 @@ namespace invMed.Data
             AddDate = item.AddDate.ToString("dd/MM/yyyy");
             ProductCategory = item.Product.Category;
             ProductName = item.Product.Name;
-            if (item.ExpirationDate is not null)
-            {
-                ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
-            }
+            ExpirationDate = item.ExpirationDate.HasValue ? item.ExpirationDate.Value.ToString("dd/MM/yyyy") : null;
         }
     }
 }

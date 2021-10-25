@@ -17,10 +17,7 @@ namespace invMed.Data
             Id = item.Id;
             BarCode = item.BarCode;
             Place = item.Place.Name;
-            if (item.ExpirationDate is not null)
-            {
-                ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
-            }
+            ExpirationDate = item.ExpirationDate.HasValue ? item.ExpirationDate.Value.ToString("dd/MM/yyyy") : null;
         }
     }
 }

@@ -21,11 +21,8 @@ namespace invMed.Data
             ProductName = item.Product.Name;
             ProductCategory = item.Product.Category;
             BarCode = item.BarCode;
+            ExpirationDate = item.ExpirationDate.HasValue ? item.ExpirationDate.Value.ToString("dd/MM/yyyy") : null;
 
-            if (item.ExpirationDate is not null)
-            {
-                ExpirationDate = item.ExpirationDate.Value.ToString("dd/MM/yyyy");
-            }
 
             if (item.ExpirationDate > DateTime.Now)
             {

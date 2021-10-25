@@ -26,18 +26,9 @@ namespace invMed.Data
             State = inventory.State;
             Type = inventory.Type;
             Description = inventory.Description;
-            if (inventory.PlannedStartDate is not null)
-            {
-                PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.PlannedEndDate is not null)
-            {
-                PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.Users is not null)
-            {
-                UserNames = inventory.Users.Select(x => x.UserName).ToList();
-            }
+            PlannedStartDate = inventory.PlannedStartDate.HasValue ? inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy") : null;
+            PlannedEndDate = inventory.PlannedEndDate.HasValue ? inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy") : null;
+            UserNames = inventory.Users.Select(x => x.UserName).ToList();
         }
     }
 }

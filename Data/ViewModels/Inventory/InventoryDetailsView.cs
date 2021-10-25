@@ -33,23 +33,10 @@ namespace invMed.Data
             Type = inventory.Type;
             Description = inventory.Description;
             InventoryItemsNumber = inventory.InventoryItemsNumber;
-
-            if (inventory.StartDate is not null)
-            {
-                StartDate = inventory.StartDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.PlannedStartDate is not null)
-            {
-                PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.PlannedEndDate is not null)
-            {
-                PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.EndDate is not null)
-            {
-                EndDate = inventory.EndDate.Value.ToString("dd/MM/yyyy");
-            }
+            StartDate = inventory.StartDate.HasValue ? inventory.StartDate.Value.ToString("dd/MM/yyyy") : null;
+            PlannedStartDate = inventory.PlannedStartDate.HasValue ? inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy") : null;
+            PlannedEndDate = inventory.PlannedEndDate.HasValue ? inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy") : null;
+            EndDate = inventory.EndDate.HasValue ? inventory.EndDate.Value.ToString("dd/MM/yyyy") : null;
 
             var scannedItemsNumber = inventory.InventoryItems.Where(x => x.Item.Type != ItemTypeEnum.Over).Count();
             ScannedItemsNumber = scannedItemsNumber;
