@@ -12,5 +12,14 @@ namespace invMed.Data
         public string Category { get; set; }
         public string BarCode { get; set; }
         public DateTime AddDate { get; set; }
+
+        public NewItemsView(Item item)
+        {
+            Id = item.Id;
+            Name = item.Product.Name;
+            Category = item.Product.Category;
+            BarCode = item.BarCode;
+            AddDate = item.AddDate;
+        }
     }
 }

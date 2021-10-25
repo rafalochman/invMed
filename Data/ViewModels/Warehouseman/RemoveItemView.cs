@@ -11,7 +11,17 @@ namespace invMed.Data
         public int Number { get; set; }
         public string? BarCode { get; set; }
         public string ProductName { get; set; }
-
         public int ProductId { get; set; }
+
+        public RemoveItemView() { }
+
+        public RemoveItemView(Item item, int number)
+        {
+            Id = item.Id;
+            Number = number;
+            BarCode = item.BarCode;
+            ProductName = item.Product.Name;
+            ProductId = item.Product.Id;
+        }
     }
 }

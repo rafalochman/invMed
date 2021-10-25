@@ -83,15 +83,8 @@ namespace invMed.Services
                 _logger.LogError("Get remove view error - item not found.");
                 return new RemoveItemView();
             }
-           
-            return new RemoveItemView()
-            {
-                Id = item.Id,
-                Number = number,
-                BarCode = item.BarCode,
-                ProductName = item.Product.Name,
-                ProductId = item.Product.Id
-            };
+
+            return new RemoveItemView(item, number);
         }
 
         public async Task<bool> RemoveItems(List<RemoveItemView> items)
@@ -128,15 +121,7 @@ namespace invMed.Services
             var newItems = new List<NewItemsView>();
             foreach (var item in items)
             {
-                var newItem = new NewItemsView
-                {
-                    Id = item.Id,
-                    Name = item.Product.Name,
-                    Category = item.Product.Category,
-                    BarCode = item.BarCode,
-                    AddDate = item.AddDate
-                };
-                newItems.Add(newItem);
+                newItems.Add(new NewItemsView(item));
             }
             return newItems;
         }
