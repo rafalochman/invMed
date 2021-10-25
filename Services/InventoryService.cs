@@ -63,36 +63,7 @@ namespace invMed.Services
             var inventoriesView = new List<InventoryView>();
             foreach (var inventory in inventories)
             {
-                var inventoryView = new InventoryView()
-                {
-                    Id = inventory.Id,
-                    Name = inventory.Name,
-                    State = inventory.State,
-                    Type = inventory.Type,
-                    Description = inventory.Description,
-                };
-                if (inventory.PlannedStartDate is not null)
-                {
-                    inventoryView.PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
-                }
-                if (inventory.PlannedEndDate is not null)
-                {
-                    inventoryView.PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
-                }
-                if (inventory.Type == InventoryTypeEnum.Full)
-                {
-                    inventory.InventoryItemsNumber = await _db.Items.Where(x => x.Type != ItemTypeEnum.Over).CountAsync();
-                }
-                var userNames = new List<string>();
-
-                if (inventory.Users is not null)
-                {
-                    foreach (var user in inventory.Users)
-                    {
-                        userNames.Add(user.UserName);
-                    }
-                }
-                inventoryView.UserNames = userNames;
+                var inventoryView = new InventoryView(inventory);
                 inventoriesView.Add(inventoryView);
             }
             return inventoriesView;
@@ -107,51 +78,8 @@ namespace invMed.Services
                 return new InventoryDetailsView();
             }
 
-            var inventoryView = new InventoryDetailsView()
-            {
-                Id = inventory.Id,
-                Name = inventory.Name,
-                State = inventory.State,
-                Type = inventory.Type,
-                Description = inventory.Description,
-                InventoryItemsNumber = inventory.InventoryItemsNumber,
-            };
-            if (inventory.StartDate is not null)
-            {
-                inventoryView.StartDate = inventory.StartDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.PlannedStartDate is not null)
-            {
-                inventoryView.PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.PlannedEndDate is not null)
-            {
-                inventoryView.PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
-            }
-            if (inventory.EndDate is not null)
-            {
-                inventoryView.EndDate = inventory.EndDate.Value.ToString("dd/MM/yyyy");
-            }
-            var scannedItemsNumber = inventory.InventoryItems.Where(x => x.Item.Type != ItemTypeEnum.Over).Count();
-            inventoryView.ScannedItemsNumber = scannedItemsNumber;
-            inventoryView.OverItemsNumber = inventory.InventoryItems.Where(x => x.Item.Type == ItemTypeEnum.Over).Count();
-            if (inventory.InventoryItemsNumber != 0)
-            {
-                inventoryView.Progres = (int)((double)scannedItemsNumber / (double)inventory.InventoryItemsNumber * 100);
-            }
-            else
-            {
-                inventoryView.Progres = 0;
-            }
-            if (inventory.Type == InventoryTypeEnum.Partial)
-            {
-                var placesNames = String.Empty;
-                foreach (var place in inventory.Places.Select(x => x.Name))
-                {
-                    placesNames += place + " ";
-                }
-                inventoryView.PlacesNames = placesNames;
-            }
+            var inventoryView = new InventoryDetailsView(inventory);
+           
             return inventoryView;
         }
 
@@ -226,13 +154,7 @@ namespace invMed.Services
                 try
                 {
                     await _db.SaveChangesAsync();
-                    return new ScannedItemView()
-                    {
-                        Id = inventoryItem.Id,
-                        BarCode = inventoryItem.Item.BarCode,
-                        ProductName = inventoryItem.Item.Product.Name,
-                        ProductId = inventoryItem.Item.Product.Id
-                    };
+                    return new ScannedItemView(inventoryItem);
                 }
                 catch (Exception ex)
                 {
@@ -265,13 +187,7 @@ namespace invMed.Services
             var scannedItemsView = new List<ScannedItemView>();
             foreach (var item in scannedItems)
             {
-                scannedItemsView.Add(new ScannedItemView()
-                {
-                    Id = item.Id,
-                    BarCode = item.Item.BarCode,
-                    ProductName = item.Item.Product.Name,
-                    ProductId = item.Item.Product.Id
-                });
+                scannedItemsView.Add(new ScannedItemView(item));
             }
             return scannedItemsView;
         }
@@ -349,13 +265,7 @@ namespace invMed.Services
             var inventoriesDto = new List<InventoryDto>();
             foreach (var inventory in inventories)
             {
-                var inventoryDto = new InventoryDto()
-                {
-                    InventoryName = inventory.Name,
-                    InventoryId = inventory.Id,
-                    InventoryType = inventory.Type.Value
-                };
-                inventoriesDto.Add(inventoryDto);
+                inventoriesDto.Add(new InventoryDto(inventory));
             }
             return inventoriesDto;
         }

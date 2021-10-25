@@ -22,5 +22,56 @@ namespace invMed.Data
         public int ScannedItemsNumber { get; set; }
         public int Progres { get; set; }
         public string PlacesNames { get; set; }
+
+        public InventoryDetailsView() { }
+
+        public InventoryDetailsView(Inventory inventory)
+        {
+            Id = inventory.Id;
+            Name = inventory.Name;
+            State = inventory.State;
+            Type = inventory.Type;
+            Description = inventory.Description;
+            InventoryItemsNumber = inventory.InventoryItemsNumber;
+
+            if (inventory.StartDate is not null)
+            {
+                StartDate = inventory.StartDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.PlannedStartDate is not null)
+            {
+                PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.PlannedEndDate is not null)
+            {
+                PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.EndDate is not null)
+            {
+                EndDate = inventory.EndDate.Value.ToString("dd/MM/yyyy");
+            }
+
+            var scannedItemsNumber = inventory.InventoryItems.Where(x => x.Item.Type != ItemTypeEnum.Over).Count();
+            ScannedItemsNumber = scannedItemsNumber;
+            OverItemsNumber = inventory.InventoryItems.Where(x => x.Item.Type == ItemTypeEnum.Over).Count();
+            if (inventory.InventoryItemsNumber != 0)
+            {
+                Progres = (int)((double)scannedItemsNumber / (double)inventory.InventoryItemsNumber * 100);
+            }
+            else
+            {
+                Progres = 0;
+            }
+
+            if (inventory.Type == InventoryTypeEnum.Partial)
+            {
+                var placesNames = String.Empty;
+                foreach (var place in inventory.Places.Select(x => x.Name))
+                {
+                    placesNames += place + " ";
+                }
+                PlacesNames = placesNames;
+            }
+        }
     }
 }

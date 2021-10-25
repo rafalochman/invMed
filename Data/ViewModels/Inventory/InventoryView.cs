@@ -18,5 +18,26 @@ namespace invMed.Data
         public string PlannedStartDate { get; set; }
         public string PlannedEndDate { get; set; }
         public List<string> UserNames { get; set; }
+
+        public InventoryView(Inventory inventory)
+        {
+            Id = inventory.Id;
+            Name = inventory.Name;
+            State = inventory.State;
+            Type = inventory.Type;
+            Description = inventory.Description;
+            if (inventory.PlannedStartDate is not null)
+            {
+                PlannedStartDate = inventory.PlannedStartDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.PlannedEndDate is not null)
+            {
+                PlannedEndDate = inventory.PlannedEndDate.Value.ToString("dd/MM/yyyy");
+            }
+            if (inventory.Users is not null)
+            {
+                UserNames = inventory.Users.Select(x => x.UserName).ToList();
+            }
+        }
     }
 }

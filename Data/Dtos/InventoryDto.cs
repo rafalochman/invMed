@@ -12,5 +12,12 @@ namespace invMed.Data
         public InventoryTypeEnum InventoryType { get; set; }
         public string InventoryName { get; set; }
         public int InventoryId { get; set; }
+
+        public InventoryDto(Inventory inventory)
+        {
+            InventoryName = inventory.Name;
+            InventoryId = inventory.Id;
+            InventoryType = inventory.Type.Value;
+        }
     }
 }
