@@ -24,7 +24,7 @@ namespace invMed.Data
             ExpirationDate = item.ExpirationDate.HasValue ? item.ExpirationDate.Value.ToString("dd/MM/yyyy") : null;
 
 
-            if (item.ExpirationDate > DateTime.Now)
+            if (item.ExpirationDate < DateTime.Now)
             {
                 ComunicateType = ExpiredComunicateTypeEnum.Expired;
             }

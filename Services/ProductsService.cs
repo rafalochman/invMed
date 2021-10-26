@@ -89,7 +89,7 @@ namespace invMed.Services
 
         public async Task<List<ExpiredItemView>> GetExpiredItems()
         {
-            var items = await _db.Items.Include(x => x.Product).Where(x => x.ExpirationDate > DateTime.Now.AddDays(-30)).Where(x => x.Type != ItemTypeEnum.Over).OrderBy(x => x.ExpirationDate).ToListAsync();
+            var items = await _db.Items.Include(x => x.Product).Where(x => x.ExpirationDate < DateTime.Now.AddDays(30)).Where(x => x.Type != ItemTypeEnum.Over).OrderBy(x => x.ExpirationDate).ToListAsync();
             var expiredItems = new List<ExpiredItemView>();
             foreach (var item in items)
             {

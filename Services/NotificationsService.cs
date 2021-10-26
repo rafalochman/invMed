@@ -48,7 +48,7 @@ namespace invMed.Services
 
         private async Task TryCreateExpiredItemNotifications(ApplicationDbContext db)
         {
-            var items = await db.Items.Where(x => x.ExpirationDate > DateTime.Now.AddDays(-30)).Where(x => x.Type != ItemTypeEnum.Over).OrderBy(x => x.ExpirationDate).ToListAsync();
+            var items = await db.Items.Where(x => x.ExpirationDate < DateTime.Now.AddDays(30)).Where(x => x.Type != ItemTypeEnum.Over).OrderBy(x => x.ExpirationDate).ToListAsync();
 
             foreach (var item in items)
             {
