@@ -43,7 +43,7 @@ namespace invMed.Services
 
         public async Task<List<ProductItemView>> GetItemsByProductId(int productId)
         {
-            var items = await _db.Items.Where(x => x.Product.Id == productId).Where(x => x.Type != ItemTypeEnum.Over).ToListAsync();
+            var items = await _db.Items.Where(x => x.Product.Id == productId).Include(x => x.Place).Where(x => x.Type != ItemTypeEnum.Over).ToListAsync();
             var itemsView = new List<ProductItemView>();
             foreach (var item in items)
             {
