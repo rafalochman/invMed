@@ -88,27 +88,14 @@ namespace invMed
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext applicationDbContext, UserManager<AspNetUser> userManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<AspNetUser> userManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
 
-                if (Configuration.GetValue<bool>("EraseDatabaseWhenLaunchingApp"))
-                {
-                    applicationDbContext.Database.EnsureDeleted();
-                    applicationDbContext.Database.EnsureCreated();
-                    if (Configuration.GetValue<bool>("SeedErasedDatabaseWithData"))
-                        StartupDataSeeder.FillWithUsers(userManager).Wait();
-                        StartupDataSeeder.FillWithPlaces(applicationDbContext).Wait();
-                        StartupDataSeeder.FillWithProducts(applicationDbContext).Wait();
-                        StartupDataSeeder.FillWithItems(applicationDbContext).Wait();
-                        StartupDataSeeder.FillWithInventories(applicationDbContext).Wait();
-                        StartupDataSeeder.FillWithNotifications(applicationDbContext).Wait();
-                }
-                else
-                    applicationDbContext.Database.EnsureCreated();
+                ApplicationDbInitializer.SeedUser(userManager);
             }
             else
             {
