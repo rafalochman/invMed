@@ -85,7 +85,7 @@ namespace invMed.Services
 
         public async Task<bool> StartInventory(int id)
         {
-            var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
+            var inventory = await _db.Inventories.Include(x => x.Places).FirstOrDefaultAsync(x => x.Id == id);
             if (inventory is null)
             {
                 _logger.LogError("Start inventory error - inventory not found.");
