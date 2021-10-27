@@ -71,7 +71,7 @@ namespace invMed.Services
 
         public async Task<InventoryDetailsView> GetInventoryDetailsViewById(int id)
         {
-            var inventory = await _db.Inventories.Include(x => x.InventoryItems).ThenInclude(x => x.Item).FirstOrDefaultAsync(x => x.Id == id);
+            var inventory = await _db.Inventories.Include(x => x.InventoryItems).ThenInclude(x => x.Item).Include(x => x.Places).FirstOrDefaultAsync(x => x.Id == id);
             if(inventory is null)
             {
                 _logger.LogError("Get inventory details error - inventory not found.");
