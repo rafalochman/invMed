@@ -279,8 +279,9 @@ namespace invMed.Services
                 return false;
             }
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);
+            var place = await _db.Places.FirstOrDefaultAsync(x => x.Name == input.Place);
             var user = await _userManager.FindByNameAsync(userName);
-            var item = new Item { AddDate = DateTime.Now, Product = product, AddUser = user, Type = ItemTypeEnum.Over, BarCode = input.Barcode };
+            var item = new Item { AddDate = DateTime.Now, Product = product, AddUser = user, Type = ItemTypeEnum.Over, BarCode = input.Barcode, Place = place };
             var barcode = new Barcode(item.BarCode);
             item.BarcodeUrl = barcode.UrlData;
             try

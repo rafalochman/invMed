@@ -17,6 +17,7 @@
                     <MudText Class="pt-8" Typo="Typo.h6">Dodaj nowy towar</MudText>
                     <MudAutocomplete T="string" Required="true" Label="Produkt" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.ProductName)" @bind-Value="input.ProductName" SearchFunc="@SearchProduct" Clearable="true" />
                     <MudTextField Label="Barkod" Immediate="true" Required="true" Class="mt-2" @bind-Value="input.Barcode" For="@(() => input.Barcode)" />
+                    <MudAutocomplete T="string" Required="true" Label="Miejsce" Immediate="true" ResetValueOnEmptyText="true" For="@(() => input.Place)" @bind-Value="input.Place" SearchFunc="@SearchPlace" Clearable="true" Class="mt-2" />
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-8">Dodaj</MudButton>
                 </EditForm>
             </MudContainer>
@@ -61,6 +62,14 @@
             return await warehousemanService.GetAllProductsNames();
 
         return await warehousemanService.SearchProductsNames(value);
+    }
+
+    private async Task<IEnumerable<string>> SearchPlace(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return await warehousemanService.GetAllPlacesNames();
+
+        return await warehousemanService.SearchPlacesNames(value);
     }
 
 }
