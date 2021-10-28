@@ -18,7 +18,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-            <MudIcon Icon="@Icons.Material.Filled.HorizontalSplit" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.HorizontalSplit" Class="mx-4 panelIcon"></MudIcon>
             <div>
                 <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="products">Produkty</MudButton>
             </div>
@@ -26,7 +26,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-            <MudIcon Icon="@Icons.Material.Filled.BarChart" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.BarChart" Class="mx-4 panelIcon"></MudIcon>
             <div>
                 <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="report">Raporty</MudButton>
             </div>
@@ -34,7 +34,7 @@
     </MudItem>
     <MudItem xs="12" sm="6" md="6" lg="3">
         <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height: 100px;">
-            <MudIcon Icon="@Icons.Material.Filled.Inventory" Class="mx-4" Style="width: 54px; height: 54px;"></MudIcon>
+            <MudIcon Icon="@Icons.Material.Filled.Inventory" Class="mx-4 panelIcon"></MudIcon>
             <div>
                 <MudButton Class="mt-2 mr-10" Variant="Variant.Filled" Color="Color.Primary" Link="inventory">Inwentaryzacja</MudButton>
             </div>
@@ -47,7 +47,7 @@
                     <TitleContent>
                         <div class="d-flex">
                             <MudBadge Visible="@isVisible" Content="@newNotificationsNumber" Color="Color.Primary" Overlap="true" Class="d-flex mt-n2">
-                                <MudIcon Style="width: 42px; height: 42px;" Icon="@Icons.Material.Filled.Email" />
+                                <MudIcon Class="panelIcon" Icon="@Icons.Material.Filled.Email" />
                             </MudBadge>
                             <MudText Typo="Typo.h6" Class="mr-10 ml-6 mt-n1">Powiadomienia</MudText>
                         </div>
