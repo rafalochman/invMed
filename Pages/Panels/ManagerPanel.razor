@@ -101,7 +101,7 @@
     </MudItem>
 
     <MudItem xs="12" lg="6" Style="float: left">
-        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
+        <MudPaper Elevation="25" Class="pa-4" Style="height: 562px; overflow-y: scroll">
             @if (runOutProducts is not null)
             {
                 <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@runOutProducts" Hover="true">
@@ -149,7 +149,7 @@
     </MudItem>
 
     <MudItem xs="12" lg="6" Style="float: left;">
-        <MudPaper Elevation="25" Class="pa-4" Style="min-height: 530px;">
+        <MudPaper Elevation="25" Class="pa-4" Style="height: 562px; overflow-y: scroll">
             @if (expiredItems is not null)
             {
                 <MudTable Breakpoint="Breakpoint.Sm" RowsPerPage="5" Elevation="0" Items="@expiredItems" Hover="true">
