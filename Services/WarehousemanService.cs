@@ -94,7 +94,7 @@ namespace invMed.Services
             {
                 foreach (var itemView in items)
                 {
-                    var item = await _db.Items.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
+                    var item = await _db.Items.Include(x => x.InventoryItems).Include(x => x.ReportItems).FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
                     var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == itemView.ProductId);
                     var notifications = await _db.Notifications.Where(x => x.Item.Id == item.Id).ToListAsync();
                     product.Amount -= 1;
