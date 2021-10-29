@@ -226,7 +226,11 @@
 
     private void Refresh()
     {
-        NavManager.NavigateTo("/managerPanel", true);
+        Console.WriteLine(NavManager.Uri);
+        if(NavManager.Uri.Contains("managerPanel"))
+        {
+            NavManager.NavigateTo("/managerPanel", true);
+        }
     }
 
     private async Task UpdatePanels()
