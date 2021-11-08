@@ -12,7 +12,7 @@ namespace invMed.Data
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime? GenerationDate { get; set; }
+        public DateTime GenerationDate { get; set; }
         public int AllItems { get; set; }
         public int ScannedItems { get; set; }
         public virtual Inventory Inventory { get; set; }

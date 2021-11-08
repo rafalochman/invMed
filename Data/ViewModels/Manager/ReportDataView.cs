@@ -18,7 +18,7 @@ namespace invMed.Data
             Id = report.Id;
             Name = report.Name;
             Description = report.Description;
-            GenerationDate = report.GenerationDate.Value.ToString("dd/MM/yyyy");
+            GenerationDate = report.GenerationDate.ToString("dd/MM/yyyy");
         }
     }
 }
