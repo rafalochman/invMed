@@ -33,7 +33,11 @@ namespace invMed.Services
 
         public async Task<bool> GenerateReport(CreateReportInput reportInput)
         {
-            var inventory = await _db.Inventories.Include(x => x.InventoryItems).FirstOrDefaultAsync(x => x.Id == reportInput.InventoryDto.InventoryId);
+            var inventory = await _db.Inventories
+                .Include(x => x.InventoryItems)
+                .ThenInclude(x => x.Item)
+                .Include(x => x.Places)
+                .FirstOrDefaultAsync(x => x.Id == reportInput.InventoryDto.InventoryId);
             if (inventory is null)
             {
                 _logger.LogError("Create report error - invenory not found.");

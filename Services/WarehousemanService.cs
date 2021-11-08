@@ -102,9 +102,13 @@ namespace invMed.Services
                     }
                     var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == itemView.ProductId);
                     var notifications = await _db.Notifications.Where(x => x.Item.Id == item.Id).ToListAsync();
+                    var inventoryItems = await _db.InventoryItems.Where(x => x.Item.Id == item.Id).ToListAsync();
+                    var reportItems = await _db.ReportItems.Where(x => x.Item.Id == item.Id).ToListAsync();
                     product.Amount -= 1;
                     _db.Remove(item);
                     _db.RemoveRange(notifications);
+                    _db.RemoveRange(inventoryItems);
+                    _db.RemoveRange(reportItems);
                     products.Add(product);
                 }
                 await _db.SaveChangesAsync();
