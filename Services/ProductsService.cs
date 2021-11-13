@@ -57,7 +57,7 @@ namespace invMed.Services
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == id);
             if (product is null)
             {
-                _logger.LogError("Get product details error - product not found.");
+                _logger.LogError($"Get product details error - product {id} not found.");
                 return new ProductDetailsView();
             }
 
@@ -69,7 +69,7 @@ namespace invMed.Services
             var item = await _db.Items.Include(x => x.Place).FirstOrDefaultAsync(x => x.Id == id);
             if (item is null)
             {
-                _logger.LogError("Get item details error - item not found.");
+                _logger.LogError($"Get item details error - item {id} not found.");
                 return new ItemDetailsView();
             }
             

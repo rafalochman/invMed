@@ -51,7 +51,7 @@ namespace invMed.Services
             var place = await _db.Places.FirstOrDefaultAsync(x => x.Name == input.Place);
             if (product is null || user is null || place is null)
             {
-                _logger.LogError("Add item error - product or item or place not found.");
+                _logger.LogError($"Add item error - product {input.ProductName} or user {userName} or place {input.Place} not found.");
                 return ("", "");
             }
 
@@ -80,7 +80,7 @@ namespace invMed.Services
             var item = await _db.Items.FirstOrDefaultAsync(x => x.BarCode == barCode);
             if (item is null)
             {
-                _logger.LogError("Get remove view error - item not found.");
+                _logger.LogError($"Get remove view error - item {barCode} not found.");
                 return new RemoveItemView();
             }
 
@@ -97,7 +97,7 @@ namespace invMed.Services
                     var item = await _db.Items.Include(x => x.InventoryItems).Include(x => x.ReportItems).FirstOrDefaultAsync(x => x.BarCode == itemView.BarCode);
                     if(item is null)
                     {
-                        _logger.LogError("Remove items - item not found.");
+                        _logger.LogError($"Remove items - item {itemView.BarCode} not found.");
                         return false;
                     }
                     var product = await _db.Products.FirstOrDefaultAsync(x => x.Id == itemView.ProductId);

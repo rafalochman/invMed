@@ -74,7 +74,7 @@ namespace invMed.Services
             var inventory = await _db.Inventories.Include(x => x.InventoryItems).ThenInclude(x => x.Item).Include(x => x.Places).FirstOrDefaultAsync(x => x.Id == id);
             if(inventory is null)
             {
-                _logger.LogError("Get inventory details error - inventory not found.");
+                _logger.LogError($"Get inventory details error - inventory {id} not found.");
                 return new InventoryDetailsView();
             }
 
@@ -88,7 +88,7 @@ namespace invMed.Services
             var inventory = await _db.Inventories.Include(x => x.Places).FirstOrDefaultAsync(x => x.Id == id);
             if (inventory is null)
             {
-                _logger.LogError("Start inventory error - inventory not found.");
+                _logger.LogError($"Start inventory error - inventory {id} not found.");
                 return false;
             }
 
@@ -129,7 +129,7 @@ namespace invMed.Services
 
             if(item is null || inventory is null)
             {
-                _logger.LogError("Add item to inventory error - item or inventory not found.");
+                _logger.LogError($"Add item to inventory error - item {barCode} or inventory {inventoryId} not found.");
                 return new ScannedItemView();
             }
 
@@ -208,7 +208,7 @@ namespace invMed.Services
             var inventory = await _db.Inventories.FirstOrDefaultAsync(x => x.Id == id);
             if (inventory is null)
             {
-                _logger.LogError("Finish inventory error - inventory not found.");
+                _logger.LogError($"Finish inventory error - inventory {id} not found.");
                 return false;
             }
 
@@ -239,7 +239,7 @@ namespace invMed.Services
             var user = await _userManager.FindByNameAsync(userName);
             if (user is null)
             {
-                _logger.LogError("Check if user has role manager error - user not found.");
+                _logger.LogError($"Check if user has role manager error - user {userName} not found.");
                 return false;
             }
 
@@ -275,7 +275,7 @@ namespace invMed.Services
             var isBarcode = _db.Items.Any(x => x.BarCode == input.Barcode);
             if (isBarcode)
             {
-                _logger.LogWarning("Add new item warning - item alredy exists.");
+                _logger.LogWarning($"Add new item warning - item {input.Barcode} alredy exists.");
                 return false;
             }
             var product = await _db.Products.FirstOrDefaultAsync(x => x.Name == input.ProductName);

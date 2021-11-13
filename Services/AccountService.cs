@@ -42,7 +42,7 @@ namespace invMed.Services
             var user = await _userManager.FindByNameAsync(userName);
             if(user is null)
             {
-                _logger.LogError("Change user password error - user not found.");
+                _logger.LogError($"Change user password error - user {userName} not found.");
                 return false;
             }
             var passwordValidation = await _signInManager.UserManager.CheckPasswordAsync(user, currentPassword);

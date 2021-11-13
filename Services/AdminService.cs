@@ -39,7 +39,7 @@ namespace invMed.Services
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (user is null)
             {
-                _logger.LogError("Get user error - user not found.");
+                _logger.LogError($"Get user error - user {id} not found.");
                 return new UserView();
             }
             var userView = new UserView(user);
@@ -79,7 +79,7 @@ namespace invMed.Services
             var user = await _userManager.FindByIdAsync(id);
             if (user is null)
             {
-                _logger.LogError("Add user to role error - user not found.");
+                _logger.LogError($"Add user to role error - user {id} not found.");
                 return false;
             }
             var result = await _userManager.AddToRoleAsync(user, role);
@@ -95,7 +95,7 @@ namespace invMed.Services
             var user = await _userManager.FindByEmailAsync(input.Email);
             if (user is null)
             {
-                _logger.LogError("Add user to role error - user not found.");
+                _logger.LogError($"Add user to role error - user {input.Email} not found.");
                 return false;
             }
             var result = await _userManager.AddToRoleAsync(user, input.Role);
@@ -111,7 +111,7 @@ namespace invMed.Services
             var user = await _userManager.FindByIdAsync(id);
             if (user is null)
             {
-                _logger.LogError("Remove user from role error - user not found.");
+                _logger.LogError($"Remove user from role error - user {id} not found.");
                 return false;
             }
             var result = await _userManager.RemoveFromRoleAsync(user, role);
@@ -156,7 +156,7 @@ namespace invMed.Services
             var user = await _userManager.FindByIdAsync(id);
             if (user is null)
             {
-                _logger.LogError("Reset password error - user not found.");
+                _logger.LogError($"Reset password error - user {id} not found.");
                 return false;
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);

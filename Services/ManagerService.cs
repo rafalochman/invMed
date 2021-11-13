@@ -40,7 +40,7 @@ namespace invMed.Services
                 .FirstOrDefaultAsync(x => x.Id == reportInput.InventoryDto.InventoryId);
             if (inventory is null)
             {
-                _logger.LogError("Create report error - invenory not found.");
+                _logger.LogError($"Create report error - invenory {reportInput.InventoryDto.InventoryId} not found.");
                 return false;
             }
 
@@ -102,7 +102,7 @@ namespace invMed.Services
             var report = await _db.Reports.Include(x => x.Inventory).FirstOrDefaultAsync(x => x.Id == reportId);
             if (report is null)
             {
-                _logger.LogError("Get report details view error - report not found.");
+                _logger.LogError($"Get report details view error - report {reportId} not found.");
                 return new ReportDetailsView();
             }
 
@@ -123,7 +123,7 @@ namespace invMed.Services
 
             if (report is null)
             {
-                _logger.LogError("Get report view error - report not found.");
+                _logger.LogError($"Get report view error - report {reportId} not found.");
                 return new ReportView();
             }
 
