@@ -132,7 +132,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        users = await Task.Run(() => adminService.GetUsers());
+        users = await adminService.GetUsers();
         rolesNumbers = GetRolesArray();
     }
 
@@ -159,7 +159,7 @@
 
         if (result is not null)
         {
-            users = await Task.Run(() => adminService.GetUsers());
+            users = await adminService.GetUsers();
         }
     }
 
@@ -171,7 +171,7 @@
 
         if (result is not null)
         {
-            users = await Task.Run(() => adminService.GetUsers());
+            users = await adminService.GetUsers();
             rolesNumbers = GetRolesArray();
         }
     }
@@ -182,7 +182,7 @@
         var result = await dialog.Result;
         if (result is not null)
         {
-            users = await Task.Run(() => adminService.GetUsers());
+            users = await adminService.GetUsers();
             rolesNumbers = GetRolesArray();
         }
     }
@@ -193,7 +193,7 @@
         var result = await dialog.Result;
         if (result is not null)
         {
-            users = await Task.Run(() => adminService.GetUsers());
+            users = await adminService.GetUsers();
             rolesNumbers = GetRolesArray();
         }
     }
