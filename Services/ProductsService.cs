@@ -43,7 +43,7 @@ namespace invMed.Services
 
         public async Task<List<ProductItemView>> GetItemsByProductId(int productId)
         {
-            var items = await _db.Items.Where(x => x.Product.Id == productId).Include(x => x.Place).Where(x => x.Type != ItemTypeEnum.Over).ToListAsync();
+            var items = await _db.Items.Include(x => x.Place).Where(x => x.Product.Id == productId && x.Type != ItemTypeEnum.Over).ToListAsync();
             var itemsView = new List<ProductItemView>();
             foreach (var item in items)
             {
@@ -89,7 +89,7 @@ namespace invMed.Services
 
         public async Task<List<ExpiredItemView>> GetExpiredItems()
         {
-            var items = await _db.Items.Include(x => x.Product).Where(x => x.ExpirationDate < DateTime.Now.AddDays(30)).Where(x => x.Type != ItemTypeEnum.Over).OrderBy(x => x.ExpirationDate).ToListAsync();
+            var items = await _db.Items.Include(x => x.Product).Where(x => x.ExpirationDate < DateTime.Now.AddDays(30) && x.Type != ItemTypeEnum.Over).OrderBy(x => x.ExpirationDate).ToListAsync();
             var expiredItems = new List<ExpiredItemView>();
             foreach (var item in items)
             {

@@ -102,7 +102,7 @@ namespace invMed.Services
                 }
                 else if (inventory.Type == InventoryTypeEnum.Partial)
                 {
-                    inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place)).Where(x => x.Type != ItemTypeEnum.Over).CountAsync();
+                    inventory.InventoryItemsNumber = await _db.Items.Where(x => inventory.Places.Contains(x.Place) && x.Type != ItemTypeEnum.Over).CountAsync();
                 }
             }
             else
