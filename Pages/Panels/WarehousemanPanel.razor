@@ -171,6 +171,7 @@
         var result = await dialog.Result;
         if (result is not null)
         {
+            newItems = await warehousemanService.GetNewItems();
             runOutProducts = await productsService.GetRunOutProducts();
         }
     }
