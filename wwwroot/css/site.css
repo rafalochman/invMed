@@ -12,6 +12,10 @@
     margin-top: 30px;
 }
 
+.loginButton {
+    background-color: #594AE2;
+}
+
 .panelIcon {
     width: 54px !important;
     height: 54px !important;
